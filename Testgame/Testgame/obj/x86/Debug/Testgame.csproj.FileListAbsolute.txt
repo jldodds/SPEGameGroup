@@ -1,0 +1,8 @@
+c:\users\joey\documents\visual studio 2010\Projects\Testgame\Testgame\Testgame\bin\x86\Debug\Content\Blob.xnb
+c:\users\joey\documents\visual studio 2010\Projects\Testgame\Testgame\Testgame\bin\x86\Debug\Content\SpriteFont1.xnb
+c:\users\joey\documents\visual studio 2010\Projects\Testgame\Testgame\Testgame\bin\x86\Debug\Testgame.exe
+c:\users\joey\documents\visual studio 2010\Projects\Testgame\Testgame\Testgame\bin\x86\Debug\Testgame.pdb
+c:\users\joey\documents\visual studio 2010\Projects\Testgame\Testgame\Testgame\obj\x86\Debug\ResolveAssemblyReference.cache
+c:\users\joey\documents\visual studio 2010\Projects\Testgame\Testgame\Testgame\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+c:\users\joey\documents\visual studio 2010\Projects\Testgame\Testgame\Testgame\obj\x86\Debug\Testgame.exe
+c:\users\joey\documents\visual studio 2010\Projects\Testgame\Testgame\Testgame\obj\x86\Debug\Testgame.pdb
