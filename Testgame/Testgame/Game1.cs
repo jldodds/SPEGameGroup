@@ -21,6 +21,7 @@ namespace Testgame
         Drawable object1;
         MouseState pastMouse;
         Card practice;
+        Card[] cards;
         
 
         public Game1()
@@ -52,7 +53,21 @@ namespace Testgame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            practice = new Card(30, this.Content.Load<Texture2D>("EightHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(0, 0), true);
+            
+            cards = new Card[13];
+            cards[0] = new Card(0, this.Content.Load<Texture2D>("AceHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+            cards[1] = new Card(1, this.Content.Load<Texture2D>("KingHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+            cards[2] = new Card(2, this.Content.Load<Texture2D>("TwoHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+            cards[3] = new Card(3, this.Content.Load<Texture2D>("ThreeHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+            cards[4] = new Card(4, this.Content.Load<Texture2D>("FourHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+            cards[5] = new Card(5, this.Content.Load<Texture2D>("FiveHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+            cards[6] = new Card(6, this.Content.Load<Texture2D>("SixHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+            cards[7] = new Card(7, this.Content.Load<Texture2D>("SevenHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+            cards[8] = new Card(8, this.Content.Load<Texture2D>("EightHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+            cards[9] = new Card(9, this.Content.Load<Texture2D>("NineHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+            cards[10] = new Card(10, this.Content.Load<Texture2D>("TenHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+            cards[11] = new Card(11, this.Content.Load<Texture2D>("JackHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+            cards[12]= new Card(12, this.Content.Load<Texture2D>("QueenHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
         }
 
 
@@ -80,12 +95,14 @@ namespace Testgame
             //object1.Change(Actions.GetBackMove(1.7f), 400, 400, 2, (float) gameTime.ElapsedGameTime.TotalSeconds);
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && pastMouse.LeftButton == ButtonState.Released)
             {
-                practice.Flip(!practice.isFaceUp);
-                practice.cardFront.Move(Actions.ExpoMove, practice.cardFront.attributes.position + new Vector2(30, 30), .5f);
+                Commands.MakePile(cards, new Vector2(300,300));
             }
             pastMouse = Mouse.GetState();
-            practice.Update(gameTime);
-            base.Update(gameTime);
+            for (int i = 0; i < cards.Length; i++)
+            {
+                cards[i].Update(gameTime);
+            }
+                base.Update(gameTime);
         }
 
         /// <summary>
@@ -98,7 +115,10 @@ namespace Testgame
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            practice.Draw(spriteBatch, SpriteEffects.None);
+            for (int i = 0; i < cards.Length; i++)
+            {
+                cards[i].Draw(spriteBatch, SpriteEffects.None);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }

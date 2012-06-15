@@ -17,9 +17,7 @@ namespace Testgame
             t /= d/2;
             if ((t) < 1) return (end - start) / 2 * t * t + start;
             return -(end - start) / 2 * ((--t) * (t - 2) - 1) + start;
-        }
-
-        
+        }  
         
         public static MoveDel GetBackMove(float s)
         {

@@ -16,7 +16,7 @@ namespace Testgame
         private int cardWidth = 130;
         public readonly int cardNumber;
 
-
+        #region Constructor
         public Card(int card, Texture2D front, Texture2D back, Vector2 position, bool orientation)
         {
             cardNumber = card;
@@ -36,7 +36,9 @@ namespace Testgame
             isFaceUp = orientation;
 
         }
+        #endregion
 
+        #region Methods
         public void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             if (isFaceUp)
@@ -55,5 +57,6 @@ namespace Testgame
         {
             cardFront.Update(gameTime);
         }
+        #endregion
     }
 }

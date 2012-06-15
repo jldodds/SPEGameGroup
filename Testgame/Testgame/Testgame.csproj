@@ -110,6 +110,7 @@
     <Compile Include="Actions.cs" />
     <Compile Include="Attributes.cs" />
     <Compile Include="Card.cs" />
+    <Compile Include="Commands.cs" />
     <Compile Include="Drawable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
