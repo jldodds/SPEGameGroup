@@ -1,2 +1,0 @@
-Content\Blob.xnb
-Content\SpriteFont1.xnb
