@@ -13,6 +13,7 @@ namespace Testgame
             _change = to - from;
             _tweeningFunction = tweeningFunction;
             _duration = duration;
+            //ok
         }
 
         public Tweener(float from, float to, TimeSpan duration, MoveDel tweeningFunction)
