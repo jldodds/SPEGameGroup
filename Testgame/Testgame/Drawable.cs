@@ -16,26 +16,15 @@ namespace Testgame
         {
             spriteBatch.Draw(attributes.texture, attributes.position, null, attributes.color, attributes.rotation, attributes.origin, attributes.scale, spriteEffects, attributes.depth);
         }
-       
+
         public Attributes attributes { get; set; }
-        public bool isMovingX { get; set; }
-        public bool isMovingY { get; set; }
-        public bool isChangingColor { get; set; }
-        public bool isRotating { get; set; }
-        public float elapsedTime { get; set; }
-        public float startPositionX { get; set; }
-        public float startPositionY { get; set; }
-        public int startColorR { get; set; }
-        public int startColorG { get; set; }
-        public int startColorB { get; set; }
-        public float startRotation { get; set; }
         Tweener tweenerX;
         Tweener tweenerY;
         Tweener tweenerRotate;
         Tweener tweenerColorR;
         Tweener tweenerColorG;
         Tweener tweenerColorB;
-        Tweener tweenerScaleX;
+        public Tweener tweenerScaleX;
         Tweener tweenerScaleY;
 
 

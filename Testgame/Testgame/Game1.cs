@@ -20,7 +20,8 @@ namespace Testgame
         SpriteBatch spriteBatch;
         Drawable object1;
         MouseState pastMouse;
-        int x, y;
+        Card practice;
+        
 
         public Game1()
         {
@@ -51,25 +52,7 @@ namespace Testgame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            object1 = new Drawable()
-            {
-                attributes = new Attributes()
-                {
-                    texture = this.Content.Load<Texture2D>("Blob"),
-                    color = Color.BurlyWood,
-                    height = 200,
-                    width = 400,
-                    rotation = 0,
-                    depth = 1,
-                    position = new Vector2(300, 300)
-                    
-                }
-            };
-
-            x = 300;
-            y = 300;
-            
-                
+            practice = new Card(30, this.Content.Load<Texture2D>("EightHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(0, 0), true);
         }
 
 
@@ -97,10 +80,11 @@ namespace Testgame
             //object1.Change(Actions.GetBackMove(1.7f), 400, 400, 2, (float) gameTime.ElapsedGameTime.TotalSeconds);
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && pastMouse.LeftButton == ButtonState.Released)
             {
-                object1.Flip(Actions.LinearMove, .1f);
+                practice.Flip(!practice.isFaceUp);
+                practice.cardFront.Move(Actions.ExpoMove, practice.cardFront.attributes.position + new Vector2(30, 30), .5f);
             }
             pastMouse = Mouse.GetState();
-            object1.Update(gameTime);
+            practice.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -114,7 +98,7 @@ namespace Testgame
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            object1.Draw(spriteBatch, SpriteEffects.None);
+            practice.Draw(spriteBatch, SpriteEffects.None);
             spriteBatch.End();
             base.Draw(gameTime);
         }
