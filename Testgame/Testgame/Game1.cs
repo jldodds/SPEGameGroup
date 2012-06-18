@@ -19,11 +19,11 @@ namespace Testgame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        //Drawable object1;
-        //MouseState pastMouse;
-        //Card practice;
         Card[] cards;
         KeyboardState oldState;
+        Screen gameplay;
+        Drawable background;
+
 
         public Game1()
         {
@@ -55,6 +55,21 @@ namespace Testgame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            background = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("PossibleBackground"),
+                    color = Color.White,
+                    position = new Vector2(512, 400),
+                    depth = 1,
+                    height = 802,
+                    width = 1026,
+                    rotation = 0
+                }
+            };
+
+            gameplay = new Screen(background);
 
             // TODO: use this.Content to load your game content here
             
@@ -72,6 +87,12 @@ namespace Testgame
             cards[10] = new Card(10, this.Content.Load<Texture2D>("TenHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
             cards[11] = new Card(11, this.Content.Load<Texture2D>("JackHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
             cards[12]= new Card(12, this.Content.Load<Texture2D>("QueenHearts"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
+
+            for (int i = 0; i < cards.Length; i++)
+            {
+                gameplay.Add(cards[i]);
+            }
+
         }
 
 
@@ -97,12 +118,8 @@ namespace Testgame
 
             // TODO: Add your update logic here
             KeyUpdate();
-            
-            for (int i = 0; i < cards.Length; i++)
-            {
-                cards[i].Update(gameTime);
-            }
 
+            gameplay.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -116,7 +133,7 @@ namespace Testgame
                 if (!oldState.IsKeyDown(Keys.Up))
                 {
                     Commands.Shuffle(cards);
-                    Commands.MakePile(cards, new Vector2(300, 300));
+                    Commands.MakePile(cards, new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
                 }
             }
 
@@ -198,11 +215,8 @@ namespace Testgame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
-            for (int i = 0; i < cards.Length; i++)
-            {
-                cards[i].Draw(spriteBatch, SpriteEffects.None);
-            }
+            spriteBatch.Begin(SpriteSortMode.BackToFront, null);
+            gameplay.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }
