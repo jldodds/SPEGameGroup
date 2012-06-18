@@ -23,6 +23,7 @@ namespace Testgame
         KeyboardState oldState;
         Screen gameplay;
         Drawable background;
+        Speed speed;
 
 
         public Game1()
@@ -127,12 +128,7 @@ namespace Testgame
             cards[50] = new Card(50, this.Content.Load<Texture2D>("QueenSpades"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
             cards[51] = new Card(51, this.Content.Load<Texture2D>("KingSpades"), this.Content.Load<Texture2D>("AceSpades"), new Vector2(100, 100), true);
             #endregion Create cards[]
-
-            for (int i = 0; i < cards.Length; i++)
-            {
-                gameplay.Add(cards[i]);
-            }
-
+            speed = new Speed(cards, gameplay);
         }
 
 
@@ -159,7 +155,7 @@ namespace Testgame
             // TODO: Add your update logic here
             KeyUpdate();
 
-            gameplay.Update(gameTime);
+            speed.gamePlay.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -172,8 +168,7 @@ namespace Testgame
             {
                 if (!oldState.IsKeyDown(Keys.Up))
                 {
-                    Commands.Shuffle(cards);
-                    Commands.MakePile(cards, new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
+                    speed.Deal();
                 }
             }
 
@@ -256,7 +251,7 @@ namespace Testgame
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
-            gameplay.Draw(spriteBatch);
+            speed.gamePlay.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }

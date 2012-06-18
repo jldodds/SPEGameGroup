@@ -9,7 +9,7 @@ namespace Testgame
 {
     class Pile
     {
-        public static Stack<Card> stack;
+        public Stack<Card> stack;
         public Vector2 position;
 
         public Pile(Vector2 p)
@@ -21,6 +21,7 @@ namespace Testgame
         public void Add(Card c)
         {
             stack.Push(c);
+            c.cardFront.attributes.depth = 1 - stack.Count * .01f;
         }
 
         public Card Take()

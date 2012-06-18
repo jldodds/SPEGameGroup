@@ -34,29 +34,29 @@ namespace Testgame
             }
         }
 
-        public static void Deal()
+        public void Deal()
         {
             Commands.Shuffle(cards);
 
             for (int i = 0; i < 5; i++)
             {
-                lSpitStack.Add(cards[i]);
+                cards[i].toPile(lSpitStack);
 
             }
 
             for (int i = 5; i < 10; i++)
             {
-                rSpitStack.Add(cards[i]);
+                cards[i].toPile(rSpitStack);
             }
 
             for (int i = 10; i < 31; i++)
             {
-                yourStack.Add(cards[i]);
+                cards[i].toPile(yourStack);
             }
 
             for (int i = 31; i < 52; i++)
             {
-                opponentStack.Add(cards[i]);
+                cards[i].toPile(opponentStack);
             }
 
             
