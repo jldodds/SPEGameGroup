@@ -70,6 +70,12 @@ namespace Testgame
         {
             cardFront.Update(gameTime);
         }
+
+        public void toPile(Pile pile)
+        {
+            cardFront.Move(Actions.ExpoMove, pile.position, .5f);
+            pile.Add(this);
+        }
         #endregion
     }
 }
