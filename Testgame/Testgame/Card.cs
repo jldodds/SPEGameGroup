@@ -15,9 +15,10 @@ namespace Testgame
         private int cardHeight = 180;
         private int cardWidth = 130;
         public readonly int cardNumber;
+        private bool isFlipping;
 
         #region Constructor
-        public Card(int card, Texture2D front, Texture2D back, Vector2 position, bool orientation)
+        public Card(int card, Texture2D front, Texture2D back, Vector2 position, bool faceUp)
         {
             cardNumber = card;
             cardFront = new Drawable()
@@ -33,7 +34,8 @@ namespace Testgame
                     }
             };
             cardBack = back;
-            isFaceUp = orientation;
+            isFaceUp = faceUp;
+            isFlipping = false;
 
         }
         #endregion
@@ -49,8 +51,19 @@ namespace Testgame
 
         public void Flip(bool endOrientation)
         {
-            cardFront.Flip(Actions.LinearMove, .25f);
+            if (isFlipping) return;
+            isFlipping = true;
+            cardFront.Flip(Actions.LinearMove, .15f);
+            cardFront.tweenerScaleX.Ended += this.Reverse;
             cardFront.tweenerScaleX.Ended += delegate() { isFaceUp = endOrientation; };
+            
+        }
+
+        private void Reverse()
+        {
+            cardFront.Reverse();
+            cardFront.tweenerScaleX.Ended -= this.Reverse;
+            cardFront.tweenerScaleX.Ended += delegate() { isFlipping = false; };
         }
 
         public void Update(GameTime gameTime)

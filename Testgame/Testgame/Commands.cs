@@ -17,5 +17,20 @@ namespace Testgame
                 cards[i].cardFront.Rotate(Actions.ExpoMove, (float)(random.NextDouble() - .5)/2, ((float)i+1)/3);
             }
         }
+
+        public static void Shuffle(Card[] cards)
+        {
+            Random random = new Random();
+            int N = cards.Length;
+            for (int i = 0; i < N; i++)
+            {
+                int r = i + (int)(random.NextDouble() * (N - i));
+                Card temp = cards[r];
+                cards[r] = cards[i];
+                cards[i] = temp;
+            };
+        }
+
+
     }
 }
