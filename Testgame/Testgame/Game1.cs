@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -114,7 +115,8 @@ namespace Testgame
             {
                 if (!oldState.IsKeyDown(Keys.Up))
                 {
-                    Commands.Equals(cards, new Vector2(300, 300));
+                    Commands.Shuffle(cards);
+                    Commands.MakePile(cards, new Vector2(300, 300));
                 }
             }
 
@@ -206,3 +208,4 @@ namespace Testgame
         }
     }
 }
+
