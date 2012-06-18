@@ -18,16 +18,19 @@ namespace Testgame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Drawable object1;
-        MouseState pastMouse;
-        Card practice;
+        //Drawable object1;
+        //MouseState pastMouse;
+        //Card practice;
         Card[] cards;
-        
+        KeyboardState oldState;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferredBackBufferWidth = 1024;
         }
 
         /// <summary>
@@ -92,19 +95,98 @@ namespace Testgame
                 this.Exit();
 
             // TODO: Add your update logic here
-            //object1.Change(Actions.GetBackMove(1.7f), 400, 400, 2, (float) gameTime.ElapsedGameTime.TotalSeconds);
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed && pastMouse.LeftButton == ButtonState.Released)
-            {
-                Commands.MakePile(cards, new Vector2(300,300));
-            }
-            pastMouse = Mouse.GetState();
+            KeyUpdate();
+            
             for (int i = 0; i < cards.Length; i++)
             {
                 cards[i].Update(gameTime);
             }
-                base.Update(gameTime);
+
+            base.Update(gameTime);
         }
 
+
+        protected void KeyUpdate()
+        {
+            KeyboardState newState = Keyboard.GetState();
+
+            if (newState.IsKeyDown(Keys.Up))
+            {
+                if (!oldState.IsKeyDown(Keys.Up))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.Down))
+            {
+                if (!oldState.IsKeyDown(Keys.Down))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.A))
+            {
+                if (!oldState.IsKeyDown(Keys.A))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.A))
+            {
+                if (!oldState.IsKeyDown(Keys.A))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.W))
+            {
+                if (!oldState.IsKeyDown(Keys.W))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.S))
+            {
+                if (!oldState.IsKeyDown(Keys.S))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.A))
+            {
+                if (!oldState.IsKeyDown(Keys.A))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.F))
+            {
+                if (!oldState.IsKeyDown(Keys.F))
+                {
+                    graphics.IsFullScreen = true;
+                    graphics.ApplyChanges();
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.Escape))
+            {
+                if (!oldState.IsKeyDown(Keys.Escape))
+                {
+                    graphics.IsFullScreen = false;
+                    graphics.ApplyChanges();
+                }
+            }
+
+            oldState = newState;
+        }
+        
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
