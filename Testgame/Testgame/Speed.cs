@@ -7,17 +7,23 @@ namespace Testgame
 {
     class Speed
     {
-        public static Stack<Card> yourStack = new Stack<Card>();
-        public static Stack<Card> opponentStack = new Stack<Card>();
-        public static Stack<Card> lSpitStack = new Stack<Card>();
-        public static Stack<Card> rSpitStack = new Stack<Card>();
-        public static Stack<Card> lGameStack = new Stack<Card>();
-        public static Stack<Card> rGameStack = new Stack<Card>();
+        public static Stack<Card> yourStack;
+        public static Stack<Card> opponentStack;
+        public static Stack<Card> lSpitStack;
+        public static Stack<Card> rSpitStack;
+        public static Stack<Card> lGameStack;
+        public static Stack<Card> rGameStack;
         public static Card[] cards;
 
         public Speed(Card[] deck)
         {
             cards = deck;
+            yourStack = new Stack<Card>();
+            opponentStack = new Stack<Card>();
+            lSpitStack = new Stack<Card>();
+            rSpitStack = new Stack<Card>();
+            lGameStack = new Stack<Card>();
+            rGameStack = new Stack<Card>();
         }
         
         public static void Deal()
