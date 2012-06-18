@@ -61,14 +61,16 @@ namespace Testgame
             tweenerScaleY = new Tweener(attributes.scale.Y, endScale.Y, d, action);
         }
 
-        private void Reverse()
-        {tweenerScaleX.Reverse();
-                tweenerScaleX.Ended -= Reverse;}
+        public void Reverse()
+        {
+            tweenerScaleX.Reverse();
+        }
+
 
         public void Flip(MoveDel action, float d)
         {
             this.Scale(action, new Vector2(0, attributes.scale.Y), d);
-            tweenerScaleX.Ended += Reverse;
+            
     }
 
         public void Update(GameTime gameTime)
