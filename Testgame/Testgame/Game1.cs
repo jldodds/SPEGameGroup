@@ -154,14 +154,14 @@ namespace Testgame
             // TODO: Add your update logic here
             //Card.Draw(spriteBatch, spriteEffects);
             
-            KeyUpdate();
+            KeyUpdate(gameTime);
 
             speed.gamePlay.Update(gameTime);
             base.Update(gameTime);
         }
 
 
-        protected void KeyUpdate()
+        protected void KeyUpdate(GameTime gameTime)
         {
             KeyboardState newState = Keyboard.GetState();
 

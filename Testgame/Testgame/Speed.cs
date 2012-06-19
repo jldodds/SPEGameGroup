@@ -40,30 +40,16 @@ namespace Testgame
             for (int i = 0; i < cards.Length; i++)
             {
                 cards[i].isFaceUp = false;
+
+
+                if (i % 4 == 3 && i < 16) cards[i].toPile(rSpitStack, (float)i / 6);
+                else if (i % 4 == 2 && i < 16) cards[i].toPile(lSpitStack, (float)i / 6);
+                else if (i % 4 == 1 && i < 16) cards[i].toPile(yourStack, (float)i / 6);
+                else if (i % 4 == 0 && i < 16) cards[i].toPile(opponentStack, (float)i / 6);
+                else if (i % 2 == 1 && i >= 16) cards[i].toPile(yourStack, (float)i / 6);
+                else if (i % 2 == 0 && i >= 16) cards[i].toPile(opponentStack, (float)i / 6);
             }
-
-            for (int i = 0; i < 5; i++)
-            {
-                cards[i].toPile(lSpitStack);
-
-            }
-
-            for (int i = 5; i < 10; i++)
-            {
-                cards[i].toPile(rSpitStack);
-            }
-
-            for (int i = 10; i < 31; i++)
-            {
-                cards[i].toPile(yourStack);
-            }
-
-            for (int i = 31; i < 52; i++)
-            {
-                cards[i].toPile(opponentStack);
-            }
-
-            
+           
         }
     }
 }

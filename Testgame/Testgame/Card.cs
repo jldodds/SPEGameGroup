@@ -1,3 +1,4 @@
+﻿
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,6 @@ namespace Testgame
     class Card
     {
         public Drawable cardFront;
-        //public Drawable daCardBack;
         Texture2D cardBack;
         public bool isFaceUp { get; set; }
         private int cardHeight = 180;
@@ -34,20 +34,6 @@ namespace Testgame
                         color = Color.White,
                     }
             };
-
-            /*daCardBack = new Drawable()
-            {
-                attributes = new Attributes()
-                {
-                    texture = back,
-                    position = position,
-                    height = cardHeight,
-                    rotation = 0,
-                    width = cardWidth,
-                    color = Color.White,
-                }
-            };*/
-
             cardBack = back;
             isFaceUp = faceUp;
             isFlipping = false;
@@ -61,10 +47,8 @@ namespace Testgame
             if (isFaceUp)
                 cardFront.Draw(spriteBatch, spriteEffects);
             else
-                //daCardBack.Draw(spriteBatch, spriteEffects);
                 spriteBatch.Draw(cardBack, cardFront.attributes.position, null, cardFront.attributes.color, cardFront.attributes.rotation, cardFront.attributes.origin, new Vector2(cardFront.attributes.scale.X * cardFront.attributes.texture.Width / cardBack.Width, cardFront.attributes.scale.Y * cardFront.attributes.texture.Height / cardBack.Height), spriteEffects, cardFront.attributes.depth);
         }
-         //new Vector2(cardFront.attributes.scale.X * cardFront.attributes.texture.Width / cardBack.Width, cardFront.attributes.scale.Y * cardFront.attributes.texture.Height / cardBack.Height),
 
         public void Flip(bool endOrientation)
         {
@@ -90,9 +74,21 @@ namespace Testgame
 
         public void toPile(Pile pile)
         {
-            cardFront.Move(Actions.ExpoMove, pile.position, .5f);
-            pile.Add(this);
+            if (cardFront.isMoving == false)
+            {
+                cardFront.Move(Actions.ExpoMove, pile.position, .5f);
+                pile.Add(this);
+            }
+        }
+        public void toPile(Pile pile, float delay)
+        {
+            if (cardFront.isMoving == false)
+            {
+                cardFront.Move(Actions.ExpoMove, pile.position, .5f, delay);
+                pile.Add(this);
+            }
         }
         #endregion
     }
 }
+
