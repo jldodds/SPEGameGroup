@@ -26,6 +26,7 @@ namespace Testgame
         Tweener tweenerColorB;
         public Tweener tweenerScaleX;
         Tweener tweenerScaleY;
+        public bool isMoving;
 
 
 
@@ -38,9 +39,19 @@ namespace Testgame
 
         public void Move(MoveDel action, Vector2 endPosition, float d)
         {
+            isMoving = true;
             tweenerX = new Tweener(attributes.position.X, endPosition.X, d, action);
             tweenerY = new Tweener(attributes.position.Y, endPosition.Y, d, action);
+            tweenerX.Ended += delegate() { this.isMoving = false; };
 
+        }
+
+        public void Move(MoveDel action, Vector2 endPosition, float d, float delay)
+        {
+            isMoving = true;
+            tweenerX = new Tweener(attributes.position.X, endPosition.X, delay, d, action);
+            tweenerY = new Tweener(attributes.position.Y, endPosition.Y, delay, d, action);
+            tweenerX.Ended += delegate() { this.isMoving = false; };
         }
 
         public void ChangeColor(MoveDel action, Color endColor, float d)

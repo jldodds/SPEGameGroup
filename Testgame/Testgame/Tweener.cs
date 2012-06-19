@@ -21,6 +21,16 @@ namespace Testgame
         {
         }
 
+        public Tweener(float from, float to, float waitTime, float duration, MoveDel tweeningFunction)
+        {
+            _from = from;
+            _position = from;
+            _change = to - from;
+            _tweeningFunction = tweeningFunction;
+            _duration = duration;
+            _wait = waitTime;
+        }
+
         #region Properties
         private float _position;
         public float Position
@@ -83,6 +93,20 @@ namespace Testgame
             }
         }
 
+        private float _wait;
+        protected float wait
+        {
+            get { return _wait; }
+            set { _wait = value; }
+        }
+
+        private float _waitTime = 0.0f;
+        protected float waitTime
+        {
+            get { return _waitTime; }
+            set { _waitTime = value; }
+        }
+
         private bool _running = true;
         public bool Running
         {
@@ -106,12 +130,16 @@ namespace Testgame
         #region Methods
         public void Update(GameTime gameTime)
         {
+            if (waitTime < wait) Running = false;
+            else Running = true;
+            float time = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            waitTime += time;
             if (!Running || (elapsed == duration))
             {
                 return;
             }
             Position = tweeningFunction(from, from + change, duration, elapsed);
-            elapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            elapsed += time;
             if (elapsed >= duration)
             {
                 elapsed = duration;

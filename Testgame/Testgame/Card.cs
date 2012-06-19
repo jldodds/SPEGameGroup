@@ -73,8 +73,19 @@ namespace Testgame
 
         public void toPile(Pile pile)
         {
-            cardFront.Move(Actions.ExpoMove, pile.position, .5f);
-            pile.Add(this);
+            if (cardFront.isMoving == false)
+            {
+                cardFront.Move(Actions.ExpoMove, pile.position, .5f);
+                pile.Add(this);
+            }
+        }
+        public void toPile(Pile pile, float delay)
+        {
+            if (cardFront.isMoving == false)
+            {
+                cardFront.Move(Actions.ExpoMove, pile.position, .5f, delay);
+                pile.Add(this);
+            }
         }
         #endregion
     }
