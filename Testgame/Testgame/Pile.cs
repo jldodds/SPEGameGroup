@@ -21,7 +21,6 @@ namespace Testgame
         public void Add(Card c)
         {
             stack.Push(c);
-            c.cardFront.attributes.depth = 1 - stack.Count * .01f;
         }
 
         public Card Take()
