@@ -177,8 +177,7 @@ namespace Testgame
             {
                 if (!oldState.IsKeyDown(Keys.Up))
                 {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                    //Card.toPile(
+                    speed.Begin();
                 }
             }
 

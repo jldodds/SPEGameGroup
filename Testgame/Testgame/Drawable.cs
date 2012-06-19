@@ -27,6 +27,7 @@ namespace Testgame
         public Tweener tweenerScaleX;
         Tweener tweenerScaleY;
         public bool isMoving;
+        public Tweener tweenerDepth;
 
 
 
@@ -72,6 +73,12 @@ namespace Testgame
             tweenerScaleY = new Tweener(attributes.scale.Y, endScale.Y, d, action);
         }
 
+        public void Scale(MoveDel action, Vector2 endScale, float d, float delay)
+        {
+            tweenerScaleX = new Tweener(attributes.scale.X, endScale.X, delay, d, action);
+            tweenerScaleY = new Tweener(attributes.scale.Y, endScale.Y, delay, d, action);
+        }
+
         public void Reverse()
         {
             tweenerScaleX.Reverse();
@@ -83,6 +90,15 @@ namespace Testgame
             this.Scale(action, new Vector2(0, attributes.scale.Y), d);
             
     }
+        public void Flip(MoveDel action, float d, float delay)
+        {
+            this.Scale(action, new Vector2(0, attributes.scale.Y), d, delay);
+        }
+
+        public void ChangeDepth(MoveDel action, float endDepth, float d, float delay)
+        {
+            tweenerDepth = new Tweener(attributes.depth, endDepth, delay, d, action);
+        }
 
         public void Update(GameTime gameTime)
         {
@@ -109,6 +125,11 @@ namespace Testgame
                 tweenerScaleX.Update(gameTime);
                 tweenerScaleY.Update(gameTime);
                 attributes.scale = new Vector2(tweenerScaleX.Position,tweenerScaleY.Position);
+            }
+            if (tweenerDepth != null)
+            {
+                tweenerDepth.Update(gameTime);
+                attributes.depth = tweenerDepth.Position;
             }
         }
     }

@@ -32,5 +32,11 @@ namespace Testgame
         {
             return (t == d) ? start + (end - start) : (end - start) * (-(float)Math.Pow(2, -10 * t / d) + 1) + start;
         }
+
+        public static float ExpoMoveIn(float start, float end, float d, float t)
+        {
+            
+		return (t==0) ? start : (end - start) * (float)Math.Pow(2, 10 * (t/d - 1)) + start;
+	}
     }
 }
