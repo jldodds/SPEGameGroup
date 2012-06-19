@@ -37,6 +37,10 @@ namespace Testgame
         public void Deal()
         {
             Commands.Shuffle(cards);
+            for (int i = 0; i < cards.Length; i++)
+            {
+                cards[i].isFaceUp = false;
+            }
 
             for (int i = 0; i < 5; i++)
             {
