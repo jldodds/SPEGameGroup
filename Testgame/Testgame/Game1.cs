@@ -24,6 +24,7 @@ namespace Testgame
         Screen gameplay;
         Drawable background;
         Speed speed;
+        SpriteFont arial;
 
         public Game1()
         {
@@ -68,6 +69,9 @@ namespace Testgame
                     rotation = 0
                 }
             };
+
+            arial = Content.Load<SpriteFont>("BADABB_"); 
+            //spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             gameplay = new Screen(background);
 
@@ -152,8 +156,6 @@ namespace Testgame
                 this.Exit();
 
             // TODO: Add your update logic here
-            //Card.Draw(spriteBatch, spriteEffects);
-            
             KeyUpdate(gameTime);
 
             speed.gamePlay.Update(gameTime);
@@ -263,6 +265,13 @@ namespace Testgame
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
             speed.gamePlay.Draw(spriteBatch);
             spriteBatch.End();
+
+            spriteBatch.Begin();
+            spriteBatch.DrawString(arial, "3", new Vector2(512, 400), Color.Black);
+            spriteBatch.DrawString(arial, "2", new Vector2(512, 400), Color.Black);
+            spriteBatch.DrawString(arial, "1", new Vector2(512, 400), Color.Black);
+            spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }
