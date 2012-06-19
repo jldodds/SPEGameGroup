@@ -18,8 +18,8 @@ namespace Testgame
         }
 
         public Attributes attributes { get; set; }
-        Tweener tweenerX;
-        Tweener tweenerY;
+        public Tweener tweenerX;
+        public Tweener tweenerY;
         Tweener tweenerRotate;
         Tweener tweenerColorR;
         Tweener tweenerColorG;
@@ -79,7 +79,7 @@ namespace Testgame
             tweenerScaleY = new Tweener(attributes.scale.Y, endScale.Y, delay, d, action);
         }
 
-        public void Reverse()
+        public virtual void Reverse()
         {
             tweenerScaleX.Reverse();
         }

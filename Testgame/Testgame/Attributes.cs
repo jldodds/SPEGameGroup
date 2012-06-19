@@ -42,6 +42,11 @@ namespace Testgame
            }
        }
        public float depth { get; set; }
+
+       public Attributes()
+       {
+           scale = new Vector2(1, 1);
+       }
     }
 
 

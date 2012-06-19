@@ -1,3 +1,4 @@
+﻿
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,6 @@ namespace Testgame
     {
         public Stack<Card> stack;
         public Vector2 position;
-        
 
         public Pile(Vector2 p)
         {
@@ -22,7 +22,6 @@ namespace Testgame
         public void Add(Card c)
         {
             stack.Push(c);
-            c.cardFront.attributes.depth = 1 - stack.Count * .01f;
         }
 
         public Card Take()
@@ -31,3 +30,4 @@ namespace Testgame
         }
     }
 }
+
