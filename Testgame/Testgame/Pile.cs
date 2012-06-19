@@ -11,6 +11,7 @@ namespace Testgame
     {
         public Stack<Card> stack;
         public Vector2 position;
+        
 
         public Pile(Vector2 p)
         {

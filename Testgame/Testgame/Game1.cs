@@ -25,7 +25,7 @@ namespace Testgame
         Screen gameplay;
         Drawable background;
         Speed speed;
-        SpriteFont arial;
+        //SpriteFont Badaboom;
 
         public Game1()
         {
@@ -71,7 +71,7 @@ namespace Testgame
                 }
             };
 
-            arial = Content.Load<SpriteFont>("BADABB_"); 
+            //badaboom = Content.Load<SpriteFont>("SpriteFont3"); 
             //spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             gameplay = new Screen(background);
@@ -250,6 +250,22 @@ namespace Testgame
                 }
             }
 
+            if (newState.IsKeyDown(Keys.P))
+            {
+                if (!oldState.IsKeyDown(Keys.P))
+                {
+                    speed.gamePlay.Pause();
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.R))
+            {
+                if (!oldState.IsKeyDown(Keys.R))
+                {
+                    speed.gamePlay.Resume();
+                }
+            }
+
             oldState = newState;
         }
         
@@ -266,11 +282,9 @@ namespace Testgame
             speed.gamePlay.Draw(spriteBatch);
             spriteBatch.End();
 
-            spriteBatch.Begin();
-            spriteBatch.DrawString(arial, "3", new Vector2(512, 400), Color.Black);
-            spriteBatch.DrawString(arial, "2", new Vector2(512, 400), Color.Black);
-            spriteBatch.DrawString(arial, "1", new Vector2(512, 400), Color.Black);
-            spriteBatch.End();
+            //spriteBatch.Begin();
+            //spriteBatch.DrawString(arial, "3", new Vector2(512, 400), Color.Black);
+            //spriteBatch.End();
 
             base.Draw(gameTime);
         }

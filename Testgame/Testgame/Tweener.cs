@@ -13,7 +13,6 @@ namespace Testgame
             _change = to - from;
             _tweeningFunction = tweeningFunction;
             _duration = duration;
-            //ok
         }
 
         public Tweener(float from, float to, TimeSpan duration, MoveDel tweeningFunction)
@@ -31,6 +30,7 @@ namespace Testgame
             _wait = waitTime;
         }
 
+        
         #region Properties
         private float _position;
         public float Position
