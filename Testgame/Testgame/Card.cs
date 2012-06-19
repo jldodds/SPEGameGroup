@@ -60,6 +60,15 @@ namespace Testgame
             
         }
 
+        public void Flip(bool endOrientation, float delay)
+        {
+            if (isFlipping) return;
+            isFlipping = true;
+            cardFront.Flip(Actions.LinearMove, .15f, delay);
+            cardFront.tweenerScaleX.Ended += this.Reverse;
+            cardFront.tweenerScaleX.Ended += delegate() { isFaceUp = endOrientation; };
+        }
+
         private void Reverse()
         {
             cardFront.Reverse();
@@ -76,7 +85,7 @@ namespace Testgame
         {
             if (cardFront.isMoving == false)
             {
-                cardFront.Move(Actions.ExpoMove, pile.position, .5f);
+                cardFront.Move(Actions.ExpoMove, pile.position, .4f);
                 pile.Add(this);
             }
         }
@@ -84,10 +93,25 @@ namespace Testgame
         {
             if (cardFront.isMoving == false)
             {
-                cardFront.Move(Actions.ExpoMove, pile.position, .5f, delay);
+                cardFront.Move(Actions.ExpoMove, pile.position, .4f, delay);
                 pile.Add(this);
+                Raise(.2f, delay);
+                cardFront.tweenerDepth.Ended += delegate() { Lower(.52f - pile.stack.Count * .01f, .2f); };
             }
         }
+
+        public void Raise(float d, float delay)
+        {
+            cardFront.ChangeDepth(Actions.ExpoMove, 0f, d, delay);
+        }
+
+        
+        public void Lower(float endDepth, float d)
+        {
+            cardFront.ChangeDepth(Actions.ExpoMoveIn, endDepth, d, 0f);
+        }
+
+
         #endregion
     }
 }
