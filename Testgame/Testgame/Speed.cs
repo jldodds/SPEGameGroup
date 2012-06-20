@@ -4,44 +4,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Testgame
 {
-    class Speed
+    class Speed : Screen
     {
         public static Pile yourStack;
         public static Pile opponentStack;
         public static Pile lSpitStack;
         public static Pile rSpitStack;
-        //public static Pile lGameStack;
-        //public static Pile rGameStack;
+        public static Pile lGameStack;
+        public static Pile rGameStack;
         public static Card[] cards;
-        public Screen gamePlay;
         public Pile[] yourCards = new Pile[5];
         public Pile[] opponentCards = new Pile[5];
 
-        public Speed(Card[] deck, Screen s)
+        public Speed(Card[] deck, Drawable background):base(background)
         {
             cards = deck;
             yourStack = new Pile(new Vector2(897, 650));
             opponentStack = new Pile(new Vector2(127, 150));
             lSpitStack = new Pile(new Vector2(217, 400));
             rSpitStack = new Pile(new Vector2(807, 400));
-            //lGameStack = new Pile(new Vector2(127, 150));
-            //rGameStack = new Pile(new Vector2(127, 150));
-            gamePlay = s;
-            for (int i = 0; i < cards.Length; i++)
-            {
-                gamePlay.Add(cards[i]);
-            }
+            lGameStack = new Pile(new Vector2(127, 150));
+            rGameStack = new Pile(new Vector2(127, 150));
 
             for (int i = 0; i < yourCards.Length; i++)
             {
                 opponentCards[i] = new Pile(new Vector2(opponentStack.position.X + (i + 1) * 154, opponentStack.position.Y));
                 yourCards[i] = new Pile(new Vector2(yourStack.position.X - (i + 1) * 154, yourStack.position.Y));
             }
-          
-            
+
+            for (int i = 0; i < cards.Length; i++)
+            {
+                base.Add(cards[i]);
+            }
+              
         }
 
 

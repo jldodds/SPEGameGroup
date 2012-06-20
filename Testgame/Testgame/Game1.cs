@@ -74,8 +74,6 @@ namespace Testgame
             //badaboom = Content.Load<SpriteFont>("SpriteFont3"); 
             //spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
-            gameplay = new Screen(background);
-
             // TODO: use this.Content to load your game content here
             #region Create cards[]
             cards = new Card[52];
@@ -132,7 +130,7 @@ namespace Testgame
             cards[50] = new Card(50, this.Content.Load<Texture2D>("QueenSpades"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
             cards[51] = new Card(51, this.Content.Load<Texture2D>("KingSpades"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
             #endregion Create cards[]
-            speed = new Speed(cards, gameplay);
+            speed = new Speed(cards, background);
         }
 
 
@@ -159,7 +157,7 @@ namespace Testgame
             // TODO: Add your update logic here
             KeyUpdate(gameTime);
 
-            speed.gamePlay.Update(gameTime);
+            speed.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -254,7 +252,7 @@ namespace Testgame
             {
                 if (!oldState.IsKeyDown(Keys.P))
                 {
-                    speed.gamePlay.Pause();
+                    speed.Pause();
                 }
             }
 
@@ -262,7 +260,7 @@ namespace Testgame
             {
                 if (!oldState.IsKeyDown(Keys.R))
                 {
-                    speed.gamePlay.Resume();
+                    speed.Resume();
                 }
             }
 
@@ -279,7 +277,7 @@ namespace Testgame
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
-            speed.gamePlay.Draw(spriteBatch);
+            speed.Draw(spriteBatch);
             spriteBatch.End();
 
             //spriteBatch.Begin();

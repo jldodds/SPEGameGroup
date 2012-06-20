@@ -11,20 +11,18 @@ namespace Testgame
     {
         public class Node
         {
-            public Card card;
             public Drawable drawable;
             public Node next;
 
             public void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
             {
-                if (card != null) card.Draw(spriteBatch, spriteEffects);
-                if (drawable != null) drawable.Draw(spriteBatch, spriteEffects);
+                
+               drawable.Draw(spriteBatch, spriteEffects);
             }
 
             public void Update(GameTime gameTime)
             {
-                if (card != null) card.Update(gameTime);
-                if (drawable != null) drawable.Update(gameTime);
+                drawable.Update(gameTime);
             }
         }
 
@@ -36,12 +34,6 @@ namespace Testgame
         {
             first = new Node() { drawable = background };
             last = first;
-        }
-
-        public void Add(Card c)
-        {
-            last.next = new Node() { card = c };
-            last = last.next;
         }
 
         public void Add(Drawable d)
