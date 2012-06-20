@@ -88,8 +88,8 @@ namespace Testgame
             AskBegin,
             Beginning,
             GamePlay,
-            OppPlayingCard,
-            YouPlayingCard
+            
+            PlayingCard
         }
 
 
@@ -158,8 +158,8 @@ namespace Testgame
                         //if (YouWin()) YourAWinner();
                         //if (OppWin()) OppAWinner();
                     break;
-                case gameState.YouPlayingCard:
-                case gameState.OppPlayingCard:
+                
+                case gameState.PlayingCard:
                     yourSelector.attributes.position = yourCards[yourSelectedPile].position;
                         oppSelector.attributes.position = opponentCards[oppSelectedPile].position;
                     break;
@@ -267,7 +267,7 @@ namespace Testgame
                     }
                     break;
 
-                case gameState.OppPlayingCard:
+                case gameState.PlayingCard:
                     if (newState.IsKeyDown(Keys.D))
                     {
                         if (!oldState.IsKeyDown(Keys.D))
@@ -303,78 +303,8 @@ namespace Testgame
                             if (yourSelectedPile == -1) yourSelectedPile = 4;
                         }
                     }
-
-                    if (newState.IsKeyDown(Keys.Up))
-                    {
-                        if (!oldState.IsKeyDown(Keys.Up))
-                        {
-                            PlayYourCard(yourCards[yourSelectedPile], lGameStack);
-                        }
-                    }
-
-                    if (newState.IsKeyDown(Keys.Down))
-                    {
-                        if (!oldState.IsKeyDown(Keys.Down))
-                        {
-                            PlayYourCard(yourCards[yourSelectedPile], rGameStack);
-                        }
-                    }
                     break;
-
-
-                case gameState.YouPlayingCard:
-                    if (newState.IsKeyDown(Keys.D))
-                    {
-                        if (!oldState.IsKeyDown(Keys.D))
-                        {
-                            oppSelectedPile++;
-                            if (oppSelectedPile == 5) oppSelectedPile = 0;
-                        }
-                    }
-
-                    if (newState.IsKeyDown(Keys.A))
-                    {
-                        if (!oldState.IsKeyDown(Keys.A))
-                        {
-                            oppSelectedPile--;
-                            if (oppSelectedPile == -1) oppSelectedPile = 4;
-                        }
-                    }
-
-                    if (newState.IsKeyDown(Keys.Left))
-                    {
-                        if (!oldState.IsKeyDown(Keys.Left))
-                        {
-                            yourSelectedPile++;
-                            if (yourSelectedPile == 5) yourSelectedPile = 0;
-                        }
-                    }
-
-                    if (newState.IsKeyDown(Keys.Right))
-                    {
-                        if (!oldState.IsKeyDown(Keys.Right))
-                        {
-                            yourSelectedPile--;
-                            if (yourSelectedPile == -1) yourSelectedPile = 4;
-                        }
-                    }
-
-                    if (newState.IsKeyDown(Keys.W))
-                    {
-                        if (!oldState.IsKeyDown(Keys.W))
-                        {
-                            PlayOppCard(opponentCards[oppSelectedPile], lGameStack);
-                        }
-                    }
-
-                    if (newState.IsKeyDown(Keys.S))
-                    {
-                        if (!oldState.IsKeyDown(Keys.S))
-                        {
-                            PlayOppCard(opponentCards[oppSelectedPile], rGameStack);
-                        }
-                    }
-                    break;
+                   
             }
             if (newState.IsKeyDown(Keys.P))
             {
@@ -410,7 +340,7 @@ namespace Testgame
         public void PlayYourCard(Pile fromPile, Pile destinationPile)
         {
             if (fromPile.stack.Count == 0) return;
-            speedState = gameState.YouPlayingCard;
+            speedState = gameState.PlayingCard;
             Card c = fromPile.stack.Peek();
             int cv = c.cardValue;
             int value = destinationPile.stack.Peek().cardValue;
@@ -432,7 +362,7 @@ namespace Testgame
         public void PlayOppCard(Pile fromPile, Pile destinationPile)
         {
             if(fromPile.stack.Count == 0) return;
-            speedState = gameState.OppPlayingCard;
+            speedState = gameState.PlayingCard;
             Card c = fromPile.stack.Peek();
             int cv = c.cardValue;
             int value = destinationPile.stack.Peek().cardValue;
