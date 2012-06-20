@@ -181,6 +181,14 @@ namespace Testgame
                 }
             }
 
+            if (newState.IsKeyDown(Keys.G))
+            {
+                if (!oldState.IsKeyDown(Keys.G))
+                {
+                    speed.TurnOn();
+                }
+            }
+
             oldState = newState;
         }
 

@@ -29,7 +29,7 @@ namespace Testgame
 
         private Node first;
         private Node last;
-        private bool isPaused;
+        public bool isPaused = true;
         
 
         public Screen(Drawable background)
@@ -57,9 +57,14 @@ namespace Testgame
             for (Node i = first; i != null; i = i.next) i.Update(gameTime);
             
         }
+
+        public virtual void TurnOn()
+        {
+            isPaused = false;
+        }
         
 
-        public void Pause()
+        public virtual void Pause()
         {
             isPaused = true;
         }

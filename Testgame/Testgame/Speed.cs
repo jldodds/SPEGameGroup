@@ -21,6 +21,7 @@ namespace Testgame
         public Pile[] yourCards = new Pile[5];
         public Pile[] opponentCards = new Pile[5];
         KeyboardState oldState;
+        gameState speedState; 
 
         public Speed(Card[] deck, Drawable background):base(background)
         {
@@ -45,9 +46,18 @@ namespace Testgame
               
         }
 
+        public enum gameState
+        {
+            Dealing,
+            AskBegin,
+            Beginning,
+            GamePlay
+        }
+
 
         public void Deal()
         {
+            speedState = gameState.Dealing;
             Commands.Shuffle(cards);
             for (int i = 0; i < cards.Length; i++)
             {
@@ -61,11 +71,16 @@ namespace Testgame
                 else if (i % 2 == 1 && i >= 16) cards[i].toPile(yourStack, (float)i / 13);
                 else if (i % 2 == 0 && i >= 16) cards[i].toPile(opponentStack, (float)i / 13);
             }
+
+            cards[51].tweenerX.Ended += delegate() {// "Press Enter to Start
+                speedState = gameState.AskBegin;
+            };
            
         }
 
         public void Begin()
         {
+            speedState = gameState.Beginning;
             for (int i = 0; i < 5; i++)
             {
                 DrawCard(yourStack, yourCards[i], i * .675f);
@@ -82,6 +97,19 @@ namespace Testgame
 
         public override void Update(GameTime gameTime)
         {
+            if (base.isPaused) return;
+            switch (speedState)
+            {
+                case gameState.Dealing:
+                    break;
+                case gameState.AskBegin:
+                    break;
+                case gameState.Beginning:
+                    break;
+                case gameState.GamePlay:
+                    break;
+            }
+
             KeyUpdate(gameTime);
             base.Update(gameTime);
         }
@@ -90,72 +118,26 @@ namespace Testgame
         {
             KeyboardState newState = Keyboard.GetState();
 
-            if (newState.IsKeyDown(Keys.Enter))
+            switch (speedState)
             {
-                if (!oldState.IsKeyDown(Keys.Enter))
-                {
-                    Deal();
-                }
+                case gameState.Dealing:
+                case gameState.Beginning:
+                    DoNothing();
+                    break;
+                case gameState.AskBegin:
+                    if (newState.IsKeyDown(Keys.Enter))
+                    {
+                        if (!oldState.IsKeyDown(Keys.Enter))
+                        {
+                            Begin();
+                        }
+                    }
+                    break;
+                
+                case gameState.GamePlay:
+                    break;
             }
-
-            if (newState.IsKeyDown(Keys.Up))
-            {
-                if (!oldState.IsKeyDown(Keys.Up))
-                {
-                    Begin();
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.Down))
-            {
-                if (!oldState.IsKeyDown(Keys.Down))
-                {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.A))
-            {
-                if (!oldState.IsKeyDown(Keys.A))
-                {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.A))
-            {
-                if (!oldState.IsKeyDown(Keys.A))
-                {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.W))
-            {
-                if (!oldState.IsKeyDown(Keys.W))
-                {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.S))
-            {
-                if (!oldState.IsKeyDown(Keys.S))
-                {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.A))
-            {
-                if (!oldState.IsKeyDown(Keys.A))
-                {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                }
-            }
-
             
-
             if (newState.IsKeyDown(Keys.P))
             {
                 if (!oldState.IsKeyDown(Keys.P))
@@ -174,6 +156,18 @@ namespace Testgame
 
             oldState = newState;
         }
+
+        public override void TurnOn()
+        {
+            Deal();
+            base.TurnOn();
+        }
+
+        public void DoNothing()
+        {
+            return;
+        }
+        
 
     }
 }
