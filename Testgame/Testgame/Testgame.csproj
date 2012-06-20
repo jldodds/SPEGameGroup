@@ -118,6 +118,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="Speed.cs" />
+    <Compile Include="Timer.cs" />
     <Compile Include="Tweener.cs" />
   </ItemGroup>
   <ItemGroup>

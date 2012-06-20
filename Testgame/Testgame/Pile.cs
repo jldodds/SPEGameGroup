@@ -12,21 +12,26 @@ namespace Testgame
     {
         public Stack<Card> stack;
         public Vector2 position;
+        public bool selected;
+
 
         public Pile(Vector2 p)
         {
             stack = new Stack<Card>();
             position = p;
+            selected = false;
         }
 
         public void Add(Card c)
         {
             stack.Push(c);
+            
         }
 
         public Card Take()
         {
-            return stack.Pop();
+            Card c = stack.Pop();
+            return c;
         }
     }
 }

@@ -44,6 +44,18 @@ namespace Testgame
             last = last.next;
         }
 
+        public void RemoveLast()
+        {
+            Node s = first;
+            while (s.next != last)
+            {
+                s = s.next;
+            }
+
+            last = s;
+            last.next = null;
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             if (isPaused) return;

@@ -22,6 +22,7 @@ namespace Testgame
         SpriteBatch spriteBatch;
         Card[] cards;
         Drawable background;
+        Texture2D selector;
         Speed speed;
         //SpriteFont Badaboom;
         KeyboardState oldState;
@@ -69,6 +70,8 @@ namespace Testgame
                     rotation = 0
                 }
             };
+
+            selector = this.Content.Load<Texture2D>("CardSelector");
 
             //badaboom = Content.Load<SpriteFont>("SpriteFont3"); 
             //spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
@@ -129,7 +132,7 @@ namespace Testgame
             cards[50] = new Card(50, this.Content.Load<Texture2D>("QueenSpades"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
             cards[51] = new Card(51, this.Content.Load<Texture2D>("KingSpades"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
             #endregion Create cards[]
-            speed = new Speed(cards, background);
+            speed = new Speed(cards, background, selector);
         }
 
 
@@ -163,27 +166,18 @@ namespace Testgame
         {
             KeyboardState newState = Keyboard.GetState();
 
-            if (newState.IsKeyDown(Keys.F))
-            {
-                if (!oldState.IsKeyDown(Keys.F))
-                {
-                    graphics.IsFullScreen = true;
-                    graphics.ApplyChanges();
-                }
-            }
-
             if (newState.IsKeyDown(Keys.Escape))
             {
                 if (!oldState.IsKeyDown(Keys.Escape))
                 {
-                    graphics.IsFullScreen = false;
+                    graphics.IsFullScreen = !graphics.IsFullScreen;
                     graphics.ApplyChanges();
                 }
             }
 
-            if (newState.IsKeyDown(Keys.G))
+            if (newState.IsKeyDown(Keys.O))
             {
-                if (!oldState.IsKeyDown(Keys.G))
+                if (!oldState.IsKeyDown(Keys.O))
                 {
                     speed.TurnOn();
                 }

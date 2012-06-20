@@ -12,7 +12,7 @@ namespace Testgame
     class Drawable
     {
 
-        public void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
+        public virtual void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             spriteBatch.Draw(attributes.texture, attributes.position, null, attributes.color, attributes.rotation, attributes.origin, attributes.scale, spriteEffects, attributes.depth);
         }
@@ -100,7 +100,7 @@ namespace Testgame
             tweenerDepth = new Tweener(attributes.depth, endDepth, delay, d, action);
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             if (tweenerX != null)
             {

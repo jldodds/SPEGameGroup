@@ -35,12 +35,14 @@ namespace Testgame
             }
             }
         public readonly int cardNumber;
+        public readonly int cardValue;
         private bool isFlipping;
 
         #region Constructor
         public Card(int card, Texture2D front, Texture2D back, Vector2 position, bool faceUp)
         {
             cardNumber = card;
+            cardValue = cardNumber % 13;
             cardFront = front;
             cardBack = back;
             
@@ -96,7 +98,7 @@ namespace Testgame
         {
             if (isMoving == false)
             {
-                Move(Actions.ExpoMove, new Vector2(pile.position.X, pile.position.Y), .4f);
+                Move(Actions.ExpoMove, new Vector2(pile.position.X, pile.position.Y), .3f);
                 pile.Add(this);
                 Raise(.2f, 0);
                 tweenerDepth.Ended += delegate() { Lower(.52f - pile.stack.Count * .01f, .2f); };
