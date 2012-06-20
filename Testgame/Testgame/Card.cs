@@ -96,23 +96,21 @@ namespace Testgame
 
         public void toPile(Pile pile)
         {
-            if (isMoving == false)
-            {
+            
                 Move(Actions.ExpoMove, new Vector2(pile.position.X, pile.position.Y), .3f);
                 pile.Add(this);
                 Raise(.2f, 0);
                 tweenerDepth.Ended += delegate() { Lower(.52f - pile.stack.Count * .01f, .2f); };
-            }
+            
         }
         public void toPile(Pile pile, float delay)
         {
-            if (isMoving == false)
-            {
+            
                 Move(Actions.ExpoMove, new Vector2(pile.position.X, pile.position.Y), .4f, delay);
                 pile.Add(this);
                 Raise(.2f, delay);
                 tweenerDepth.Ended += delegate() { Lower(.52f - pile.stack.Count * .01f, .2f); };
-            }
+            
         }
 
         public void Raise(float d, float delay)
