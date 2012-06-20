@@ -21,11 +21,10 @@ namespace Testgame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Card[] cards;
-        KeyboardState oldState;
-        Screen gameplay;
         Drawable background;
         Speed speed;
         //SpriteFont Badaboom;
+        KeyboardState oldState;
 
         public Game1()
         {
@@ -155,80 +154,14 @@ namespace Testgame
                 this.Exit();
 
             // TODO: Add your update logic here
-            KeyUpdate(gameTime);
-
             speed.Update(gameTime);
+            KeyUpdate(gameTime);
             base.Update(gameTime);
         }
-
 
         protected void KeyUpdate(GameTime gameTime)
         {
             KeyboardState newState = Keyboard.GetState();
-
-            if (newState.IsKeyDown(Keys.Enter))
-            {
-                if (!oldState.IsKeyDown(Keys.Enter))
-                {
-                    speed.Deal();
-                }
-            }
-            
-            if (newState.IsKeyDown(Keys.Up))
-            {
-                if (!oldState.IsKeyDown(Keys.Up))
-                {
-                    speed.Begin();
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.Down))
-            {
-                if (!oldState.IsKeyDown(Keys.Down))
-                {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.A))
-            {
-                if (!oldState.IsKeyDown(Keys.A))
-                {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.A))
-            {
-                if (!oldState.IsKeyDown(Keys.A))
-                {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.W))
-            {
-                if (!oldState.IsKeyDown(Keys.W))
-                {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.S))
-            {
-                if (!oldState.IsKeyDown(Keys.S))
-                {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.A))
-            {
-                if (!oldState.IsKeyDown(Keys.A))
-                {
-                    Commands.MakePile(cards, new Vector2(300, 300));
-                }
-            }
 
             if (newState.IsKeyDown(Keys.F))
             {
@@ -248,24 +181,10 @@ namespace Testgame
                 }
             }
 
-            if (newState.IsKeyDown(Keys.P))
-            {
-                if (!oldState.IsKeyDown(Keys.P))
-                {
-                    speed.Pause();
-                }
-            }
-
-            if (newState.IsKeyDown(Keys.R))
-            {
-                if (!oldState.IsKeyDown(Keys.R))
-                {
-                    speed.Resume();
-                }
-            }
-
             oldState = newState;
         }
+
+       
         
         /// <summary>
         /// This is called when the game should draw itself.

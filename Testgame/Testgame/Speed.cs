@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Testgame
 {
@@ -19,6 +20,7 @@ namespace Testgame
         public static Card[] cards;
         public Pile[] yourCards = new Pile[5];
         public Pile[] opponentCards = new Pile[5];
+        KeyboardState oldState;
 
         public Speed(Card[] deck, Drawable background):base(background)
         {
@@ -66,16 +68,111 @@ namespace Testgame
         {
             for (int i = 0; i < 5; i++)
             {
-                Draw(yourStack, yourCards[i], i * .675f);
-                Draw(opponentStack, opponentCards[i], i * .675f);
+                DrawCard(yourStack, yourCards[i], i * .675f);
+                DrawCard(opponentStack, opponentCards[i], i * .675f);
             }
         }
 
-        public void Draw(Pile drawPile, Pile destinationPile, float delay)
+        public void DrawCard(Pile drawPile, Pile destinationPile, float delay)
         {
             Card temp = drawPile.Take();
             temp.Flip(true, delay);
             temp.toPile(destinationPile, delay);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            KeyUpdate(gameTime);
+            base.Update(gameTime);
+        }
+
+        protected void KeyUpdate(GameTime gameTime)
+        {
+            KeyboardState newState = Keyboard.GetState();
+
+            if (newState.IsKeyDown(Keys.Enter))
+            {
+                if (!oldState.IsKeyDown(Keys.Enter))
+                {
+                    Deal();
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.Up))
+            {
+                if (!oldState.IsKeyDown(Keys.Up))
+                {
+                    Begin();
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.Down))
+            {
+                if (!oldState.IsKeyDown(Keys.Down))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.A))
+            {
+                if (!oldState.IsKeyDown(Keys.A))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.A))
+            {
+                if (!oldState.IsKeyDown(Keys.A))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.W))
+            {
+                if (!oldState.IsKeyDown(Keys.W))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.S))
+            {
+                if (!oldState.IsKeyDown(Keys.S))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.A))
+            {
+                if (!oldState.IsKeyDown(Keys.A))
+                {
+                    Commands.MakePile(cards, new Vector2(300, 300));
+                }
+            }
+
+            
+
+            if (newState.IsKeyDown(Keys.P))
+            {
+                if (!oldState.IsKeyDown(Keys.P))
+                {
+                    Pause();
+                }
+            }
+
+            if (newState.IsKeyDown(Keys.R))
+            {
+                if (!oldState.IsKeyDown(Keys.R))
+                {
+                    Resume();
+                }
+            }
+
+            oldState = newState;
         }
 
     }

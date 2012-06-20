@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Testgame
 {
@@ -29,6 +30,7 @@ namespace Testgame
         private Node first;
         private Node last;
         private bool isPaused;
+        
 
         public Screen(Drawable background)
         {
@@ -44,16 +46,18 @@ namespace Testgame
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (isPaused) return;
             for (Node i = first; i != null; i = i.next) i.Draw(spriteBatch, SpriteEffects.None);
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
-            if (!isPaused)
-            {
-                for (Node i = first; i != null; i = i.next) i.Update(gameTime);
-            }
+            if (isPaused) return;
+            
+            for (Node i = first; i != null; i = i.next) i.Update(gameTime);
+            
         }
+        
 
         public void Pause()
         {
