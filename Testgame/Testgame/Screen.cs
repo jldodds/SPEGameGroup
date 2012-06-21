@@ -28,7 +28,7 @@ namespace Testgame
             }
         }
 
-        private Node first;
+        public readonly Node first;
         private Node last;
         public bool isPaused = true;
         

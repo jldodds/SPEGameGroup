@@ -168,6 +168,7 @@ namespace Testgame
 
             // TODO: Add your update logic here
             speed.Update(gameTime);
+            if (speed.playAgain) speed = new Speed(cards, background, selector);
             KeyUpdate(gameTime);
             base.Update(gameTime);
         }

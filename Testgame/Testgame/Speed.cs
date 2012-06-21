@@ -26,10 +26,15 @@ namespace Testgame
         Drawable oppSelector;
         int yourSelectedPile;
         Drawable yourSelector;
+        public bool playAgain = false;
 
         public Speed(Card[] deck, Drawable background, Texture2D selector):base(background)
         {
             cards = deck;
+            for (int i = 0; i < cards.Length; i++)
+            {
+                cards[i].attributes.position = new Vector2(-100, 100);
+            }
             yourStack = new Pile(new Vector2(897, 650));
             opponentStack = new Pile(new Vector2(127, 150));
             lSpitStack = new Pile(new Vector2(217, 400));
@@ -90,7 +95,8 @@ namespace Testgame
             GamePlay,
             ReBeginning,
             PlayingCard,
-            Winner
+            Winner,
+            PlayAgain
         }
 
 
@@ -167,6 +173,8 @@ namespace Testgame
                     break;
                 case gameState.Winner:
                     break;
+                case gameState.PlayAgain:
+                    break;
             }
 
             KeyUpdate(gameTime);
@@ -195,6 +203,7 @@ namespace Testgame
                     break;
 
                 case gameState.GamePlay:
+                    #region GameKeys
                     if (newState.IsKeyDown(Keys.Left))
                     {
                         if (!oldState.IsKeyDown(Keys.Left))
@@ -271,8 +280,10 @@ namespace Testgame
                         }
                     }
                     break;
+                    #endregion
                 case gameState.ReBeginning:
                 case gameState.PlayingCard:
+                    #region Selector Keys
                     if (newState.IsKeyDown(Keys.D))
                     {
                         if (!oldState.IsKeyDown(Keys.D))
@@ -309,7 +320,17 @@ namespace Testgame
                         }
                     }
                     break;
-                   
+                    #endregion
+                case gameState.PlayAgain:
+                    if (newState.IsKeyDown(Keys.Y))
+                    {
+                        if (!oldState.IsKeyDown(Keys.Y))
+                        {
+                            playAgain = true;
+
+                        }
+                    }
+                    break;
             }
             if (newState.IsKeyDown(Keys.P))
             {
@@ -430,6 +451,22 @@ namespace Testgame
                 stopwatch.SetTimer(1, 3, delegate() {/*Display "1" */});
                 stopwatch.SetTimer(2, 4, delegate() {/*Display "SPEED!" */ BeginGame(); base.RemoveLast(); });
             }
+
+            else
+            {
+                int yourCount = 0;
+                int oppCount = 0;
+                for (int i = 0; i < yourCards.Length; i++)
+                {
+                    yourCount += yourCards[i].stack.Count;
+                    oppCount += opponentCards[i].stack.Count;
+                }
+                yourCount += yourStack.stack.Count;
+                oppCount += opponentStack.stack.Count;
+                if (oppCount > yourCount) YourAWinner();
+                else if (yourCount > oppCount) OppAWinner();
+                else if (yourCount == oppCount) Tie();
+            }
         }
 
         public bool YouWin()
@@ -459,6 +496,9 @@ namespace Testgame
             speedState = gameState.Winner;
             yourSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
             yourSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
+            Timer endGame = new Timer(1);
+            base.Add(endGame);
+            endGame.SetTimer(0, 4, delegate() { Reset(); base.RemoveLast(); });
         }
 
         public void OppAWinner()
@@ -466,6 +506,28 @@ namespace Testgame
             speedState = gameState.Winner;
             oppSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
             oppSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
+            Timer endGame = new Timer(1);
+            base.Add(endGame);
+            endGame.SetTimer(0, 4, delegate() { Reset(); base.RemoveLast(); });
+        }
+
+        public void Tie()
+        {
+            speedState = gameState.Winner;
+            yourSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
+            yourSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
+            oppSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
+            oppSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
+            Timer endGame = new Timer(1);
+            base.Add(endGame);
+            endGame.SetTimer(0, 4, delegate() { Reset(); base.RemoveLast(); });
+        }
+
+        public void Reset()
+        {
+            speedState = gameState.PlayAgain;
+            
+            //display "Play Again? yes = y, no = n
         }
     }
 }

@@ -98,7 +98,7 @@ namespace Testgame
         {
             if (isMoving == false)
             {
-                Move(Actions.ExpoMove, new Vector2(pile.position.X, pile.position.Y), .3f);
+                Move(Actions.ExpoMove, new Vector2(pile.position.X, pile.position.Y), .2f);
                 pile.Add(this);
                 Raise(.2f, 0);
                 tweenerDepth.Ended += delegate() { Lower(.52f - pile.stack.Count * .01f, .2f); };
