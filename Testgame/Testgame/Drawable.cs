@@ -26,6 +26,7 @@ namespace Testgame
         Tweener tweenerColorR;
         Tweener tweenerColorG;
         Tweener tweenerColorB;
+        public Tweener tweenerA;
         public Tweener tweenerScaleX;
         Tweener tweenerScaleY;
         public bool isMoving;
@@ -63,6 +64,13 @@ namespace Testgame
             tweenerColorR = new Tweener(attributes.color.R, endColor.R, d, action);
             tweenerColorG = new Tweener(attributes.color.G, endColor.G, d, action);
             tweenerColorB = new Tweener(attributes.color.B, endColor.B, d, action);
+            tweenerA = new Tweener(attributes.color.A, endColor.A, d, action);
+        }
+
+        public void Fade(float d)
+        {
+            
+            ChangeColor(Actions.LinearMove, Color.Transparent, d);
         }
 
         public void Rotate(MoveDel action, float endRotation, float d)
@@ -121,7 +129,8 @@ namespace Testgame
                 tweenerColorR.Update(gameTime);
                 tweenerColorG.Update(gameTime);
                 tweenerColorB.Update(gameTime);
-                attributes.color = new Color(tweenerColorR.Position, tweenerColorG.Position, tweenerColorB.Position);
+                tweenerA.Update(gameTime);
+                attributes.color = new Color((int) tweenerColorR.Position, (int) tweenerColorG.Position,(int) tweenerColorB.Position, (int)tweenerA.Position);
             }
             if (tweenerScaleX != null)
             {

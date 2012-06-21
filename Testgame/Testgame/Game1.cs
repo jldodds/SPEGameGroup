@@ -20,7 +20,7 @@ namespace Testgame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        SpriteFont arial;
+        SpriteFont font;
         Card[] cards;
         Drawable background;
         Texture2D selector;
@@ -137,8 +137,8 @@ namespace Testgame
             cards[51] = new Card(51, this.Content.Load<Texture2D>("KingSpades"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
             #endregion Create cards[]
             selector = this.Content.Load<Texture2D>("CardSelector");
-            arial = Content.Load<SpriteFont>("SpriteFont3");
-            speed = new Speed(cards, background, selector, arial);
+            font = Content.Load<SpriteFont>("SpriteFont3");
+            speed = new Speed(cards, background, selector, font);
 
             resume = Content.Load<Texture2D>("3");
             instructions = Content.Load<Texture2D>("2");
@@ -173,7 +173,7 @@ namespace Testgame
 
             // TODO: Add your update logic here
             speed.Update(gameTime);
-            if (speed.playAgain) speed = new Speed(cards, background, selector, arial);
+            if (speed.playAgain) speed = new Speed(cards, background, selector, font);
             KeyUpdate(gameTime);
             base.Update(gameTime);
         }
