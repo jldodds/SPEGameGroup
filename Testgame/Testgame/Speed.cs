@@ -88,8 +88,9 @@ namespace Testgame
             AskBegin,
             Beginning,
             GamePlay,
-            
-            PlayingCard
+            ReBeginning,
+            PlayingCard,
+            Winner
         }
 
 
@@ -154,14 +155,17 @@ namespace Testgame
                 case gameState.GamePlay:
                     yourSelector.attributes.position = yourCards[yourSelectedPile].position;
                         oppSelector.attributes.position = opponentCards[oppSelectedPile].position;
-                        //if (!ExistMoves()) ReBegin();
-                        //if (YouWin()) YourAWinner();
-                        //if (OppWin()) OppAWinner();
+                        if (!ExistMoves()) ReBegin();
+                        if (YouWin()) YourAWinner();
+                        if (OppWin()) OppAWinner();
                     break;
                 
+                case gameState.ReBeginning:
                 case gameState.PlayingCard:
                     yourSelector.attributes.position = yourCards[yourSelectedPile].position;
                         oppSelector.attributes.position = opponentCards[oppSelectedPile].position;
+                    break;
+                case gameState.Winner:
                     break;
             }
 
@@ -175,6 +179,7 @@ namespace Testgame
 
             switch (speedState)
             {
+                case gameState.Winner:
                 case gameState.Dealing:
                 case gameState.Beginning:
                     DoNothing();
@@ -266,7 +271,7 @@ namespace Testgame
                         }
                     }
                     break;
-
+                case gameState.ReBeginning:
                 case gameState.PlayingCard:
                     if (newState.IsKeyDown(Keys.D))
                     {
@@ -413,16 +418,18 @@ namespace Testgame
 
         public void ReBegin()
         {
-            speedState = gameState.Beginning;
+            speedState = gameState.ReBeginning;
             //Display "NO MOVES"
 
-
-            Timer stopwatch = new Timer(4);
-            base.Add(stopwatch);
-            stopwatch.SetTimer(3, 1, delegate() {/*Display "3" */});
-            stopwatch.SetTimer(0, 2, delegate() {/*Display "2" */});
-            stopwatch.SetTimer(1, 3, delegate() {/*Display "1" */});
-            stopwatch.SetTimer(2, 4, delegate() {/*Display "SPEED!" */ BeginGame(); base.RemoveLast(); });
+            if (lSpitStack.stack.Count != 0)
+            {
+                Timer stopwatch = new Timer(4);
+                base.Add(stopwatch);
+                stopwatch.SetTimer(3, 1, delegate() {/*Display "3" */});
+                stopwatch.SetTimer(0, 2, delegate() {/*Display "2" */});
+                stopwatch.SetTimer(1, 3, delegate() {/*Display "1" */});
+                stopwatch.SetTimer(2, 4, delegate() {/*Display "SPEED!" */ BeginGame(); base.RemoveLast(); });
+            }
         }
 
         public bool YouWin()
@@ -432,6 +439,7 @@ namespace Testgame
             {
                 if (yourCards[i].stack.Count != 0) winner = false;
             }
+            if (yourStack.stack.Count != 0) winner = false;
             return winner;
         }
 
@@ -442,17 +450,22 @@ namespace Testgame
             {
                 if (opponentCards[i].stack.Count != 0) winner = false;
             }
+            if (opponentStack.stack.Count != 0) winner = false;
             return winner;
         }
 
         public void YourAWinner()
         {
-            Deal();
+            speedState = gameState.Winner;
+            yourSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
+            yourSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
         }
 
         public void OppAWinner()
         {
-            Deal();
+            speedState = gameState.Winner;
+            oppSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
+            oppSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
         }
     }
 }
