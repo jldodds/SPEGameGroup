@@ -144,8 +144,8 @@ namespace Testgame
             instructions = Content.Load<Texture2D>("2");
             mainmenu = Content.Load<Texture2D>("1");
 
-          
-            spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+            //arial = Content.Load<SpriteFont>("SpriteFont3");
+            //spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
         }
 
 
