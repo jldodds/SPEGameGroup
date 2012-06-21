@@ -23,9 +23,9 @@ namespace Testgame
         Drawable background;
         Texture2D selector;
         Speed speed;
-        //SpriteFont Badaboom;
+        SpriteFont arial;
         KeyboardState oldState;
-        Pause pause;
+        //Pause pause;
         Texture2D resume;
         Texture2D instructions;
         Texture2D mainmenu;
@@ -75,9 +75,6 @@ namespace Testgame
                     rotation = 0
                 }
             };
-
-            //badaboom = Content.Load<SpriteFont>("SpriteFont3"); 
-            //spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
             #region Create cards[]
@@ -135,12 +132,15 @@ namespace Testgame
             cards[50] = new Card(50, this.Content.Load<Texture2D>("QueenSpades"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
             cards[51] = new Card(51, this.Content.Load<Texture2D>("KingSpades"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
             #endregion Create cards[]
-             selector = this.Content.Load<Texture2D>("CardSelector");
-            speed = new Speed(cards, background, selector);
+            selector = this.Content.Load<Texture2D>("CardSelector");
+            speed = new Speed(cards, background, selector, arial);
 
             resume = Content.Load<Texture2D>("3");
             instructions = Content.Load<Texture2D>("2");
             mainmenu = Content.Load<Texture2D>("1");
+
+            arial = Content.Load<SpriteFont>("SpriteFont3"); 
+            spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
         }
 
 
@@ -210,6 +210,7 @@ namespace Testgame
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
             speed.Draw(spriteBatch);
+            spriteBatch.DrawString(arial, "3", new Vector2(440, 220), Color.Orange);
             spriteBatch.End();
 
             //spriteBatch.Begin();

@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Actions.cs" />
     <Compile Include="Attributes.cs" />
+    <Compile Include="Button.cs" />
     <Compile Include="Card.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Drawable.cs" />

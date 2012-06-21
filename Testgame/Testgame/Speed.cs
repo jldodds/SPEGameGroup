@@ -26,8 +26,11 @@ namespace Testgame
         Drawable oppSelector;
         int yourSelectedPile;
         Drawable yourSelector;
+        public static GraphicsDevice graphicsDevice;
+        //SpriteBatch spBatch = new SpriteBatch(graphicsDevice);
+        SpriteFont arial;
 
-        public Speed(Card[] deck, Drawable background, Texture2D selector):base(background)
+        public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont arial):base(background)
         {
             cards = deck;
             yourStack = new Pile(new Vector2(897, 650));
@@ -426,6 +429,7 @@ namespace Testgame
                 Timer stopwatch = new Timer(4);
                 base.Add(stopwatch);
                 stopwatch.SetTimer(3, 1, delegate() {/*Display "3" */});
+                    //{spBatch.DrawString(arial, "3", new Vector2(512, 400), Color.Orange)});
                 stopwatch.SetTimer(0, 2, delegate() {/*Display "2" */});
                 stopwatch.SetTimer(1, 3, delegate() {/*Display "1" */});
                 stopwatch.SetTimer(2, 4, delegate() {/*Display "SPEED!" */ BeginGame(); base.RemoveLast(); });
@@ -459,6 +463,7 @@ namespace Testgame
             speedState = gameState.Winner;
             yourSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
             yourSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
+            //spBatch.DrawString(arial, "3", new Vector2(512, 400), Color.Orange);
         }
 
         public void OppAWinner()
