@@ -1,4 +1,5 @@
 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,17 +20,17 @@ namespace Testgame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteFont arial;
         Card[] cards;
         Drawable background;
         Texture2D selector;
         Speed speed;
-        //SpriteFont Badaboom;
         KeyboardState oldState;
-        Pause pause;
+        //Pause pause;
         Texture2D resume;
         Texture2D instructions;
         Texture2D mainmenu;
-        
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -135,12 +136,15 @@ namespace Testgame
             cards[50] = new Card(50, this.Content.Load<Texture2D>("QueenSpades"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
             cards[51] = new Card(51, this.Content.Load<Texture2D>("KingSpades"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
             #endregion Create cards[]
-             selector = this.Content.Load<Texture2D>("CardSelector");
-            speed = new Speed(cards, background, selector);
+            selector = this.Content.Load<Texture2D>("CardSelector");
+            speed = new Speed(cards, background, selector, arial);
 
             resume = Content.Load<Texture2D>("3");
             instructions = Content.Load<Texture2D>("2");
             mainmenu = Content.Load<Texture2D>("1");
+
+            arial = Content.Load<SpriteFont>("SpriteFont3");
+            spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
         }
 
 
@@ -168,7 +172,7 @@ namespace Testgame
 
             // TODO: Add your update logic here
             speed.Update(gameTime);
-            if (speed.playAgain) speed = new Speed(cards, background, selector);
+            if (speed.playAgain) speed = new Speed(cards, background, selector, arial);
             KeyUpdate(gameTime);
             base.Update(gameTime);
         }
@@ -177,7 +181,7 @@ namespace Testgame
         {
             KeyboardState newState = Keyboard.GetState();
 
-            
+
 
             if (newState.IsKeyDown(Keys.Escape))
             {
@@ -187,7 +191,7 @@ namespace Testgame
                     graphics.ApplyChanges();
                 }
             }
-            
+
             if (newState.IsKeyDown(Keys.O))
             {
                 if (!oldState.IsKeyDown(Keys.O))
@@ -198,8 +202,8 @@ namespace Testgame
             oldState = newState;
         }
 
-       
-        
+
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>

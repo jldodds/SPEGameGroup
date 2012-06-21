@@ -27,8 +27,9 @@ namespace Testgame
         int yourSelectedPile;
         Drawable yourSelector;
         public bool playAgain = false;
+        SpriteFont arial;
 
-        public Speed(Card[] deck, Drawable background, Texture2D selector):base(background)
+        public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font):base(background)
         {
             cards = deck;
             for (int i = 0; i < cards.Length; i++)
@@ -84,7 +85,7 @@ namespace Testgame
             base.Add(oppSelector);
             base.Add(yourSelector);
 
-              
+            arial = font;
         }
 
         public enum gameState
@@ -531,4 +532,3 @@ namespace Testgame
         }
     }
 }
-
