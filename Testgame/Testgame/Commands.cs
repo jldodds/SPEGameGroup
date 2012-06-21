@@ -32,14 +32,6 @@ namespace Testgame
             };
         }
 
-        public static void NewGame(Speed speed, Card[] cards, Drawable background, Texture2D selector)
-        {
-            for (int i = 0; i < cards.Length; i++)
-            {
-                cards[i].attributes.position = new Vector2(-100, 100);
-            }
-            speed = new Speed(cards, background, selector);
-            speed.TurnOn();
-        }
+        
     }
 }

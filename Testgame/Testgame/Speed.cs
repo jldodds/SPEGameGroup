@@ -27,7 +27,7 @@ namespace Testgame
         int yourSelectedPile;
         Drawable yourSelector;
         public bool playAgain = false;
-        SpriteFont arial;
+        SpriteFont _font;
 
         public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font):base(background)
         {
@@ -85,7 +85,7 @@ namespace Testgame
             base.Add(oppSelector);
             base.Add(yourSelector);
 
-            arial = font;
+            _font = font;
         }
 
         public enum gameState
@@ -133,19 +133,44 @@ namespace Testgame
                 DrawCard(opponentStack, opponentCards[i], i * .675f);
             }
 
-            //Display "3"
+            
             Timer stopwatch = new Timer(3);
             base.Add(stopwatch);
-            stopwatch.SetTimer(0, 1, delegate() {/*Display "2" */});
-            stopwatch.SetTimer(1, 2, delegate() {/*Display "1" */});
-            stopwatch.SetTimer(2, 3, delegate() {/*Display "SPEED!" */ BeginGame(); base.RemoveLast(); });
+            Text three = new Text("3", _font) { attributes = new Attributes() { color = Color.Orange, position = new Vector2(420, 220) } };
+            base.Add(three);
+            three.Fade(1);
+            three.tweenerA.Ended += delegate() { three.isSeeable = false; };
+            stopwatch.SetTimer(0, 1, delegate()
+            {
+                Text two = new Text("2", _font) { attributes = new Attributes() { color = Color.Orange, position = new Vector2(420, 220) } };
+                base.Add(two);
+                two.Fade(1);
+                two.tweenerA.Ended += delegate() { two.isSeeable = false; };
+            });
+            stopwatch.SetTimer(1, 2, delegate()
+            {
+                Text one = new Text("1", _font) { attributes = new Attributes() { color = Color.Orange, position = new Vector2(420, 220) } };
+                base.Add(one);
+                one.Fade(1);
+                one.tweenerA.Ended += delegate() { one.isSeeable = false; };
+            });
+            stopwatch.SetTimer(2, 3, delegate()
+            {
+                Text title = new Text("SPEED!", _font) { attributes = new Attributes() { color = Color.Orange, position = new Vector2(-40, 220) } };
+                base.Add(title);
+                title.Fade(.5f);
+                title.tweenerA.Ended += delegate() { title.isSeeable = false; BeginGame(); };
+            });
         }
 
         public void DrawCard(Pile drawPile, Pile destinationPile, float delay)
         {
+            if (destinationPile.drawnTo) return;
+            destinationPile.drawnTo = true;
             Card temp = drawPile.Take();
             temp.Flip(true, delay);
             temp.toPile(destinationPile, delay);
+            temp.tweenerX.Ended += delegate() { destinationPile.drawnTo = false; };
         }
 
         public override void Update(GameTime gameTime)
@@ -162,9 +187,10 @@ namespace Testgame
                 case gameState.GamePlay:
                     yourSelector.attributes.position = yourCards[yourSelectedPile].position;
                         oppSelector.attributes.position = opponentCards[oppSelectedPile].position;
-                        if (!ExistMoves()) ReBegin();
                         if (YouWin()) YourAWinner();
                         if (OppWin()) OppAWinner();
+                        
+                        if (!ExistMoves()) ReBegin();
                     break;
                 
                 case gameState.ReBeginning:
@@ -358,8 +384,11 @@ namespace Testgame
         public void BeginGame()
         {
             speedState = gameState.GamePlay;
-            oppSelectedPile = 0;
-            yourSelectedPile = 0;
+            if (oppSelectedPile == null)
+            {
+                oppSelectedPile = 0;
+                yourSelectedPile = 0;
+            }
             DrawCard(lSpitStack, lGameStack, 0f);
             DrawCard(rSpitStack, rGameStack, 0f);
         }
@@ -367,6 +396,7 @@ namespace Testgame
         public void PlayYourCard(Pile fromPile, Pile destinationPile)
         {
             if (fromPile.stack.Count == 0) return;
+            if (fromPile.drawnTo) return;
             speedState = gameState.PlayingCard;
             Card c = fromPile.stack.Peek();
             int cv = c.cardValue;
@@ -376,12 +406,15 @@ namespace Testgame
 
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
-                m.tweenerX.Ended += delegate() { speedState = gameState.GamePlay; };
-                if (yourStack.stack.Count != 0)
+                m.tweenerX.Ended += delegate()
                 {
-                    if (fromPile.stack.Count == 0)
-                        DrawCard(yourStack, fromPile, 0f);
-                }
+                    speedState = gameState.GamePlay; 
+                    if (yourStack.stack.Count != 0)
+                    {
+                        if (fromPile.stack.Count == 0)
+                            DrawCard(yourStack, fromPile, 0f);
+                    }
+                };
             }
             else speedState = gameState.GamePlay;
         }
@@ -389,6 +422,7 @@ namespace Testgame
         public void PlayOppCard(Pile fromPile, Pile destinationPile)
         {
             if(fromPile.stack.Count == 0) return;
+            if (fromPile.drawnTo) return;
             speedState = gameState.PlayingCard;
             Card c = fromPile.stack.Peek();
             int cv = c.cardValue;
@@ -397,12 +431,14 @@ namespace Testgame
             {
                 Card m = fromPile.Take();
                     m.toPile(destinationPile);
-                    m.tweenerX.Ended += delegate() { speedState = gameState.GamePlay; };
-                if (opponentStack.stack.Count != 0)
-                {
-                    if (fromPile.stack.Count == 0)
-                        DrawCard(opponentStack, fromPile, .3f);
-                }
+                    m.tweenerX.Ended += delegate() { speedState = gameState.GamePlay;
+                    if (opponentStack.stack.Count != 0)
+                    {
+                        if (fromPile.stack.Count == 0)
+                            DrawCard(opponentStack, fromPile, .3f);
+                    }
+                    };
+                
             }
                 else speedState = gameState.GamePlay;
         }
@@ -441,16 +477,49 @@ namespace Testgame
         public void ReBegin()
         {
             speedState = gameState.ReBeginning;
-            //Display "NO MOVES"
+            Timer watch = new Timer(1);
+            base.Add(watch);
+            watch.SetTimer(0, 1, delegate()
+            {
+                Text nomove = new Text("No Moves", _font) { attributes = new Attributes() { color = Color.Orange, position = new Vector2(-40, 220) } };
+                base.Add(nomove);
+                nomove.Fade(1);
+                nomove.tweenerA.Ended += delegate() { nomove.isSeeable = false; };
+            });
 
             if (lSpitStack.stack.Count != 0)
             {
                 Timer stopwatch = new Timer(4);
                 base.Add(stopwatch);
-                stopwatch.SetTimer(3, 1, delegate() {/*Display "3" */});
-                stopwatch.SetTimer(0, 2, delegate() {/*Display "2" */});
-                stopwatch.SetTimer(1, 3, delegate() {/*Display "1" */});
-                stopwatch.SetTimer(2, 4, delegate() {/*Display "SPEED!" */ BeginGame(); base.RemoveLast(); });
+                
+                stopwatch.SetTimer(0, 3, delegate()
+                {
+                    Text two = new Text("2", _font) { attributes = new Attributes() { color = Color.Orange, position = new Vector2(420, 220) } };
+                    base.Add(two);
+                    two.Fade(1);
+                    two.tweenerA.Ended += delegate() { two.isSeeable = false; };
+                });
+                stopwatch.SetTimer(1, 4, delegate()
+                {
+                    Text one = new Text("1", _font) { attributes = new Attributes() { color = Color.Orange, position = new Vector2(420, 220) } };
+                    base.Add(one);
+                    one.Fade(1);
+                    one.tweenerA.Ended += delegate() { one.isSeeable = false; };
+                });
+                stopwatch.SetTimer(2, 5, delegate()
+                {
+                    Text title = new Text("SPEED!", _font) { attributes = new Attributes() { color = Color.Orange, position = new Vector2(-40, 220) } };
+                    base.Add(title);
+                    title.Fade(.5f);
+                    title.tweenerA.Ended += delegate() { title.isSeeable = false; BeginGame(); };
+                });
+                stopwatch.SetTimer(3,2, delegate()
+                {
+                    Text three = new Text("3", _font) { attributes = new Attributes() { color = Color.Orange, position = new Vector2(420, 220) } };
+                base.Add(three);
+                three.Fade(1);
+                three.tweenerA.Ended += delegate() { three.isSeeable = false; };
+                });
             }
 
             else

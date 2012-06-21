@@ -12,14 +12,14 @@ namespace Testgame
     {
         public Stack<Card> stack;
         public Vector2 position;
-        public bool selected;
+        public bool drawnTo;
 
 
         public Pile(Vector2 p)
         {
             stack = new Stack<Card>();
             position = p;
-            selected = false;
+            drawnTo = false;
         }
 
         public void Add(Card c)

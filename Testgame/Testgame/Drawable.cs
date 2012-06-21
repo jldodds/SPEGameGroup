@@ -15,6 +15,7 @@ namespace Testgame
 
         public virtual void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
+            if (!isSeeable) return;
             spriteBatch.Draw(attributes.texture, attributes.position, null, attributes.color, attributes.rotation, attributes.origin, attributes.scale, spriteEffects, attributes.depth);
         }
 
@@ -29,6 +30,7 @@ namespace Testgame
         Tweener tweenerScaleY;
         public bool isMoving;
         public Tweener tweenerDepth;
+        public bool isSeeable = true;
 
 
 

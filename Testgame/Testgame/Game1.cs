@@ -137,13 +137,14 @@ namespace Testgame
             cards[51] = new Card(51, this.Content.Load<Texture2D>("KingSpades"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
             #endregion Create cards[]
             selector = this.Content.Load<Texture2D>("CardSelector");
+            arial = Content.Load<SpriteFont>("SpriteFont3");
             speed = new Speed(cards, background, selector, arial);
 
             resume = Content.Load<Texture2D>("3");
             instructions = Content.Load<Texture2D>("2");
             mainmenu = Content.Load<Texture2D>("1");
 
-            arial = Content.Load<SpriteFont>("SpriteFont3");
+          
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
         }
 
