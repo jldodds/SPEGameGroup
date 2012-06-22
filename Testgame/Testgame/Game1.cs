@@ -26,10 +26,9 @@ namespace Testgame
         Texture2D selector;
         Speed speed;
         KeyboardState oldState;
-        //Pause pause;
-        Texture2D resume;
-        Texture2D instructions;
-        Texture2D mainmenu;
+        public Menu MainMenu;
+        public Menu PlayAgain;
+        Drawable freeze;
 
         public Game1()
         {
@@ -81,6 +80,7 @@ namespace Testgame
             //spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
             #region Create cards[]
             cards = new Card[52];
             cards[0] = new Card(0, this.Content.Load<Texture2D>("AceClubs"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
@@ -136,13 +136,71 @@ namespace Testgame
             cards[50] = new Card(50, this.Content.Load<Texture2D>("QueenSpades"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
             cards[51] = new Card(51, this.Content.Load<Texture2D>("KingSpades"), this.Content.Load<Texture2D>("cardBack"), new Vector2(-100, 100), true);
             #endregion Create cards[]
+           
             selector = this.Content.Load<Texture2D>("CardSelector");
             font = Content.Load<SpriteFont>("SpriteFont3");
-            speed = new Speed(cards, background, selector, font);
 
-            resume = Content.Load<Texture2D>("3");
-            instructions = Content.Load<Texture2D>("2");
-            mainmenu = Content.Load<Texture2D>("1");
+            #region MainMenu
+            Text title = new Text("Speed!", font)
+            {
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    rotation = -.2f
+                },
+                scale = new Vector2(.5f, .5f)
+            };
+            String[] mainMenuString = new String[3];
+            mainMenuString[0] = "Play Game";
+            mainMenuString[1] = "Instructions";
+            mainMenuString[2] = "Settings";
+            Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[3];
+            mainMenuAction[0] = delegate() { speed = new Speed(cards, background, selector, font); speed.TurnOn(); MainMenu.isPaused = true; };
+            mainMenuAction[1] = delegate() { Console.WriteLine("Instructions"); };
+            mainMenuAction[2] = delegate() { Console.WriteLine("Settings"); };
+            MainMenu = new Menu(background, 3, title, mainMenuString, mainMenuAction, font, selector);
+            MainMenu.TurnOn();
+            #endregion
+
+            #region PlayAgainMenu
+            Text playAgain = new Text("Play Again?", font) {attributes = new Attributes() {
+                color = Color.Black,
+                rotation = -.1f,
+            }, height = 100};
+            String[] PAButtonNames = new String[2];
+            PAButtonNames[0] = "Hell Yeah";
+            PAButtonNames[1] = "Nah Bro";
+            Button.ClickHandler[] playAgainAction = new Button.ClickHandler[2];
+            playAgainAction[0] = delegate(){speed = new Speed(cards,background,selector, font); speed.TurnOn(); PlayAgain.isPaused = true;};
+            playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
+            Drawable playAgainBackground = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("PossibleBackground"),
+                    color = Color.Transparent,
+                    position = new Vector2(512, 400),
+                    depth = 1,
+                    height = 802,
+                    width = 1026,
+                    rotation = 0
+                }
+            };
+            PlayAgain = new Menu(playAgainBackground, 2, playAgain, PAButtonNames, playAgainAction,font,selector);
+#endregion
+
+            freeze = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("Freeze"),
+                    position = new Vector2(300, 300),
+                    color = Color.White
+                }
+            };
+            freeze.isSeeable = false;
+
+            
 
             //arial = Content.Load<SpriteFont>("SpriteFont3");
             //spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
@@ -172,8 +230,17 @@ namespace Testgame
             //pause.Update(gameTime);
 
             // TODO: Add your update logic here
-            speed.Update(gameTime);
-            if (speed.playAgain) speed = new Speed(cards, background, selector, font);
+            if (speed != null)
+            {
+                speed.Update(gameTime);
+                if (speed.speedState == Speed.gameState.PlayAgain)
+                {
+                    PlayAgain.isPaused = false;
+                    speed.isHalted = true;
+                }
+            }
+            MainMenu.Update(gameTime);
+            PlayAgain.Update(gameTime);
             KeyUpdate(gameTime);
             base.Update(gameTime);
         }
@@ -200,6 +267,14 @@ namespace Testgame
                     speed.TurnOn();
                 }
             }
+
+            if (newState.IsKeyDown(Keys.H))
+            {
+                if (!oldState.IsKeyDown(Keys.H))
+                {
+                    freeze.isSeeable = !freeze.isSeeable;
+                }
+            }
             oldState = newState;
         }
 
@@ -215,7 +290,10 @@ namespace Testgame
 
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
-            speed.Draw(spriteBatch);
+            if(speed!= null) speed.Draw(spriteBatch);
+            MainMenu.Draw(spriteBatch);
+            PlayAgain.Draw(spriteBatch);
+            freeze.Draw(spriteBatch, SpriteEffects.None);
             spriteBatch.End();
 
             //spriteBatch.Begin();
@@ -224,5 +302,6 @@ namespace Testgame
 
             base.Draw(gameTime);
         }
+
     }
 }

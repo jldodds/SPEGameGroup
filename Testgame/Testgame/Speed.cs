@@ -21,13 +21,14 @@ namespace Testgame
         public Pile[] yourCards = new Pile[5];
         public Pile[] opponentCards = new Pile[5];
         KeyboardState oldState;
-        gameState speedState;
+        public gameState speedState;
         int oppSelectedPile;
         Drawable oppSelector;
         int yourSelectedPile;
         Drawable yourSelector;
         public bool playAgain = false;
         SpriteFont _font;
+        public bool isHalted = false;
 
         public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font):base(background)
         {
@@ -77,7 +78,7 @@ namespace Testgame
                     color = Color.LightSkyBlue,
                     height = 190,
                     width = 140,
-                    depth = .01f,
+                    depth = .11f,
                     rotation = 0
                 }
             };
@@ -125,7 +126,7 @@ namespace Testgame
                     position = new Vector2(512, 400),
                     rotation = 0
                 },
-                scale = .1f
+                scale = new Vector2(.1f,.1f)
             };
             cards[51].tweenerX.Ended += delegate()
             {
@@ -188,6 +189,7 @@ namespace Testgame
         public override void Update(GameTime gameTime)
         {
             if (base.isPaused) return;
+            if (isHalted) return;
             switch (speedState)
             {
                 case gameState.Dealing:
@@ -361,14 +363,6 @@ namespace Testgame
                     break;
                     #endregion
                 case gameState.PlayAgain:
-                    if (newState.IsKeyDown(Keys.Y))
-                    {
-                        if (!oldState.IsKeyDown(Keys.Y))
-                        {
-                            playAgain = true;
-
-                        }
-                    }
                     break;
             }
             if (newState.IsKeyDown(Keys.P))
@@ -388,6 +382,11 @@ namespace Testgame
             base.TurnOn();
         }
 
+        public void Halt()
+        {
+            isHalted = true;
+        }
+
         public void DoNothing()
         {
             return;
@@ -395,7 +394,9 @@ namespace Testgame
 
         public void BeginGame()
         {
-            speedState = gameState.GamePlay;
+            Timer timer = new Timer(1);
+            base.Add(timer);
+            timer.SetTimer(0, .4f, delegate() { speedState = gameState.GamePlay; });
             DrawCard(lSpitStack, lGameStack, 0f);
             DrawCard(rSpitStack, rGameStack, 0f);
         }
@@ -489,7 +490,7 @@ namespace Testgame
             watch.SetTimer(0, 1, delegate()
             {
                 Text nomove = new Text("No Moves", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) },
-                scale = .5f};
+                scale = new Vector2(.5f,.5f)};
                 base.Add(nomove);
                 nomove.Move(Actions.LinearMove, nomove.attributes.position, 1);
                 nomove.tweenerX.Ended += delegate() { nomove.isSeeable = false; };
@@ -497,7 +498,7 @@ namespace Testgame
 
             if (lSpitStack.stack.Count != 0)
             {
-                Timer stopwatch = new Timer(4);
+                Timer stopwatch = new Timer(5);
                 base.Add(stopwatch);
                 
                 stopwatch.SetTimer(0, 3, delegate()
@@ -577,20 +578,22 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.LightSkyBlue,
-                    position = new Vector2(512, 650),
-                    rotation = -.2f
+                    position = new Vector2(512, 600),
+                    rotation = -.2f,
+                    depth = .1f,
                 },
-                scale = .8f
+                scale = new Vector2(.8f,.8f)
             };
             Text loser = new Text("Scrub!!!", _font)
             {
                 attributes = new Attributes()
                 {
                     color = Color.DarkRed,
-                    position = new Vector2(512, 150),
-                    rotation = -.2f
+                    position = new Vector2(512, 200),
+                    rotation = -.2f,
+                    depth = .1f
                 },
-                scale = .8f
+                scale = new Vector2(.8f,.8f)
             };
 
             yourSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
@@ -613,20 +616,22 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.Red,
-                    position = new Vector2(512, 175),
-                    rotation = -.2f
+                    position = new Vector2(512, 200),
+                    rotation = -.2f,
+                    depth = .1f
                 },
-                scale = .8f
+                scale = new Vector2(.8f,.8f)
             };
             Text loser = new Text("Scrub!!!", _font)
             {
                 attributes = new Attributes()
                 {
                     color = Color.DarkBlue,
-                    position = new Vector2(512, 650),
-                    rotation = -.2f
+                    position = new Vector2(512, 600),
+                    rotation = -.2f,
+                    depth = .1f
                 },
-                scale = .8f
+                scale = new Vector2(.8f,.8f)
             };
            
             oppSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
@@ -650,9 +655,10 @@ namespace Testgame
                 {
                     position = new Vector2(512, 200),
                     color = Color.RoyalBlue,
-                    rotation = -.2f
+                    rotation = -.2f,
+                    depth = .1f
                 },
-                scale = .8f
+                scale = new Vector2(.8f,.8f)
             };
 
             Text tieMiddle = new Text("You're both", _font)
@@ -660,10 +666,11 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     position = new Vector2(512, 400),
-                    color = Color.Tomato,
-                    rotation = -.2f
+                    color = Color.Red,
+                    rotation = -.2f,
+                    depth = .1f
                 },
-                scale = .7f
+                scale = new Vector2(.7f,.7f)
             };
 
             Text tieBottom = new Text("SCRUBS!!!", _font)
@@ -671,10 +678,11 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     position = new Vector2(512, 600),
-                    color = Color.Tomato,
-                    rotation = -.2f
+                    color = Color.Red,
+                    rotation = -.2f,
+                    depth = .1f
                 },
-                scale = .7f
+                scale = new Vector2(.7f,.7f)
             };
 
             yourSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
@@ -695,8 +703,6 @@ namespace Testgame
         public void Reset()
         {
             speedState = gameState.PlayAgain;
-            
-            //display "Play Again? yes = y, no = n
         }
     }
 }

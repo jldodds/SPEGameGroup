@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Testgame
 {
-    class Attributes
+    public class Attributes
     {
        public Color color{ get; set;}
        public Vector2 position { get; set; }

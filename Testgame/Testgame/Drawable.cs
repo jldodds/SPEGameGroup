@@ -10,9 +10,12 @@ namespace Testgame
 {
     public delegate float MoveDel(float start, float end, float d, float t);
 
-    class Drawable
+    public class Drawable
     {
-
+        public Drawable()
+        {
+            attributes = new Attributes();
+        }
         public virtual void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             if (!isSeeable) return;

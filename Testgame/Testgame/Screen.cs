@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Testgame
 {
-    class Screen
+    public class Screen
     {
         public class Node
         {

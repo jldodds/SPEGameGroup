@@ -32,7 +32,7 @@ namespace Testgame
         {
             for (int i = 0; i < timer.Length; i++)
             {
-                timer[i].Update(gameTime);
+                if(timer[i] != null) timer[i].Update(gameTime);
             }
         }
     }

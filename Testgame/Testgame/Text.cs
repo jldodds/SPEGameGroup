@@ -8,18 +8,42 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Testgame
 {
-    class Text : Drawable
+    public class Text : Drawable
     {
         public String content;
-        SpriteFont _font;
+        public SpriteFont _font;
        
-        public float scale;
+        public Vector2 scale;
+        public float height
+        {
+            get
+            {
+                return scale.Y * _font.MeasureString(content).Y;
+            }
+            set
+            {
+                scale = new Vector2(value/ _font.MeasureString(content).Y , value / _font.MeasureString(content).Y);
+            }
+        }
+
+        public float width
+        {
+            get
+            {
+                return scale.X * _font.MeasureString(content).X;
+            }
+            set
+            {
+                scale = new Vector2(value / _font.MeasureString(content).X, value / _font.MeasureString(content).X);
+            }
+        }
+
 
         public Text(String stuff, SpriteFont font)
         {
             content = stuff;
             _font = font;
-            scale = 1;
+            scale = new Vector2(1, 1);
         }
 
         public override void Draw(SpriteBatch spriteBatch,SpriteEffects spriteEffects)
