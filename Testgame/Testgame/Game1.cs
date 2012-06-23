@@ -26,6 +26,7 @@ namespace Testgame
         KeyboardState oldState;
         public Menu MainMenu;
         public Menu PlayAgain;
+        public Menu Pause;
         Drawable freeze;
 
         public Game1()
@@ -148,15 +149,17 @@ namespace Testgame
                 },
                 scale = new Vector2(.5f, .5f)
             };
-            String[] mainMenuString = new String[3];
+            String[] mainMenuString = new String[4];
             mainMenuString[0] = "Play Game";
             mainMenuString[1] = "Instructions";
             mainMenuString[2] = "Settings";
-            Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[3];
+            mainMenuString[3] = "GTFO";
+            Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[4];
             mainMenuAction[0] = delegate() { speed = new Speed(cards, background, selector, font); speed.TurnOn(); MainMenu.isPaused = true; };
             mainMenuAction[1] = delegate() { Console.WriteLine("Instructions"); };
             mainMenuAction[2] = delegate() { Console.WriteLine("Settings"); };
-            MainMenu = new Menu(background, 3, title, mainMenuString, mainMenuAction, font, selector);
+            mainMenuAction[3] = delegate() { this.Exit(); };
+            MainMenu = new Menu(background, 4, title, mainMenuString, mainMenuAction, font, selector);
             MainMenu.TurnOn();
             #endregion
 
@@ -168,7 +171,7 @@ namespace Testgame
                     color = Color.Black,
                     rotation = -.1f,
                 },
-                height = 100
+                height = 200
             };
             String[] PAButtonNames = new String[2];
             PAButtonNames[0] = "Hell Yeah";
@@ -189,7 +192,30 @@ namespace Testgame
                     rotation = 0
                 }
             };
-            PlayAgain = new Menu(playAgainBackground, 2, playAgain, PAButtonNames, playAgainAction, font, selector);
+            PlayAgain = new Menu(playAgainBackground, 2, playAgain, PAButtonNames, playAgainAction, font, selector, 150);
+            #endregion
+
+            #region PauseMenu
+            Text pause = new Text("Pause", font)
+            {
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    rotation = -.1f,
+                },
+            };
+            String[] pauseNames = new String[3];
+            pauseNames[0] = "Resume";
+            pauseNames[1] = "Instructions";
+            pauseNames[2] = "Bitch Out";
+            Button.ClickHandler[] pauseActions = new Button.ClickHandler[3];
+            pauseActions[0] = delegate() {if(speed != null && speed.isPaused == false){
+                speed.Resume();
+                Pause.isPaused = true;
+            }};
+            pauseActions[1] = delegate() { Console.WriteLine("Instructions"); };
+            pauseActions[2] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; if (speed != null) speed.isHalted = false; speed.isPaused = true; };
+            Pause = new Menu(playAgainBackground, 3, pause, pauseNames, pauseActions, font, selector);
             #endregion
 
             freeze = new Drawable()
@@ -243,6 +269,7 @@ namespace Testgame
                 }
             }
             MainMenu.Update(gameTime);
+            Pause.Update(gameTime);
             PlayAgain.Update(gameTime);
             KeyUpdate(gameTime);
             base.Update(gameTime);
@@ -263,11 +290,15 @@ namespace Testgame
                 }
             }
 
-            if (newState.IsKeyDown(Keys.O))
+            if (newState.IsKeyDown(Keys.P))
             {
-                if (!oldState.IsKeyDown(Keys.O))
+                if (!oldState.IsKeyDown(Keys.P))
                 {
-                    speed.TurnOn();
+                    if(speed != null && speed.isPaused == false && speed.speedState != Speed.gameState.PlayAgain)
+                    {
+                        speed.Halt();
+                        Pause.isPaused = false;
+                    }
                 }
             }
 
@@ -295,6 +326,7 @@ namespace Testgame
             spriteBatch.Begin(SpriteSortMode.BackToFront, null);
             if (speed != null) speed.Draw(spriteBatch);
             MainMenu.Draw(spriteBatch);
+            Pause.Draw(spriteBatch);
             PlayAgain.Draw(spriteBatch);
             freeze.Draw(spriteBatch, SpriteEffects.None);
             spriteBatch.End();

@@ -82,7 +82,7 @@ namespace Testgame
             isPaused = true;
         }
 
-        public void Resume()
+        public virtual void Resume()
         {
             isPaused = false;
         }
