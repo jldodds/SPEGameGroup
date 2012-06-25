@@ -28,6 +28,10 @@ namespace Testgame
         public Menu PlayAgain;
         public Menu Pause;
         Drawable freeze;
+        Instructions instructions;
+        SoundEffect soeffect;
+        SoundEffectInstance instance;
+        float aspectRatio;
 
         public Game1()
         {
@@ -136,6 +140,11 @@ namespace Testgame
             cards[51] = new Card(51, this.Content.Load<Texture2D>("KingSpades"), this.Content.Load<Texture2D>("cardBack2.0"), new Vector2(-100, 100), true);
             #endregion Create cards[]
 
+            soeffect = Content.Load<SoundEffect>("Audio\\Waves\\engine_2");
+            instance = soeffect.CreateInstance();
+
+            aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
+            
             selector = this.Content.Load<Texture2D>("CardSelector");
             font = Content.Load<SpriteFont>("SpriteFont3");
 
@@ -156,11 +165,12 @@ namespace Testgame
             mainMenuString[3] = "GTFO";
             Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[4];
             mainMenuAction[0] = delegate() { speed = new Speed(cards, background, selector, font); speed.TurnOn(); MainMenu.isPaused = true; };
-            mainMenuAction[1] = delegate() { Console.WriteLine("Instructions"); };
+            mainMenuAction[1] = delegate() { instructions = new Instructions(background, font); instructions.Start(); MainMenu.isPaused = true; };
             mainMenuAction[2] = delegate() { Console.WriteLine("Settings"); };
             mainMenuAction[3] = delegate() { this.Exit(); };
             MainMenu = new Menu(background, 4, title, mainMenuString, mainMenuAction, font, selector);
             MainMenu.TurnOn();
+            soeffect.Play();
             #endregion
 
             #region PlayAgainMenu
@@ -229,10 +239,6 @@ namespace Testgame
             };
             freeze.isSeeable = false;
 
-
-
-            //arial = Content.Load<SpriteFont>("SpriteFont3");
-            //spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
         }
 
 
@@ -328,12 +334,9 @@ namespace Testgame
             MainMenu.Draw(spriteBatch);
             Pause.Draw(spriteBatch);
             PlayAgain.Draw(spriteBatch);
+            //instructions.Draw(spriteBatch);
             freeze.Draw(spriteBatch, SpriteEffects.None);
             spriteBatch.End();
-
-            //spriteBatch.Begin();
-            //spriteBatch.DrawString(arial, "3", new Vector2(512, 400), Color.Black);
-            //spriteBatch.End();
 
             base.Draw(gameTime);
         }

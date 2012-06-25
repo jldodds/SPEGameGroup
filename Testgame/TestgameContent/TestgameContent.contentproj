@@ -346,13 +346,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cardback.jpg">
-      <Name>cardback</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="SpriteFont3.spritefont">
       <Name>SpriteFont3</Name>
       <Importer>FontDescriptionImporter</Importer>
@@ -398,6 +391,21 @@
       <Name>cardback2.0</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Audio\Waves\engine_2.wav">
+      <Name>engine_2</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Audio\Waves\hyperspace_activate.wav">
+      <Name>hyperspace_activate</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
