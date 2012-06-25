@@ -761,7 +761,7 @@ namespace Testgame
             Timer endGame = new Timer(2);
             base.Add(endGame);
             endGame.SetTimer(0, 6, delegate() { Reset();});
-            endGame.SetTimer(1, 4, delegate() { tieTop.Fade(2); tieMiddle.Fade(2); tieTop.Fade(2); });
+            endGame.SetTimer(1, 4, delegate() { tieTop.Fade(2); tieMiddle.Fade(2); tieBottom.Fade(2); });
         }
 
         public void Reset()
