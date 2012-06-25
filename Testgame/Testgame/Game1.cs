@@ -179,6 +179,7 @@ namespace Testgame
             mainMenuAction[3] = delegate() { this.Exit(); };
             MainMenu = new Menu(background, 4, title, mainMenuString, mainMenuAction, font, selector);
             MainMenu.TurnOn();
+            MainMenu.selector.attributes.color = Color.Transparent;
             soeffect.Play();
             #endregion
 
@@ -212,6 +213,7 @@ namespace Testgame
                 }
             };
             PlayAgain = new Menu(playAgainBackground, 2, playAgain, PAButtonNames, playAgainAction, font, selector, 150);
+            PlayAgain.selector.attributes.color = Color.Transparent;
             #endregion
 
             #region PauseMenu
@@ -235,6 +237,7 @@ namespace Testgame
             pauseActions[1] = delegate() { Console.WriteLine("Instructions"); };
             pauseActions[2] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; if (speed != null) speed.isHalted = false; speed.isPaused = true; };
             Pause = new Menu(playAgainBackground, 3, pause, pauseNames, pauseActions, font, selector);
+            Pause.selector.attributes.color = Color.Transparent;
             #endregion
 
             freeze = new Drawable()
@@ -348,12 +351,12 @@ namespace Testgame
             if (speed != null && speed.isShaking) spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, translate);
             else spriteBatch.Begin(SpriteSortMode.BackToFront, null);
             
-            spriteBatch.Begin(SpriteSortMode.BackToFront, null);
+
             if (speed != null) speed.Draw(spriteBatch);
             MainMenu.Draw(spriteBatch);
             Pause.Draw(spriteBatch);
             PlayAgain.Draw(spriteBatch);
-            instructions.Draw(spriteBatch);
+            //instructions.Draw(spriteBatch);
             freeze.Draw(spriteBatch, SpriteEffects.None);
             test.Draw(spriteBatch);
             spriteBatch.End();
