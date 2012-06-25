@@ -161,6 +161,7 @@ namespace Testgame
             mainMenuAction[3] = delegate() { this.Exit(); };
             MainMenu = new Menu(background, 4, title, mainMenuString, mainMenuAction, font, selector);
             MainMenu.TurnOn();
+            MainMenu.selector.attributes.color = Color.Transparent;
             #endregion
 
             #region PlayAgainMenu
@@ -193,6 +194,7 @@ namespace Testgame
                 }
             };
             PlayAgain = new Menu(playAgainBackground, 2, playAgain, PAButtonNames, playAgainAction, font, selector, 150);
+            PlayAgain.selector.attributes.color = Color.Transparent;
             #endregion
 
             #region PauseMenu
@@ -216,6 +218,7 @@ namespace Testgame
             pauseActions[1] = delegate() { Console.WriteLine("Instructions"); };
             pauseActions[2] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; if (speed != null) speed.isHalted = false; speed.isPaused = true; };
             Pause = new Menu(playAgainBackground, 3, pause, pauseNames, pauseActions, font, selector);
+            Pause.selector.attributes.color = Color.Transparent;
             #endregion
 
             freeze = new Drawable()

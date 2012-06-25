@@ -11,6 +11,7 @@ namespace Testgame
     {
         private Timer buttonTimer;
         public bool selected;
+        public bool clicked;
         public Button(String stuff, SpriteFont font, Vector2 position, Color color): base(stuff, font)
         {
             
@@ -31,8 +32,9 @@ namespace Testgame
 
         public void Click()
         {
+            clicked = true;
             attributes.color = Color.Orange;
-            buttonTimer.SetTimer(0, .9f, delegate() { Clicked(); attributes.color = Color.Black; });
+            buttonTimer.SetTimer(0, .9f, delegate() { Clicked(); clicked = false; });
         }
 
         public void Remove()
