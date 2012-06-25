@@ -28,6 +28,9 @@ namespace Testgame
         public Menu PlayAgain;
         public Menu Pause;
         Drawable freeze;
+        List<Texture2D> textures;
+        ParticleEngine test;
+        Random random = new Random();
 
         public Game1()
         {
@@ -153,9 +156,12 @@ namespace Testgame
             mainMenuString[0] = "Play Game";
             mainMenuString[1] = "Instructions";
             mainMenuString[2] = "Settings";
-            mainMenuString[3] = "GTFO";
+            mainMenuString[3] = "Exit";
             Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[4];
-            mainMenuAction[0] = delegate() { speed = new Speed(cards, background, selector, font); speed.TurnOn(); MainMenu.isPaused = true; };
+            mainMenuAction[0] = delegate()
+            {
+                 speed = new Speed(cards, background, selector, font); speed.TurnOn(); MainMenu.isPaused = true;
+            };
             mainMenuAction[1] = delegate() { Console.WriteLine("Instructions"); };
             mainMenuAction[2] = delegate() { Console.WriteLine("Settings"); };
             mainMenuAction[3] = delegate() { this.Exit(); };
@@ -209,7 +215,7 @@ namespace Testgame
             String[] pauseNames = new String[3];
             pauseNames[0] = "Resume";
             pauseNames[1] = "Instructions";
-            pauseNames[2] = "Bitch Out";
+            pauseNames[2] = "Main Menu";
             Button.ClickHandler[] pauseActions = new Button.ClickHandler[3];
             pauseActions[0] = delegate() {if(speed != null && speed.isPaused == false){
                 speed.Resume();
@@ -232,7 +238,11 @@ namespace Testgame
             };
             freeze.isSeeable = false;
 
-
+            textures = new List<Texture2D>();
+            textures.Add(Content.Load<Texture2D>("circle"));
+            textures.Add(Content.Load<Texture2D>("diamond"));
+            textures.Add(Content.Load<Texture2D>("star"));
+            test = new ParticleEngine(textures, new Vector2(512, 400), .99f);
 
             //arial = Content.Load<SpriteFont>("SpriteFont3");
             //spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
@@ -262,6 +272,10 @@ namespace Testgame
             //pause.Update(gameTime);
 
             // TODO: Add your update logic here
+            test.Update(gameTime);
+
+            
+            
             if (speed != null)
             {
                 speed.Update(gameTime);
@@ -324,21 +338,23 @@ namespace Testgame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            Matrix translate = Matrix.CreateTranslation(Shake());
             // TODO: Add your drawing code here
-            spriteBatch.Begin(SpriteSortMode.BackToFront, null);
+            if (speed != null && speed.isShaking) spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, translate);
+            else spriteBatch.Begin(SpriteSortMode.BackToFront, null);
             if (speed != null) speed.Draw(spriteBatch);
             MainMenu.Draw(spriteBatch);
             Pause.Draw(spriteBatch);
             PlayAgain.Draw(spriteBatch);
             freeze.Draw(spriteBatch, SpriteEffects.None);
+            test.Draw(spriteBatch);
             spriteBatch.End();
-
-            //spriteBatch.Begin();
-            //spriteBatch.DrawString(arial, "3", new Vector2(512, 400), Color.Black);
-            //spriteBatch.End();
-
             base.Draw(gameTime);
+        }
+
+        private Vector3 Shake()
+        {
+            return new Vector3((float)random.NextDouble() * 4 - 2, (float)random.NextDouble() * 4 - 2, 0);
         }
 
     }

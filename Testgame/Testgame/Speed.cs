@@ -29,6 +29,7 @@ namespace Testgame
         public bool playAgain = false;
         SpriteFont _font;
         public bool isHalted = false;
+        public bool isShaking = false;
         YouPenaltyState youPenalty;
         OppPenaltyState oppPenalty;
 
@@ -445,6 +446,7 @@ namespace Testgame
                         if (fromPile.stack.Count == 0)
                             DrawCard(yourStack, fromPile, 0f);
                     }
+                    Shake();
                 };
             }
             else
@@ -474,6 +476,7 @@ namespace Testgame
                         if (fromPile.stack.Count == 0)
                             DrawCard(opponentStack, fromPile, .3f);
                     }
+                    Shake();
                 };
 
             }
@@ -764,6 +767,14 @@ namespace Testgame
         public void Reset()
         {
             speedState = gameState.PlayAgain;
+        }
+
+        public void Shake()
+        {
+            Timer timer = new Timer(1);
+            base.Add(timer);
+            isShaking = true;
+            timer.SetTimer(0, .5f, delegate() { isShaking = false; });
         }
     }
 }
