@@ -14,7 +14,7 @@ namespace Testgame
         public Button[] buttons;
         public int buttonHeight = 75;
         float maxButtonWidth;
-        Drawable selector;
+        public Drawable selector;
         int selected;
         menuState myState;
 
@@ -119,8 +119,16 @@ namespace Testgame
             KeyUpdate();
             for (int i = 0; i < buttons.Length; i++)
             {
-                if (i == selected) buttons[i].selected = true;
-                else buttons[i].selected = false;
+                if (i == selected)
+                {
+                    buttons[i].selected = true;
+                    if(!buttons[i].clicked) buttons[i].attributes.color = Color.Red;
+                }
+                else
+                {
+                    buttons[i].selected = false;
+                    if(!buttons[i].clicked) buttons[i].attributes.color = Color.Black;
+                }
             }
             selector.attributes.position = buttons[selected].attributes.position;
             base.Update(gameTime);

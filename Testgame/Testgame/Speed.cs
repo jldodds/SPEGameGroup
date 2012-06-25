@@ -29,6 +29,7 @@ namespace Testgame
         public bool playAgain = false;
         SpriteFont _font;
         public bool isHalted = false;
+        public bool isShaking = false;
         YouPenaltyState youPenalty;
         OppPenaltyState oppPenalty;
 
@@ -445,6 +446,7 @@ namespace Testgame
                         if (fromPile.stack.Count == 0)
                             DrawCard(yourStack, fromPile, 0f);
                     }
+                    Shake();
                 };
             }
             else
@@ -474,6 +476,7 @@ namespace Testgame
                         if (fromPile.stack.Count == 0)
                             DrawCard(opponentStack, fromPile, .3f);
                     }
+                    Shake();
                 };
 
             }
@@ -648,8 +651,7 @@ namespace Testgame
                 },
                 scale = new Vector2(.8f,.8f)
             };
-            winner.Fade(2);
-            loser.Fade(2);
+
             oppSelector.Fade(2);
             yourSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
             yourSelector.Fade(2);
@@ -660,9 +662,10 @@ namespace Testgame
                 
             };
             yourSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
-            Timer endGame = new Timer(1);
+            Timer endGame = new Timer(2);
             base.Add(endGame);
-            endGame.SetTimer(0, 4, delegate() { Reset(); });
+            endGame.SetTimer(0, 6, delegate() { Reset(); });
+            endGame.SetTimer(1, 4, delegate() { winner.Fade(2); loser.Fade(2); });
         }
 
         public void OppAWinner()
@@ -690,8 +693,6 @@ namespace Testgame
                 },
                 scale = new Vector2(.8f,.8f)
             };
-            winner.Fade(2);
-            loser.Fade(2);
             yourSelector.Fade(2);
             oppSelector.Fade(2);
             oppSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
@@ -701,9 +702,10 @@ namespace Testgame
                 base.Add(loser);
             };
             oppSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
-            Timer endGame = new Timer(1);
+            Timer endGame = new Timer(2);
             base.Add(endGame);
-            endGame.SetTimer(0, 4, delegate() { Reset(); });
+            endGame.SetTimer(0, 6, delegate() { Reset(); });
+            endGame.SetTimer(1, 4, delegate() { winner.Fade(2); loser.Fade(2); });
         }
 
         public void Tie()
@@ -756,14 +758,23 @@ namespace Testgame
                 base.Add(tieBottom);
             };
             oppSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
-            Timer endGame = new Timer(1);
+            Timer endGame = new Timer(2);
             base.Add(endGame);
-            endGame.SetTimer(0, 4, delegate() { Reset();});
+            endGame.SetTimer(0, 6, delegate() { Reset();});
+            endGame.SetTimer(1, 4, delegate() { tieTop.Fade(2); tieMiddle.Fade(2); tieTop.Fade(2); });
         }
 
         public void Reset()
         {
             speedState = gameState.PlayAgain;
+        }
+
+        public void Shake()
+        {
+            Timer timer = new Timer(1);
+            base.Add(timer);
+            isShaking = true;
+            timer.SetTimer(0, .5f, delegate() { isShaking = false; });
         }
     }
 }

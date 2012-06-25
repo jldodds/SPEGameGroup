@@ -16,8 +16,6 @@ namespace Testgame
         SpriteFont _font;
         KeyboardState oldState;
         public instructionspage _instructionsPage;
-        SpriteBatch spBatch;
-        SpriteEffects spEffects;
 
         public enum instructionspage
         {
@@ -33,7 +31,6 @@ namespace Testgame
         {
             _font = font;
             _instructionsPage = instructionspage.none;
-            //graphics = new GraphicsDeviceManager(game);
         }
 
         public void Start()
@@ -43,7 +40,7 @@ namespace Testgame
 
         public void WriteText()
         {
-            spEffects = new SpriteEffects();
+
             
             if (_instructionsPage == instructionspage.one)
             {
@@ -56,7 +53,6 @@ namespace Testgame
                         depth = .1f,
                     },
                 };
-                _instructions1.Draw(spBatch, spEffects);
             }
 
             if (_instructionsPage == instructionspage.two)
@@ -71,7 +67,6 @@ namespace Testgame
                     },
                     scale = new Vector2(.8f, .8f)
                 };
-                _instructions1.Draw(spBatch, spEffects);
             }
 
             if (_instructionsPage == instructionspage.three)
@@ -86,7 +81,6 @@ namespace Testgame
                     },
                     scale = new Vector2(.8f, .8f)
                 };
-                _instructions1.Draw(spBatch, spEffects);
             }
         }
 
