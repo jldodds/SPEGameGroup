@@ -33,7 +33,7 @@ namespace Testgame
                     base.Add(state);
                     state.SetTimer(0, .5f, delegate() { myState = menuState.On; });  
                 }
-                if (value) myState = menuState.Off;
+                //if (value) myState = menuState.Off;
             }
         }
 
@@ -96,7 +96,7 @@ namespace Testgame
             myState = menuState.Off;
             Timer state = new Timer(1);
             base.Add(state);
-            state.SetTimer(0, 1, delegate() { myState = menuState.On; });
+            state.SetTimer(0, .5f, delegate() { myState = menuState.On; });
         }
 
         public enum menuState

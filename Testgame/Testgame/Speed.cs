@@ -26,6 +26,8 @@ namespace Testgame
         Drawable oppSelector;
         int yourSelectedPile;
         Drawable yourSelector;
+        Player you;
+        Player opp;
 
         SpriteFont _font;
         public bool isHalted { get; set; }
