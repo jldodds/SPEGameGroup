@@ -41,6 +41,7 @@ namespace Testgame
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
+            // set screen size to 1024x800
             graphics.PreferredBackBufferHeight = 800;
             graphics.PreferredBackBufferWidth = 1024;
         }
@@ -55,6 +56,7 @@ namespace Testgame
         {
             // TODO: Add your initialization logic here
 
+            // makes cursor visible when on screen
             IsMouseVisible = true;
             base.IsMouseVisible = true;
             base.Initialize();
@@ -68,6 +70,7 @@ namespace Testgame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            // loads up the background
             background = new Drawable()
             {
                 attributes = new Attributes()
@@ -82,11 +85,9 @@ namespace Testgame
                 }
             };
 
-            //badaboom = Content.Load<SpriteFont>("SpriteFont3"); 
-            //spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
 
+            // loads up cards & assigns values
             #region Create cards[]
             cards = new Card[52];
             cards[0] = new Card(0, this.Content.Load<Texture2D>("AceClubs"), this.Content.Load<Texture2D>("cardBack2.0"), new Vector2(-100, 100), true);
@@ -143,15 +144,19 @@ namespace Testgame
             cards[51] = new Card(51, this.Content.Load<Texture2D>("KingSpades"), this.Content.Load<Texture2D>("cardBack2.0"), new Vector2(-100, 100), true);
             #endregion Create cards[]
 
+            // plays music
             soeffect = Content.Load<SoundEffect>("Audio\\Waves\\engine_2");
             instance = soeffect.CreateInstance();
 
             aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
             
+            // loads card selector
             selector = this.Content.Load<Texture2D>("CardSelector");
+            // loads BadaBoom font
             font = Content.Load<SpriteFont>("SpriteFont3");
 
             #region MainMenu
+            // game title
             Text title = new Text("Speed!", font)
             {
                 attributes = new Attributes()
@@ -161,28 +166,41 @@ namespace Testgame
                 },
                 scale = new Vector2(.5f, .5f)
             };
+
+            // creates main menu buttons
             String[] mainMenuString = new String[4];
             mainMenuString[0] = "Play Game";
             mainMenuString[1] = "Instructions";
             mainMenuString[2] = "Settings";
             mainMenuString[3] = "Exit";
             Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[4];
+            
+            // if "play game" is chosen from main menu, starts the game
             mainMenuAction[0] = delegate() 
             {
                 speed = new Speed(cards, background, selector, font); speed.TurnOn(); MainMenu.isPaused = true; 
             };
+            
+            // if "instructions" chosen, displays instructions
             mainMenuAction[1] = delegate() 
             {
                 instructions = new Instructions(background, font); instructions.Start(); MainMenu.isPaused = true; 
             };
+
+            // if "settings" chosen, displays settings
             mainMenuAction[2] = delegate() { Console.WriteLine("Settings"); };
+            
+            //exits game
             mainMenuAction[3] = delegate() { this.Exit(); };
+            
+            //makes main menu and turns it on
             MainMenu = new Menu(background, 4, title, mainMenuString, mainMenuAction, font);
             MainMenu.TurnOn();
             soeffect.Play();
             #endregion
 
             #region PlayAgainMenu
+            // title for play again menu
             Text playAgain = new Text("Play Again?", font)
             {
                 attributes = new Attributes()
@@ -192,12 +210,18 @@ namespace Testgame
                 },
                 height = 200
             };
+            
+            // button names
             String[] PAButtonNames = new String[2];
             PAButtonNames[0] = "Hell Yeah";
             PAButtonNames[1] = "Nah Bro";
+            
+            // starts new game or goes to main menu depending on choice
             Button.ClickHandler[] playAgainAction = new Button.ClickHandler[2];
             playAgainAction[0] = delegate() { speed = new Speed(cards, background, selector, font); speed.TurnOn(); PlayAgain.isPaused = true; };
             playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
+            
+            // makes transparent background
             Drawable playAgainBackground = new Drawable()
             {
                 attributes = new Attributes()
@@ -211,6 +235,8 @@ namespace Testgame
                     rotation = 0
                 }
             };
+            
+            // makes playagain menu
             PlayAgain = new Menu(playAgainBackground, 2, playAgain, PAButtonNames, playAgainAction, font, 150);
             #endregion
 
@@ -238,6 +264,7 @@ namespace Testgame
 
             #endregion
 
+            // makes the freeze icon
             freeze = new Drawable()
             {
                 attributes = new Attributes()
@@ -249,6 +276,7 @@ namespace Testgame
             };
             freeze.isSeeable = false;
 
+            // load images for particleengine and make a new one
             textures = new List<Texture2D>();
             textures.Add(Content.Load<Texture2D>("circle"));
             textures.Add(Content.Load<Texture2D>("diamond"));
@@ -274,12 +302,11 @@ namespace Testgame
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            test.Update(gameTime);
-            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // TODO: Add your update logic here
+            // updates game screens and all 
             if (speed != null)
             {
                 speed.Update(gameTime);
@@ -289,6 +316,7 @@ namespace Testgame
                     speed.isHalted = true;
                 }
             }
+            test.Update(gameTime);
             MainMenu.Update(gameTime);
             Pause.Update(gameTime);
             PlayAgain.Update(gameTime);
@@ -298,10 +326,10 @@ namespace Testgame
 
         protected void KeyUpdate(GameTime gameTime)
         {
+            // checks if buttons recently pressed
             KeyboardState newState = Keyboard.GetState();
 
-
-
+            // toggles full screen if escape is pressed
             if (newState.IsKeyDown(Keys.Escape))
             {
                 if (!oldState.IsKeyDown(Keys.Escape))
@@ -311,6 +339,7 @@ namespace Testgame
                 }
             }
 
+            // pauses game if p is pressed
             if (newState.IsKeyDown(Keys.P))
             {
                 if (!oldState.IsKeyDown(Keys.P))
@@ -323,6 +352,7 @@ namespace Testgame
                 }
             }
 
+            // displays freeze image..?
             if (newState.IsKeyDown(Keys.H))
             {
                 if (!oldState.IsKeyDown(Keys.H))
@@ -330,6 +360,8 @@ namespace Testgame
                     freeze.isSeeable = !freeze.isSeeable;
                 }
             }
+
+            // updates oldstate of keyboard
             oldState = newState;
         }
 
@@ -346,10 +378,11 @@ namespace Testgame
             Matrix translate = Matrix.CreateTranslation(Shake());
 
             // TODO: Add your drawing code here
+            // shakes screen if card is played
             if (speed != null && speed.isShaking) spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, translate);
             else spriteBatch.Begin(SpriteSortMode.BackToFront, null);
             
-
+            // draws screens
             if (speed != null) speed.Draw(spriteBatch);
             MainMenu.Draw(spriteBatch);
             Pause.Draw(spriteBatch);
@@ -362,6 +395,7 @@ namespace Testgame
             base.Draw(gameTime);
         }
 
+        // method to shake screen
        private Vector3 Shake()
        {
            return new Vector3((float)random.NextDouble() * 4 - 2, (float)random.NextDouble() * 4 - 2, 0);

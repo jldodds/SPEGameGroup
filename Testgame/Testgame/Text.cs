@@ -10,12 +10,13 @@ namespace Testgame
 {
     public class Text : Drawable
     {
-        public String content;
-        public SpriteFont _font;
+        public String content;   // words of the text
+        public SpriteFont _font; // text's font
        
         public Vector2 scale;
         public float height
         {
+            // gets scaled version of text's height
             get
             {
                 return scale.Y * _font.MeasureString(content).Y;
@@ -28,6 +29,7 @@ namespace Testgame
 
         public float width
         {
+            // gets scaled version of text's width
             get
             {
                 return scale.X * _font.MeasureString(content).X;
@@ -38,7 +40,7 @@ namespace Testgame
             }
         }
 
-
+        // constructs the text based on words, font, and gives it a true scaling
         public Text(String stuff, SpriteFont font)
         {
             content = stuff;
@@ -46,6 +48,7 @@ namespace Testgame
             scale = new Vector2(1, 1);
         }
 
+        // draws the string if it's seeable based on attributes
         public override void Draw(SpriteBatch spriteBatch,SpriteEffects spriteEffects)
         {
             if (!isSeeable) return;
