@@ -162,7 +162,8 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.Black,
-                    rotation = -.2f
+                    rotation = -.2f,
+                    depth = 0f,
                 },
                 scale = new Vector2(.5f, .5f)
             };
@@ -207,6 +208,7 @@ namespace Testgame
                 {
                     color = Color.Black,
                     rotation = -.1f,
+                    depth = 0f,
                 },
                 height = 200
             };
@@ -241,6 +243,7 @@ namespace Testgame
             #endregion
 
             #region PauseMenu
+            // creates pause menu title
             Text pause = new Text("Pause", font)
             {
                 attributes = new Attributes()
@@ -250,17 +253,21 @@ namespace Testgame
                     depth = 0f,
                 },
             };
+            // makes names for each button on pause menu
             String[] pauseNames = new String[3];
             pauseNames[0] = "Resume";
             pauseNames[1] = "Instructions";
             pauseNames[2] = "Main Menu";
+            // sets up an array of events based on which button is clicked
             Button.ClickHandler[] pauseActions = new Button.ClickHandler[3];
+            // resumes speed if that option is chosen, goes to instructions if that's chosen, and goes to main menu if these aren't the case
             pauseActions[0] = delegate() {if(speed != null && speed.isPaused == false){
                 speed.Resume();
                 Pause.isPaused = true;
             }};
             pauseActions[1] = delegate() { Console.WriteLine("Instructions"); };
             pauseActions[2] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; if (speed != null) speed.isHalted = false; speed.isPaused = true; };
+            // creates instance of pause menu
             Pause = new Menu(playAgainBackground, 3, pause, pauseNames, pauseActions, font);
 
             #endregion
@@ -307,6 +314,7 @@ namespace Testgame
                 this.Exit();
 
             // TODO: Add your update logic here
+            
             // updates game screens and all 
             if (speed != null)
             {

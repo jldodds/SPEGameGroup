@@ -16,7 +16,6 @@ namespace Testgame
         SpriteFont _font;
         KeyboardState oldState;
         public instructionspage _instructionsPage;
-        bool instructionsOn;
 
         public enum instructionspage
         {
@@ -34,8 +33,7 @@ namespace Testgame
             _instructionsPage = instructionspage.none;
 
 
-            if (_instructionsPage == instructionspage.one)
-            {
+            
                 _instructions1 = new Text("Ok this is a test.", _font)
                 {
                     attributes = new Attributes()
@@ -44,40 +42,11 @@ namespace Testgame
                         position = new Vector2(512, 600),
                         depth = .11f,
                     },
+                    isSeeable = false,
+                    scale = new Vector2(.3f, .3f),
                 };
-                base.Add(background);
-            }
+                base.Add(_instructions1);
 
-            instructionsOn = false;
-
-        }
-
-        public void Start()
-        {
-            _instructionsPage = instructionspage.one;
-            base.TurnOn();
-            instructionsOn = true;
-        }
-
-        public void WriteText()
-        {
-
-            
-            if (_instructionsPage == instructionspage.one)
-            {
-                _instructions1 = new Text("Ok this is a test.", _font)
-                {
-                    attributes = new Attributes()
-                    {
-                        color = Color.Orange,
-                        position = new Vector2(512, 600),
-                        depth = .1f,
-                    },
-                };
-            }
-
-            if (_instructionsPage == instructionspage.two)
-            {
                 _instructions2 = new Text("Page2", _font)
                 {
                     attributes = new Attributes()
@@ -86,8 +55,41 @@ namespace Testgame
                         position = new Vector2(512, 600),
                         depth = .1f,
                     },
-                    scale = new Vector2(.8f, .8f)
+                    scale = new Vector2(.8f, .8f),
+                    isSeeable = false,
                 };
+
+            
+                _instructions3 = new Text("Page2", _font)
+                {
+                    attributes = new Attributes()
+                    {
+                        color = Color.Orange,
+                        position = new Vector2(512, 600),
+                        depth = .1f,
+                    },
+                    scale = new Vector2(.8f, .8f),
+                    isSeeable = false,
+                };
+
+        }
+
+        public void Start()
+        {
+            _instructionsPage = instructionspage.one;
+            base.TurnOn();
+        }
+
+        public void WriteText()
+        {
+            if (_instructionsPage == instructionspage.one)
+            {
+                _instructions1.isSeeable = true;
+            }
+
+            if (_instructionsPage == instructionspage.two)
+            {
+                _instructions2.isSeeable = true;
             }
 
             if (_instructionsPage == instructionspage.three)
@@ -100,7 +102,8 @@ namespace Testgame
                         position = new Vector2(512, 600),
                         depth = .1f,
                     },
-                    scale = new Vector2(.8f, .8f)
+                    scale = new Vector2(.8f, .8f),
+                    isSeeable = false,
                 };
             }
         }
