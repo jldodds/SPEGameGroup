@@ -356,7 +356,7 @@ namespace Testgame
             MainMenu.Draw(spriteBatch);
             Pause.Draw(spriteBatch);
             PlayAgain.Draw(spriteBatch);
-            //instructions.Draw(spriteBatch);
+            if (instructions != null) instructions.Draw(spriteBatch);
             freeze.Draw(spriteBatch, SpriteEffects.None);
             test.Draw(spriteBatch);
             spriteBatch.End();
