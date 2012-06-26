@@ -10,8 +10,8 @@ namespace Testgame
     public class Button : Text
     {
         private Timer buttonTimer;
-        public bool selected;
-        public bool clicked;
+        bool selected;
+        bool clicked;
         public Button(String stuff, SpriteFont font, Vector2 position, Color color): base(stuff, font)
         {
             
@@ -43,6 +43,7 @@ namespace Testgame
             {
                 buttonTimer.timer[0] = null;
                 attributes.color = Color.Black;
+                clicked = false;
             }
         }
 
@@ -50,6 +51,21 @@ namespace Testgame
         {
             if (buttonTimer != null) buttonTimer.Update(gameTime);
             base.Update(gameTime);
+        }
+
+        public void Select()
+        {
+            selected = true;
+        }
+
+        public void DeSelect()
+        {
+            selected = false;
+        }
+
+        public bool isClicked()
+        {
+            return clicked;
         }
     }
 }

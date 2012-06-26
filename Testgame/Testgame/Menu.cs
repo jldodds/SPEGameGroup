@@ -11,14 +11,13 @@ namespace Testgame
     public class Menu : Screen
     {
         KeyboardState oldState;
-        public Button[] buttons;
-        public int buttonHeight = 75;
+        Button[] buttons;
+        int buttonHeight = 75;
         float maxButtonWidth;
-        public Drawable selector;
         int selected;
         menuState myState;
 
-        public Menu(Drawable background, int numberOfButtons, Text title, String[] buttonNames, Button.ClickHandler[] buttonActions, SpriteFont buttonFont, Texture2D selector)
+        public Menu(Drawable background, int numberOfButtons, Text title, String[] buttonNames, Button.ClickHandler[] buttonActions, SpriteFont buttonFont)
             : base(background)
         {
             buttons = new Button[numberOfButtons];
@@ -42,27 +41,13 @@ namespace Testgame
             }
 
             selected = 0;
-            this.selector = new Drawable()
-            {
-                attributes = new Attributes()
-                {
-                    texture = selector,
-                    position = buttons[selected].attributes.position,
-                    color = Color.Red,
-                    height = buttonHeight * 1.3f + 5,
-                    width = maxButtonWidth * 1.3f + 40,
-                    depth = 0,
-                    
-                }
-            };
-            base.Add(this.selector);
             myState = menuState.Off;
             Timer state = new Timer(1);
             base.Add(state);
             state.SetTimer(0, 1, delegate() { myState = menuState.On; });
         }
 
-        public Menu(Drawable background, int numberOfButtons, Text title, String[] buttonNames, Button.ClickHandler[] buttonActions, SpriteFont buttonFont, Texture2D selector, int buttonHeight)
+        public Menu(Drawable background, int numberOfButtons, Text title, String[] buttonNames, Button.ClickHandler[] buttonActions, SpriteFont buttonFont, int buttonHeight)
             : base(background)
         {
             this.buttonHeight = buttonHeight; 
@@ -87,20 +72,6 @@ namespace Testgame
             }
 
             selected = 0;
-            this.selector = new Drawable()
-            {
-                attributes = new Attributes()
-                {
-                    texture = selector,
-                    position = buttons[selected].attributes.position,
-                    color = Color.Red,
-                    height = buttonHeight * 1.3f + 5,
-                    width = maxButtonWidth * 1.3f + 40,
-                    depth = 0,
-
-                }
-            };
-            base.Add(this.selector);
             myState = menuState.Off;
             Timer state = new Timer(1);
             base.Add(state);
@@ -121,16 +92,16 @@ namespace Testgame
             {
                 if (i == selected)
                 {
-                    buttons[i].selected = true;
-                    if(!buttons[i].clicked) buttons[i].attributes.color = Color.Red;
+                    buttons[i].Select();
+                    if(!buttons[i].isClicked()) buttons[i].attributes.color = Color.Red;
                 }
                 else
                 {
-                    buttons[i].selected = false;
-                    if(!buttons[i].clicked) buttons[i].attributes.color = Color.Black;
+                    buttons[i].DeSelect();
+                    if(!buttons[i].isClicked()) buttons[i].attributes.color = Color.Black;
                 }
             }
-            selector.attributes.position = buttons[selected].attributes.position;
+            
             base.Update(gameTime);
         }
 

@@ -15,6 +15,7 @@ namespace Testgame
         public Drawable()
         {
             attributes = new Attributes();
+            isSeeable = true;
         }
         public virtual void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
@@ -24,20 +25,20 @@ namespace Testgame
         }
 
         public Attributes attributes { get; set; }
-        public Tweener tweenerX;
-        public Tweener tweenerY;
+        Tweener tweenerX;
+        Tweener tweenerY;
         Tweener tweenerRotate;
         Tweener tweenerColorR;
         Tweener tweenerColorG;
         Tweener tweenerColorB;
-        public Tweener tweenerA;
+        Tweener tweenerA;
         public Tweener tweenerScaleX;
         Tweener tweenerScaleY;
-        public bool isMoving;
+        public bool isMoving { get; set; }
         public Tweener tweenerDepth;
-        public bool isSeeable = true;
-        public ParticleEngine particleEngine;
-        public List<Texture2D> textures;
+        public bool isSeeable { get; set; }
+        ParticleEngine particleEngine;
+        List<Texture2D> textures;
 
 
 
@@ -77,6 +78,7 @@ namespace Testgame
         {
             
             ChangeColor(Actions.LinearMove, Color.Transparent, d);
+            tweenerA.Ended += delegate() { isSeeable = false; };
         }
 
         public void Rotate(MoveDel action, float endRotation, float d)
@@ -149,6 +151,16 @@ namespace Testgame
                 tweenerDepth.Update(gameTime);
                 attributes.depth = tweenerDepth.Position;
             }
+        }
+
+        public void WhenDoneMoving(Tweener.EndHandler process)
+        {
+            tweenerX.Ended += process;
+        }
+
+        public void WhenDoneFading(Tweener.EndHandler process)
+        {
+            tweenerA.Ended += process;
         }
     }
 }
