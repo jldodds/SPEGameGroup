@@ -145,11 +145,11 @@ namespace Testgame
                 },
                 scale = new Vector2(.1f,.1f)
             };
-            cards[51].tweenerX.Ended += delegate()
+            cards[51].WhenDoneMoving( delegate()
             {
                 base.Add(begin);
                 speedState = gameState.AskBegin;
-            };
+            });
            
         }
 
@@ -169,27 +169,27 @@ namespace Testgame
             Text three = new Text("3", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
             base.Add(three);
             three.Fade(1);
-            three.tweenerA.Ended += delegate() { three.isSeeable = false; };
+           
             stopwatch.SetTimer(0, 1, delegate()
             {
                 Text two = new Text("2", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
                 base.Add(two);
                 two.Fade(1);
-                two.tweenerA.Ended += delegate() { two.isSeeable = false; };
+                
             });
             stopwatch.SetTimer(1, 2, delegate()
             {
                 Text one = new Text("1", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
                 base.Add(one);
                 one.Fade(1);
-                one.tweenerA.Ended += delegate() { one.isSeeable = false; };
+                
             });
             stopwatch.SetTimer(2, 3, delegate()
             {
                 Text title = new Text("SPEED!", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
                 base.Add(title);
                 title.Fade(.5f);
-                title.tweenerA.Ended += delegate() { title.isSeeable = false; BeginGame(); };
+                title.WhenDoneFading(new Tweener.EndHandler(BeginGame));
             });
         }
 
@@ -200,7 +200,7 @@ namespace Testgame
             Card temp = drawPile.Take();
             temp.Flip(true, delay);
             temp.toPile(destinationPile, delay);
-            temp.tweenerX.Ended += delegate() { destinationPile.drawnTo = false; };
+            temp.WhenDoneMoving(delegate() { destinationPile.drawnTo = false; });
         }
 
         public override void Update(GameTime gameTime)
@@ -438,7 +438,7 @@ namespace Testgame
 
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
-                m.tweenerX.Ended += delegate()
+                m.WhenDoneMoving( delegate()
                 {
                     speedState = gameState.GamePlay;
                     if (yourStack.stack.Count != 0)
@@ -447,7 +447,7 @@ namespace Testgame
                             DrawCard(yourStack, fromPile, 0f);
                     }
                     Shake();
-                };
+                });
             }
             else
             {
@@ -468,7 +468,7 @@ namespace Testgame
             {
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
-                m.tweenerX.Ended += delegate()
+                m.WhenDoneMoving( delegate()
                 {
                     speedState = gameState.GamePlay;
                     if (opponentStack.stack.Count != 0)
@@ -477,7 +477,7 @@ namespace Testgame
                             DrawCard(opponentStack, fromPile, .3f);
                     }
                     Shake();
-                };
+                });
 
             }
             else
@@ -549,7 +549,7 @@ namespace Testgame
                 scale = new Vector2(.5f,.5f)};
                 base.Add(nomove);
                 nomove.Move(Actions.LinearMove, nomove.attributes.position, 1);
-                nomove.tweenerX.Ended += delegate() { nomove.isSeeable = false; };
+                nomove.WhenDoneMoving( delegate() { nomove.isSeeable = false; });
             });
 
             if (lSpitStack.stack.Count != 0)
@@ -562,28 +562,28 @@ namespace Testgame
                     Text two = new Text("2", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
                     base.Add(two);
                     two.Fade(1);
-                    two.tweenerA.Ended += delegate() { two.isSeeable = false; };
+                    
                 });
                 stopwatch.SetTimer(1, 4, delegate()
                 {
                     Text one = new Text("1", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
                     base.Add(one);
                     one.Fade(1);
-                    one.tweenerA.Ended += delegate() { one.isSeeable = false; };
+                    
                 });
                 stopwatch.SetTimer(2, 5, delegate()
                 {
                     Text title = new Text("SPEED!", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
                     base.Add(title);
                     title.Fade(.5f);
-                    title.tweenerA.Ended += delegate() { title.isSeeable = false; BeginGame(); };
+                    title.WhenDoneFading(new Tweener.EndHandler(BeginGame));
                 });
                 stopwatch.SetTimer(3,2, delegate()
                 {
                     Text three = new Text("3", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
                 base.Add(three);
                 three.Fade(1);
-                three.tweenerA.Ended += delegate() { three.isSeeable = false; };
+                
                 });
             }
 
@@ -655,12 +655,12 @@ namespace Testgame
             oppSelector.Fade(2);
             yourSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
             yourSelector.Fade(2);
-            yourSelector.tweenerX.Ended += delegate()
+            yourSelector.WhenDoneMoving( delegate()
             {
                 base.Add(winner);
                 base.Add(loser);
                 
-            };
+            });
             yourSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
             Timer endGame = new Timer(2);
             base.Add(endGame);
@@ -696,11 +696,11 @@ namespace Testgame
             yourSelector.Fade(2);
             oppSelector.Fade(2);
             oppSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
-            oppSelector.tweenerX.Ended += delegate()
+            oppSelector.WhenDoneMoving( delegate()
             {
                 base.Add(winner);
                 base.Add(loser);
-            };
+            });
             oppSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
             Timer endGame = new Timer(2);
             base.Add(endGame);
@@ -751,12 +751,12 @@ namespace Testgame
             yourSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
             oppSelector.Fade(2);
             oppSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
-            oppSelector.tweenerX.Ended += delegate()
+            oppSelector.WhenDoneMoving( delegate()
             {
                 base.Add(tieTop);
                 base.Add(tieMiddle);
                 base.Add(tieBottom);
-            };
+            });
             oppSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
             Timer endGame = new Timer(2);
             base.Add(endGame);

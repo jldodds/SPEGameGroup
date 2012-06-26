@@ -24,9 +24,9 @@ namespace Testgame
         Texture2D selector;
         Speed speed;
         KeyboardState oldState;
-        public Menu MainMenu;
-        public Menu PlayAgain;
-        public Menu Pause;
+        Menu MainMenu;
+        Menu PlayAgain;
+        Menu Pause;
         Drawable freeze;
         List<Texture2D> textures;
         ParticleEngine test;
@@ -177,9 +177,8 @@ namespace Testgame
             };
             mainMenuAction[2] = delegate() { Console.WriteLine("Settings"); };
             mainMenuAction[3] = delegate() { this.Exit(); };
-            MainMenu = new Menu(background, 4, title, mainMenuString, mainMenuAction, font, selector);
+            MainMenu = new Menu(background, 4, title, mainMenuString, mainMenuAction, font);
             MainMenu.TurnOn();
-            MainMenu.selector.attributes.color = Color.Transparent;
             soeffect.Play();
             #endregion
 
@@ -212,8 +211,7 @@ namespace Testgame
                     rotation = 0
                 }
             };
-            PlayAgain = new Menu(playAgainBackground, 2, playAgain, PAButtonNames, playAgainAction, font, selector, 150);
-            PlayAgain.selector.attributes.color = Color.Transparent;
+            PlayAgain = new Menu(playAgainBackground, 2, playAgain, PAButtonNames, playAgainAction, font, 150);
             #endregion
 
             #region PauseMenu
@@ -236,8 +234,8 @@ namespace Testgame
             }};
             pauseActions[1] = delegate() { Console.WriteLine("Instructions"); };
             pauseActions[2] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; if (speed != null) speed.isHalted = false; speed.isPaused = true; };
-            Pause = new Menu(playAgainBackground, 3, pause, pauseNames, pauseActions, font, selector);
-            Pause.selector.attributes.color = Color.Transparent;
+            Pause = new Menu(playAgainBackground, 3, pause, pauseNames, pauseActions, font);
+
             #endregion
 
             freeze = new Drawable()
