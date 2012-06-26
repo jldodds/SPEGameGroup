@@ -12,6 +12,8 @@ namespace Testgame
         Timer buttonTimer;
         bool selected;
         bool clicked;
+        
+        // gives buttons colors, position, makes buttontimer
         public Button(String stuff, SpriteFont font, Vector2 position, Color color): base(stuff, font)
         {
             
@@ -20,6 +22,7 @@ namespace Testgame
             buttonTimer = new Timer(1);
         }
 
+        // draws buttons if they should be drawn, then makes selected buttons larger than normal
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             if (!isSeeable) return;
@@ -27,16 +30,19 @@ namespace Testgame
             else base.Draw(spriteBatch, spriteEffects);
         }
 
+        // delegate and event for cases where buttons are selected
         public delegate void ClickHandler();
         public event ClickHandler Clicked;
 
+        // performs button actions .5 seconds after it's clicked, then uses delegates to make events occur
         public void Click()
         {
             clicked = true;
             attributes.color = Color.Orange;
-            buttonTimer.SetTimer(0, .9f, delegate() { Clicked(); clicked = false; });
+            buttonTimer.SetTimer(0, .5f, delegate() { Clicked(); clicked = false; });
         }
 
+        // 
         public void Remove()
         {
             buttonTimer.RemoveTimers();
@@ -45,27 +51,32 @@ namespace Testgame
             
         }
 
+        // update method
         public override void Update(GameTime gameTime)
         {
             if (buttonTimer != null) buttonTimer.Update(gameTime);
             base.Update(gameTime);
         }
 
+        // changes boolean about selection to true
         public void Select()
         {
             selected = true;
         }
 
+        // changes boolean about selection to false
         public void DeSelect()
         {
             selected = false;
         }
 
+        // returns wheter or not button is clicked
         public bool isClicked()
         {
             return clicked;
         }
 
+        //
         public void WhenButtonClicked(ClickHandler process)
         {
             Clicked += process;
