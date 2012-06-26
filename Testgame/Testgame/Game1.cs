@@ -247,6 +247,7 @@ namespace Testgame
                 {
                     color = Color.Black,
                     rotation = -.1f,
+                    depth = 0f,
                 },
             };
             String[] pauseNames = new String[3];
