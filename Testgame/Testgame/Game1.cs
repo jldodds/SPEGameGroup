@@ -321,7 +321,7 @@ namespace Testgame
                 speed.Update(gameTime);
                 if (speed.speedState == Speed.gameState.PlayAgain)
                 {
-                    PlayAgain.isPaused = false;
+                    if (PlayAgain.isPaused) PlayAgain.isPaused = false;
                     speed.isHalted = true;
                 }
             }
