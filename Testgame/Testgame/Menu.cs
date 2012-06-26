@@ -12,14 +12,35 @@ namespace Testgame
     {
         KeyboardState oldState;
         Button[] buttons;
-        int buttonHeight = 75;
+        int buttonHeight;
         float maxButtonWidth;
         int selected;
         menuState myState;
+        private bool _isPaused;
+        public override bool isPaused
+        {
+            get
+            {
+                return _isPaused;
+            }
+            set
+            {
+                _isPaused = value;
+                if (!value)
+                {
+                    myState = menuState.Off;
+                    Timer state = new Timer(1);
+                    base.Add(state);
+                    state.SetTimer(0, .5f, delegate() { myState = menuState.On; });  
+                }
+                if (value) myState = menuState.Off;
+            }
+        }
 
         public Menu(Drawable background, int numberOfButtons, Text title, String[] buttonNames, Button.ClickHandler[] buttonActions, SpriteFont buttonFont)
             : base(background)
         {
+            buttonHeight = 75;
             buttons = new Button[numberOfButtons];
             base.Add(title);
             title.attributes.position = new Vector2(512, title.height / 2 + 40);
@@ -44,7 +65,7 @@ namespace Testgame
             myState = menuState.Off;
             Timer state = new Timer(1);
             base.Add(state);
-            state.SetTimer(0, 1, delegate() { myState = menuState.On; });
+            state.SetTimer(0, .5f, delegate() { myState = menuState.On; });
         }
 
         public Menu(Drawable background, int numberOfButtons, Text title, String[] buttonNames, Button.ClickHandler[] buttonActions, SpriteFont buttonFont, int buttonHeight)
@@ -81,6 +102,7 @@ namespace Testgame
         public enum menuState
         {
             On,
+            Clicking,
             Off
         }
 
@@ -109,6 +131,7 @@ namespace Testgame
         {
             KeyboardState newState = Keyboard.GetState();
             if (myState == menuState.Off) return;
+            if (myState == menuState.Clicking) return;
             if (newState.IsKeyDown(Keys.Up))
             {
                 if (!oldState.IsKeyDown(Keys.Up))
@@ -131,6 +154,8 @@ namespace Testgame
             {
                 if (!oldState.IsKeyDown(Keys.Enter))
                 {
+                    myState = menuState.Clicking;
+                    buttons[selected].WhenButtonClicked(delegate() { myState = menuState.On; });
                     buttons[selected].Click();
                 }
             }

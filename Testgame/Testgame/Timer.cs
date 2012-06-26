@@ -10,7 +10,7 @@ namespace Testgame
 {
     class Timer : Drawable
     {
-        public Tweener[] timer;
+        Tweener[] timer;
         
         public Timer(int x)
         {
@@ -33,6 +33,14 @@ namespace Testgame
             for (int i = 0; i < timer.Length; i++)
             {
                 if(timer[i] != null) timer[i].Update(gameTime);
+            }
+        }
+
+        public void RemoveTimers()
+        {
+            for (int i = 0; i < timer.Length; i++)
+            {
+                timer[i] = null;
             }
         }
     }

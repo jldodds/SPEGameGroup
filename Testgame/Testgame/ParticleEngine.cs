@@ -13,7 +13,7 @@ namespace Testgame
         public Vector2 emitterLocation { get; set; }
         private List<Particle> particles;
         private List<Texture2D> textures;
-        public float depth;
+        public float depth { get; set; }
 
         public ParticleEngine(List<Texture2D> Textures, Vector2 position, float Depth)
         {
@@ -55,7 +55,7 @@ namespace Testgame
             for (int particle = 0; particle < particles.Count; particle++)
             {
                 particles[particle].Update(gameTime);
-                if (particles[particle].timeToLive <= 0)
+                if (particles[particle].isDead())
                 {
                     particles.RemoveAt(particle);
                     particle--;

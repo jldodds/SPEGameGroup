@@ -9,7 +9,7 @@ namespace Testgame
 {
     public class Button : Text
     {
-        private Timer buttonTimer;
+        Timer buttonTimer;
         bool selected;
         bool clicked;
         public Button(String stuff, SpriteFont font, Vector2 position, Color color): base(stuff, font)
@@ -39,12 +39,10 @@ namespace Testgame
 
         public void Remove()
         {
-            if (buttonTimer.timer[0] != null)
-            {
-                buttonTimer.timer[0] = null;
-                attributes.color = Color.Black;
-                clicked = false;
-            }
+            buttonTimer.RemoveTimers();
+            attributes.color = Color.Black;
+            clicked = false;
+            
         }
 
         public override void Update(GameTime gameTime)
@@ -66,6 +64,11 @@ namespace Testgame
         public bool isClicked()
         {
             return clicked;
+        }
+
+        public void WhenButtonClicked(ClickHandler process)
+        {
+            Clicked += process;
         }
     }
 }

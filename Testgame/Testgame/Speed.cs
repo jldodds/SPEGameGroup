@@ -11,30 +11,33 @@ namespace Testgame
 {
     class Speed : Screen
     {
-        public static Pile yourStack;
-        public static Pile opponentStack;
-        public static Pile lSpitStack;
-        public static Pile rSpitStack;
-        public static Pile lGameStack;
-        public static Pile rGameStack;
-        public static Card[] cards;
-        public Pile[] yourCards = new Pile[5];
-        public Pile[] opponentCards = new Pile[5];
+        Pile yourStack;
+        Pile opponentStack;
+        Pile lSpitStack;
+        Pile rSpitStack;
+        Pile lGameStack;
+        Pile rGameStack;
+        Card[] cards;
+        Pile[] yourCards;
+        Pile[] opponentCards;
         KeyboardState oldState;
-        public gameState speedState;
+        public gameState speedState { get; set; }
         int oppSelectedPile;
         Drawable oppSelector;
         int yourSelectedPile;
         Drawable yourSelector;
-        public bool playAgain = false;
+
         SpriteFont _font;
-        public bool isHalted = false;
-        public bool isShaking = false;
+        public bool isHalted { get; set; }
+        public bool isShaking { get; set; }
         YouPenaltyState youPenalty;
         OppPenaltyState oppPenalty;
 
         public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font):base(background)
         {
+            isHalted = false;
+            isShaking = false;
+            
             cards = deck;
             for (int i = 0; i < cards.Length; i++)
             {
@@ -47,6 +50,8 @@ namespace Testgame
             rSpitStack = new Pile(new Vector2(807, 400));
             lGameStack = new Pile(new Vector2(413, 400));
             rGameStack = new Pile(new Vector2(610, 400));
+            yourCards = new Pile[5];
+            opponentCards = new Pile[5];
 
             for (int i = 0; i < yourCards.Length; i++)
             {
@@ -424,15 +429,15 @@ namespace Testgame
 
         public void PlayYourCard(Pile fromPile, Pile destinationPile)
         {
-            if (fromPile.stack.Count == 0)
+            if (fromPile.Count() == 0)
             {
                 return;
             }
             if (fromPile.drawnTo) return;
             speedState = gameState.PlayingCard;
-            Card c = fromPile.stack.Peek();
+            Card c = fromPile.Peek();
             int cv = c.cardValue;
-            int value = destinationPile.stack.Peek().cardValue;
+            int value = destinationPile.Peek().cardValue;
             if ((cv == 0 && value == 12) || (cv == 12 && value == 0) || (cv == value + 1 || cv == value - 1))
             {
 
@@ -441,9 +446,9 @@ namespace Testgame
                 m.WhenDoneMoving( delegate()
                 {
                     speedState = gameState.GamePlay;
-                    if (yourStack.stack.Count != 0)
+                    if (yourStack.Count() != 0)
                     {
-                        if (fromPile.stack.Count == 0)
+                        if (fromPile.Count() == 0)
                             DrawCard(yourStack, fromPile, 0f);
                     }
                     Shake();
@@ -458,12 +463,12 @@ namespace Testgame
 
         public void PlayOppCard(Pile fromPile, Pile destinationPile)
         {
-            if(fromPile.stack.Count == 0) return;
+            if(fromPile.Count() == 0) return;
             if (fromPile.drawnTo) return;
             speedState = gameState.PlayingCard;
-            Card c = fromPile.stack.Peek();
+            Card c = fromPile.Peek();
             int cv = c.cardValue;
-            int value = destinationPile.stack.Peek().cardValue;
+            int value = destinationPile.Peek().cardValue;
             if ((cv == 0 && value == 12) || (cv == 12 && value == 0) || (cv == value + 1 || cv == value - 1))
             {
                 Card m = fromPile.Take();
@@ -471,9 +476,9 @@ namespace Testgame
                 m.WhenDoneMoving( delegate()
                 {
                     speedState = gameState.GamePlay;
-                    if (opponentStack.stack.Count != 0)
+                    if (opponentStack.Count() != 0)
                     {
-                        if (fromPile.stack.Count == 0)
+                        if (fromPile.Count() == 0)
                             DrawCard(opponentStack, fromPile, .3f);
                     }
                     Shake();
@@ -490,7 +495,7 @@ namespace Testgame
         public void YouPenalty()
         {
             youPenalty = YouPenaltyState.YouScrewedUp;
-            Card c = yourCards[yourSelectedPile].stack.Peek();
+            Card c = yourCards[yourSelectedPile].Peek();
             c.attributes.color = Color.Red;
             Timer timer = new Timer(1);
             base.Add(timer);
@@ -500,7 +505,7 @@ namespace Testgame
         public void OppPenalty()
         {
             oppPenalty = OppPenaltyState.OppScrewedUp;
-            Card c = opponentCards[oppSelectedPile].stack.Peek();
+            Card c = opponentCards[oppSelectedPile].Peek();
             c.attributes.color = Color.Red;
             Timer timer = new Timer(1);
             base.Add(timer);
@@ -512,11 +517,11 @@ namespace Testgame
             bool oppMoves = false;
             for (int i = 0; i < opponentCards.Length; i++)
             {
-                if (opponentCards[i].stack.Count != 0)
+                if (opponentCards[i].Count() != 0)
                 {
-                    int cv = opponentCards[i].stack.Peek().cardValue;
-                    int value1 = lGameStack.stack.Peek().cardValue;
-                    int value2 = rGameStack.stack.Peek().cardValue;
+                    int cv = opponentCards[i].Peek().cardValue;
+                    int value1 = lGameStack.Peek().cardValue;
+                    int value2 = rGameStack.Peek().cardValue;
                     if ((cv == 0 && value1 == 12) || (cv == 12 && value1 == 0) || (cv == value1 + 1 || cv == value1 - 1)) oppMoves = true;
                     if ((cv == 0 && value2 == 12) || (cv == 12 && value2 == 0) || (cv == value2 + 1 || cv == value2 - 1)) oppMoves = true;
                 }
@@ -525,11 +530,11 @@ namespace Testgame
             bool yourMoves = false;
             for (int i = 0; i < yourCards.Length; i++)
             {
-                if (yourCards[i].stack.Count != 0)
+                if (yourCards[i].Count() != 0)
                 {
-                    int cv = yourCards[i].stack.Peek().cardValue;
-                    int value1 = lGameStack.stack.Peek().cardValue;
-                    int value2 = rGameStack.stack.Peek().cardValue;
+                    int cv = yourCards[i].Peek().cardValue;
+                    int value1 = lGameStack.Peek().cardValue;
+                    int value2 = rGameStack.Peek().cardValue;
                     if ((cv == 0 && value1 == 12) || (cv == 12 && value1 == 0) || (cv == value1 + 1 || cv == value1 - 1)) yourMoves = true;
                     if ((cv == 0 && value2 == 12) || (cv == 12 && value2 == 0) || (cv == value2 + 1 || cv == value2 - 1)) yourMoves = true;
                 }
@@ -552,7 +557,7 @@ namespace Testgame
                 nomove.WhenDoneMoving( delegate() { nomove.isSeeable = false; });
             });
 
-            if (lSpitStack.stack.Count != 0)
+            if (lSpitStack.Count() != 0)
             {
                 Timer stopwatch = new Timer(5);
                 base.Add(stopwatch);
@@ -593,11 +598,11 @@ namespace Testgame
                 int oppCount = 0;
                 for (int i = 0; i < yourCards.Length; i++)
                 {
-                    yourCount += yourCards[i].stack.Count;
-                    oppCount += opponentCards[i].stack.Count;
+                    yourCount += yourCards[i].Count();
+                    oppCount += opponentCards[i].Count();
                 }
-                yourCount += yourStack.stack.Count;
-                oppCount += opponentStack.stack.Count;
+                yourCount += yourStack.Count();
+                oppCount += opponentStack.Count();
                 if (oppCount > yourCount) YourAWinner();
                 else if (yourCount > oppCount) OppAWinner();
                 else if (yourCount == oppCount) Tie();
@@ -609,9 +614,9 @@ namespace Testgame
             bool winner = true;
             for (int i = 0; i < yourCards.Length; i++)
             {
-                if (yourCards[i].stack.Count != 0) winner = false;
+                if (yourCards[i].Count() != 0) winner = false;
             }
-            if (yourStack.stack.Count != 0) winner = false;
+            if (yourStack.Count() != 0) winner = false;
             return winner;
         }
 
@@ -620,9 +625,9 @@ namespace Testgame
             bool winner = true;
             for (int i = 0; i < opponentCards.Length; i++)
             {
-                if (opponentCards[i].stack.Count != 0) winner = false;
+                if (opponentCards[i].Count() != 0) winner = false;
             }
-            if (opponentStack.stack.Count != 0) winner = false;
+            if (opponentStack.Count() != 0) winner = false;
             return winner;
         }
 
