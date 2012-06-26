@@ -16,6 +16,7 @@ namespace Testgame
         SpriteFont _font;
         KeyboardState oldState;
         public instructionspage _instructionsPage;
+        bool instructionsOn;
 
         public enum instructionspage
         {
@@ -41,13 +42,13 @@ namespace Testgame
                     {
                         color = Color.Orange,
                         position = new Vector2(512, 600),
-                        depth = 0f,
+                        depth = .11f,
                     },
                 };
                 base.Add(background);
             }
 
-
+            instructionsOn = false;
 
         }
 
@@ -55,6 +56,7 @@ namespace Testgame
         {
             _instructionsPage = instructionspage.one;
             base.TurnOn();
+            instructionsOn = true;
         }
 
         public void WriteText()

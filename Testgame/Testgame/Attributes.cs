@@ -9,6 +9,8 @@ namespace Testgame
 {
     public class Attributes
     {
+       //getters and setters for attributes of drawables
+        
        public Color color{ get; set;}
        public Vector2 position { get; set; }
        public Vector2 scale { get; set; }
@@ -36,6 +38,7 @@ namespace Testgame
         public float rotation { get; set; }
        public Vector2 origin
        {
+           //centers the origin
            get
            {
                return new Vector2(texture.Width / 2, texture.Height / 2);
@@ -45,6 +48,8 @@ namespace Testgame
 
        public Attributes()
        {
+           //makes scalings "true" scalings
+           //default scale is just image size
            scale = new Vector2(1, 1);
        }
     }
