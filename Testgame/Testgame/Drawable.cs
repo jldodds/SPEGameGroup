@@ -21,10 +21,11 @@ namespace Testgame
         {
             if (!isSeeable) return;
             spriteBatch.Draw(attributes.texture, attributes.position, null, attributes.color, attributes.rotation, attributes.origin, attributes.scale, spriteEffects, attributes.depth);
-            if (particleEngine != null) particleEngine.Draw(spriteBatch);
+            //if (particleEngine != null) particleEngine.Draw(spriteBatch);
         }
 
         public Attributes attributes { get; set; }
+        
         Tweener tweenerX;
         Tweener tweenerY;
         Tweener tweenerRotate;
@@ -32,13 +33,15 @@ namespace Testgame
         Tweener tweenerColorG;
         Tweener tweenerColorB;
         Tweener tweenerA;
-        public Tweener tweenerScaleX;
+        protected Tweener tweenerScaleX;
         Tweener tweenerScaleY;
+        protected Tweener tweenerDepth;
+
         public bool isMoving { get; set; }
-        public Tweener tweenerDepth;
         public bool isSeeable { get; set; }
-        ParticleEngine particleEngine;
-        List<Texture2D> textures;
+        
+        //ParticleEngine particleEngine;
+        //List<Texture2D> textures;
 
 
 

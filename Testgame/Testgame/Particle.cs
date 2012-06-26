@@ -9,15 +9,15 @@ namespace Testgame
 {
     public class Particle
     {
-        public Texture2D texture;
-        public Vector2 position;
-        public Vector2 velocity;
-        public float angle;
-        public float angularVelocity;
-        public Color color;
-        public float size;
-        public float timeToLive;
-        public float depth;
+        Texture2D texture;
+        Vector2 position;
+        Vector2 velocity;
+        float angle;
+        float angularVelocity;
+        Color color;
+        float size;
+        float timeToLive;
+        float depth;
 
         public Particle(Texture2D Texture, Vector2 Position, Vector2 Velocity, float Angle, float AngularVelocity, Color Color, float Size, float TimeToLive, float Depth)
         {
@@ -48,5 +48,9 @@ namespace Testgame
 
         }
 
+        public bool isDead()
+        {
+            return timeToLive <= 0;
+        }
     }
 }

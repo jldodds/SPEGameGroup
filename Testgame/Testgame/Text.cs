@@ -10,10 +10,11 @@ namespace Testgame
 {
     public class Text : Drawable
     {
-        public String content;   // words of the text
-        public SpriteFont _font; // text's font
-       
-        public Vector2 scale;
+        protected readonly String content;   // words of the text
+        protected readonly SpriteFont _font; // text's font
+
+        public Vector2 scale { get; set; }
+
         public float height
         {
             // gets scaled version of text's height

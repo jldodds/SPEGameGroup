@@ -30,13 +30,14 @@ namespace Testgame
 
         public readonly Node first;
         private Node last;
-        public bool isPaused = true;
+        public virtual bool isPaused { get; set; }
         
 
         public Screen(Drawable background)
         {
             first = new Node() { drawable = background };
             last = first;
+            isPaused = true;
         }
 
         public void Add(Drawable d)

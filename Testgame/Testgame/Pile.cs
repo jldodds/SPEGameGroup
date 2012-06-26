@@ -10,9 +10,9 @@ namespace Testgame
 {
     class Pile
     {
-        public Stack<Card> stack;
-        public Vector2 position;
-        public bool drawnTo;
+        Stack<Card> stack;
+        public readonly Vector2 position;
+        public bool drawnTo { get; set; }
 
 
         public Pile(Vector2 p)
@@ -32,6 +32,16 @@ namespace Testgame
         {
             Card c = stack.Pop();
             return c;
+        }
+
+        public int Count()
+        {
+            return stack.Count;
+        }
+
+        public Card Peek()
+        {
+            return stack.Peek();
         }
     }
 }
