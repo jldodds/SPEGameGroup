@@ -31,11 +31,30 @@ namespace Testgame
         {
             _font = font;
             _instructionsPage = instructionspage.none;
+
+
+            if (_instructionsPage == instructionspage.one)
+            {
+                _instructions1 = new Text("Ok this is a test.", _font)
+                {
+                    attributes = new Attributes()
+                    {
+                        color = Color.Orange,
+                        position = new Vector2(512, 600),
+                        depth = 0f,
+                    },
+                };
+                base.Add(background);
+            }
+
+
+
         }
 
         public void Start()
         {
             _instructionsPage = instructionspage.one;
+            base.TurnOn();
         }
 
         public void WriteText()
