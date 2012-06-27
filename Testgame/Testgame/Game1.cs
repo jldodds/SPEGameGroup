@@ -35,6 +35,8 @@ namespace Testgame
         SoundEffect soeffect;
         SoundEffectInstance instance;
         float aspectRatio;
+        Player player1;
+        Player player2;
 
         public Game1()
         {
@@ -85,6 +87,8 @@ namespace Testgame
                 }
             };
 
+            player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Player 1", true);
+            player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Player 2", false);
             // TODO: use this.Content to load your game content here
 
             // loads up cards & assigns values
@@ -179,7 +183,7 @@ namespace Testgame
             // if "play game" is chosen from main menu, starts the game
             mainMenuAction[0] = delegate() 
             {
-                speed = new Speed(cards, background, selector, font); speed.TurnOn(); MainMenu.isPaused = true; 
+                speed = new Speed(cards, background, selector, font, player1, player2); speed.TurnOn(); MainMenu.isPaused = true; 
             };
             
             // if "instructions" chosen, displays instructions
@@ -220,7 +224,7 @@ namespace Testgame
             
             // starts new game or goes to main menu depending on choice
             Button.ClickHandler[] playAgainAction = new Button.ClickHandler[2];
-            playAgainAction[0] = delegate() { speed = new Speed(cards, background, selector, font); speed.TurnOn(); PlayAgain.isPaused = true; };
+            playAgainAction[0] = delegate() { speed = new Speed(cards, background, selector, font, player1, player2); speed.TurnOn(); PlayAgain.isPaused = true; };
             playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
             
             // makes transparent background
