@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Testgame
 {
-    class HumanPlayer:Player
+    class HumanPlayer : Player
     {
         Keys toLeftPile;
         Keys toRightPile;
@@ -14,7 +15,8 @@ namespace Testgame
         Keys scrollRight;
         KeyboardState oldstate;
 
-        public HumanPlayer(Keys _toLeftPile, Keys _toRightPile, Keys _scrollLeft, Keys _scrollRight, string name, bool isPlayer1):base(name, isPlayer1)
+        // initializes keys
+        public HumanPlayer(Keys _toLeftPile, Keys _toRightPile, Keys _scrollLeft, Keys _scrollRight, string name, bool isPlayer1) : base(name, isPlayer1)
         {
             toLeftPile = _toLeftPile;
             toRightPile = _toRightPile;
@@ -22,16 +24,20 @@ namespace Testgame
             scrollRight = _scrollRight;
         }
 
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        // update method
+        public override void Update(GameTime gameTime)
         {
             KeyUpdate();
             base.Update(gameTime);
         }
 
+        //update keys
         public void KeyUpdate()
         {
+            // keeps track of what key currently being pressed
             KeyboardState newstate = Keyboard.GetState();
 
+            // move selector to left pile if left if corresp. key pressed
             if (newstate.IsKeyDown(toLeftPile))
             {
                 if (!oldstate.IsKeyDown(toLeftPile))
@@ -40,6 +46,7 @@ namespace Testgame
                 }
             }
 
+            // move selector to right pile if left if corresp. key pressed
             if (newstate.IsKeyDown(toRightPile))
             {
                 if (!oldstate.IsKeyDown(toRightPile))
@@ -48,6 +55,7 @@ namespace Testgame
                 }
             }
 
+            // move selector left if left if corresp. key pressed
             if (newstate.IsKeyDown(scrollLeft))
             {
                 if (!oldstate.IsKeyDown(scrollLeft))
@@ -56,6 +64,7 @@ namespace Testgame
                 }
             }
 
+            // move selector right if left if corresp. key pressed
             if (newstate.IsKeyDown(scrollRight))
             {
                 if (!oldstate.IsKeyDown(scrollRight))
@@ -64,6 +73,7 @@ namespace Testgame
                 }
             }
 
+            // updates old keyboard state
             oldstate = newstate;
         }
 
