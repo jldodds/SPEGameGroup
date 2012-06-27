@@ -35,6 +35,7 @@ namespace Testgame
         Text oppScore;
         Random random;
 
+        // initializes lots of variables
         public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top):base(background)
         {
             random = new Random();
@@ -50,8 +51,7 @@ namespace Testgame
             opp.SelectedCardRight += delegate() { PlayCard(opp, opp.selector, rGameStack); };
             you.score = 0;
             opp.score = 0;
-            
-            
+
             cards = deck;
             for (int i = 0; i < cards.Length; i++)
             {
@@ -139,10 +139,9 @@ namespace Testgame
 
             base.Add(oppSelector);
             base.Add(yourSelector);
-
-            
         }
 
+        // different gamestates
         public enum gameState
         {
             Dealing,
@@ -155,6 +154,7 @@ namespace Testgame
             PlayAgain,
         }
 
+        // deals cards to their piles, says to press enter to start
         public void Deal()
         {
             speedState = gameState.Dealing;
@@ -182,9 +182,9 @@ namespace Testgame
                 base.Add(begin);
                 speedState = gameState.AskBegin;
             });
-           
         }
 
+        // displays a countdown while cards are dealt to respective hands and game stacks are formed
         public void Begin()
         {
             base.RemoveLast();
@@ -224,6 +224,7 @@ namespace Testgame
             });
         }
 
+        // draws card to different piles
         public void DrawCard(Pile drawPile, Pile destinationPile, float delay)
         {
             if (destinationPile.drawnTo) return;
@@ -234,6 +235,7 @@ namespace Testgame
             temp.WhenDoneMoving(delegate() { destinationPile.drawnTo = false; });
         }
 
+        // update method based on different gamestates
         public override void Update(GameTime gameTime)
         {
             if (base.isPaused) return;
@@ -269,11 +271,11 @@ namespace Testgame
                 case gameState.PlayAgain:
                     break;
             }
-
             KeyUpdate(gameTime);
             base.Update(gameTime);
         }
 
+        // updates keys, if enter is pressed while game is about to start, starts it
         protected void KeyUpdate(GameTime gameTime)
         {
             KeyboardState newState = Keyboard.GetState();
@@ -287,32 +289,36 @@ namespace Testgame
                     }
                 }
             }
-
             oldState = newState;
         }
 
+        // resumes the game
         public override void Resume()
         {
             isHalted = false;
             base.Resume();
         }
 
+        // turns game on
         public override void TurnOn()
         {
             Deal();
             base.TurnOn();
         }
 
+        // halts game
         public void Halt()
         {
             isHalted = true;
         }
 
+        // do nothing
         public void DoNothing()
         {
             return;
         }
 
+        // starts the game
         public void BeginGame()
         {
             Timer timer = new Timer(1);
@@ -324,6 +330,7 @@ namespace Testgame
             opp.TurnOn();
         }
 
+        // plays cards from selected piles to destination piles
         public void PlayCard(Player player, int selectedPile, Pile destinationPile)
         {
             if (speedState != gameState.GamePlay) return;
@@ -385,6 +392,7 @@ namespace Testgame
             }
         }
         
+        // determines if moves are still possible, returns boolean
         public bool ExistMoves()
         {
             bool oppMoves = false;
@@ -399,7 +407,6 @@ namespace Testgame
                     if ((cv == 0 && value2 == 12) || (cv == 12 && value2 == 0) || (cv == value2 + 1 || cv == value2 - 1)) oppMoves = true;
                 }
             }
-
             bool yourMoves = false;
             for (int i = 0; i < yourCards.Length; i++)
             {
@@ -412,10 +419,10 @@ namespace Testgame
                     if ((cv == 0 && value2 == 12) || (cv == 12 && value2 == 0) || (cv == value2 + 1 || cv == value2 - 1)) yourMoves = true;
                 }
             }
-
             return yourMoves || oppMoves;
         }
 
+        // adds cards to game stacks if no cards are playable
         public void ReBegin()
         {
             speedState = gameState.ReBeginning;
@@ -423,13 +430,15 @@ namespace Testgame
             base.Add(watch);
             watch.SetTimer(0, 1, delegate()
             {
-                Text nomove = new Text("No Moves", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) },
-                scale = new Vector2(.5f,.5f)};
+                Text nomove = new Text("No Moves", _font)
+                {
+                    attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) },
+                    scale = new Vector2(.5f, .5f)
+                };
                 base.Add(nomove);
                 nomove.Move(Actions.LinearMove, nomove.attributes.position, 1);
-                nomove.WhenDoneMoving( delegate() { nomove.isSeeable = false; });
+                nomove.WhenDoneMoving(delegate() { nomove.isSeeable = false; });
             });
-
             if (lSpitStack.Count() != 0)
             {
                 Timer stopwatch = new Timer(5);
@@ -466,9 +475,9 @@ namespace Testgame
             }
 
             else Winner(DetermineWinner());
-
         }
 
+        // determines if there is a winner based on if one player's score higher than the other's
         public bool ExistWinner()
         {
             bool youWinner = true;
@@ -487,6 +496,7 @@ namespace Testgame
             return youWinner || oppWinner;
         }
 
+        // returns the player who won based on their score
         public Player DetermineWinner()
         {
             if (you.score > opp.score) return you;
@@ -494,6 +504,7 @@ namespace Testgame
             else return null;
         }
 
+        // does actions if player is a winner
         public void Winner(Player winner)
         {
             yourName.Fade(4);
@@ -518,6 +529,7 @@ namespace Testgame
             else OppAWinner();
         }
 
+        // if bottom player wins, displays certain text & fades some drawables& adds endgame actions
         public void YourAWinner()
         {
             speedState = gameState.Winner;
@@ -543,15 +555,13 @@ namespace Testgame
                 },
                 scale = new Vector2(.8f,.8f)
             };
-
             oppSelector.Fade(2);
             yourSelector.Move(Actions.ExpoMove, new Vector2(512, 400), 2);
             yourSelector.Fade(2);
             yourSelector.WhenDoneMoving( delegate()
             {
                 base.Add(winner);
-                base.Add(loser);
-                
+                base.Add(loser);    
             });
             yourSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
             Timer endGame = new Timer(2);
@@ -575,6 +585,7 @@ namespace Testgame
             endGame.SetTimer(1, 4, delegate() { winner.Fade(2); loser.Fade(2); });
         }
 
+        // if top player wins, displays certain text & fades some drawables& adds endgame actions
         public void OppAWinner()
         {
             speedState = gameState.Winner;
@@ -630,6 +641,7 @@ namespace Testgame
             endGame.SetTimer(1, 4, delegate() { winner.Fade(2); loser.Fade(2); });
         }
 
+        // if game ends in a tie, displays certain text & fades some drawables& adds endgame actions
         public void Tie()
         {
             speedState = gameState.Winner;
@@ -701,11 +713,13 @@ namespace Testgame
             endGame.SetTimer(1, 4, delegate() { tieTop.Fade(2); tieMiddle.Fade(2); tieBottom.Fade(2); });
         }
 
+        // resets gamestate
         public void Reset()
         {
             speedState = gameState.PlayAgain;
         }
 
+        // shakes screen
         public void Shake()
         {
             Timer timer = new Timer(1);
@@ -714,6 +728,7 @@ namespace Testgame
             timer.SetTimer(0, .5f, delegate() { isShaking = false; });
         }
 
+        // shuffles cards 
         public static void Shuffle(Card[] cards)
         {
             Random random = new Random();
