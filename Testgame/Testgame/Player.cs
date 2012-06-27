@@ -8,6 +8,7 @@ namespace Testgame
 {
     class Player
     {
+        // constructor, initializes arguments
         public Player(String name, bool isPlayer1)
         {
             playerName = name;
@@ -16,6 +17,7 @@ namespace Testgame
             this.isPlayer1 = isPlayer1; 
         }
 
+        // possible player states
         private enum PlayerState
         {
             Off,
@@ -35,17 +37,21 @@ namespace Testgame
         public event CardPlayer SelectedCardLeft;
         public event CardPlayer SelectedCardRight;
 
+        // puts player in penalty state
         public void Penalize()
         {
             oldState = myState;
             myState = PlayerState.Penalized;
         }
 
+
+        // puts player back in old state
         public void RemovePenalty()
         {
             myState = oldState;
         }
 
+        // moves selector right if called, assuming player is on and not penalized
         public void MoveSelectorRight()
         {
             if (myState == PlayerState.Off) return;
@@ -62,6 +68,7 @@ namespace Testgame
             }
         }
 
+        // moves selector left if called, assuming player is on and not penalized
         public void MoveSelectorLeft()
         {
             if (myState == PlayerState.Off) return;
@@ -78,6 +85,7 @@ namespace Testgame
             }
         }
 
+        // if player is on, not penalized & not playing a card, moves card to a game pile depending on boolean
         public void SelectCard(bool isLeftPile)
         {
             if (myState == PlayerState.Off) return;
@@ -94,22 +102,20 @@ namespace Testgame
 
         public void UnFreeze()
         {
-            //remember to chang oldstate to normal to come out of penalty normal
+            //remember to change oldstate to normal to come out of penalty normal
         }
 
         public int score { get; set; }
 
+        // turns player on into the normal state
         public void TurnOn()
         {
             myState = PlayerState.Normal;
         }
-
+        
+        // fail, scrub
         public virtual void Update(GameTime gameTime)
         {
         }
-
-
-
-
     }
 }

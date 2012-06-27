@@ -15,6 +15,7 @@ namespace Testgame
         private List<Texture2D> textures;
         public float depth { get; set; }
 
+        // constructor, initializes variables
         public ParticleEngine(List<Texture2D> Textures, Vector2 position, float Depth)
         {
             random = new Random();
@@ -24,6 +25,7 @@ namespace Testgame
             depth = Depth;
         }
 
+        // makes new particles
         private Particle GenerateNewParticle()
         {
             Texture2D texture = textures[random.Next(textures.Count)];
@@ -43,6 +45,9 @@ namespace Testgame
             return new Particle(texture, position, velocity, angle, angularVelocity, color, size, ttl, depth);
         }
 
+        // update method
+        // adds particles to list of particles using method above
+        // removes "dead" particles
         public void Update(GameTime gameTime)
         {
             int total = 10;
@@ -63,14 +68,13 @@ namespace Testgame
             }
         }
 
+        // draws particles in the list
         public void Draw(SpriteBatch spriteBatch)
         {
-            
             for (int index = 0; index < particles.Count; index++)
             {
                 particles[index].Draw(spriteBatch);
             }
-            
         }
     }
 }

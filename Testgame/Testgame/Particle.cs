@@ -19,6 +19,7 @@ namespace Testgame
         float timeToLive;
         float depth;
 
+        // constructor, initialize particles' attributes
         public Particle(Texture2D Texture, Vector2 Position, Vector2 Velocity, float Angle, float AngularVelocity, Color Color, float Size, float TimeToLive, float Depth)
         {
             texture = Texture;
@@ -32,6 +33,7 @@ namespace Testgame
             depth = Depth;
         }
 
+        // updates method
         public void Update(GameTime gameTime)
         {
             float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -40,14 +42,14 @@ namespace Testgame
             angle += elapsedTime * angularVelocity;
         }
 
+        // draws particles
         public void Draw(SpriteBatch spriteBatch)
         {
             Vector2 origin = new Vector2(texture.Width / 2, texture.Height / 2);
-            
             spriteBatch.Draw(texture, position, null, color, angle, origin, size, SpriteEffects.None, depth);
-
         }
 
+        // returns whether or not particle engine's lifetime has passed
         public bool isDead()
         {
             return timeToLive <= 0;
