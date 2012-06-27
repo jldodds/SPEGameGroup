@@ -41,6 +41,8 @@ namespace Testgame
             you.SelectedCardRight += delegate() { PlayCard(you, you.selector, rGameStack); };
             opp.SelectedCardLeft += delegate() { PlayCard(opp, opp.selector, lGameStack); };
             opp.SelectedCardRight += delegate() { PlayCard(opp, opp.selector, rGameStack); };
+            you.score = 0;
+            opp.score = 0;
             
             cards = deck;
             for (int i = 0; i < cards.Length; i++)
@@ -123,12 +125,11 @@ namespace Testgame
                 cards[i].isFaceUp = false;
 
 
-                if (i % 4 == 3 && i < 16) cards[i].toPile(rSpitStack, (float)i / 13);
-                else if (i % 4 == 2 && i < 16) cards[i].toPile(lSpitStack, (float)i / 13);
-                else if (i % 4 == 1 && i < 16) cards[i].toPile(yourStack, (float)i / 13);
-                else if (i % 4 == 0 && i < 16) cards[i].toPile(opponentStack, (float)i / 13);
-                else if (i % 2 == 1 && i >= 16) cards[i].toPile(yourStack, (float)i / 13);
-                else if (i % 2 == 0 && i >= 16) cards[i].toPile(opponentStack, (float)i / 13);
+                if (i % 4 == 3 && i < 20) cards[i].toPile(rSpitStack, (float)i / 13);
+                else if (i % 4 == 2 && i < 20) cards[i].toPile(lSpitStack, (float)i / 13);
+                else if (i % 2 == 1) cards[i].toPile(yourStack, (float)i / 13);
+                else if (i % 2 == 0) cards[i].toPile(opponentStack, (float)i / 13);
+                
             }
             Text begin = new Text("Press Enter to Start", _font)
             {
@@ -207,14 +208,16 @@ namespace Testgame
                 case gameState.Dealing:
                 case gameState.AskBegin:
                 case gameState.Beginning:
+                    DoNothing();
                     break;
                 case gameState.GamePlay:
+                    if (ExistWinner()) Winner(DetermineWinner());
+                    else if (!ExistMoves()) ReBegin();
                     you.Update(gameTime);
                     opp.Update(gameTime);
                     yourSelector.attributes.position = yourCards[you.selector].position;
                     oppSelector.attributes.position = opponentCards[opp.selector].position;
-                    if (ExistWinner()) Winner(DetermineWinner());
-                    else if (!ExistMoves()) ReBegin();
+                    
                     break;
                 
                 case gameState.ReBeginning:
@@ -286,7 +289,7 @@ namespace Testgame
 
         public void PlayCard(Player player, int selectedPile, Pile destinationPile)
         {
-            if (speedState == gameState.PlayingCard) return;
+            if (speedState != gameState.GamePlay) return;
             Pile fromPile;
             if (player.isPlayer1) fromPile = yourCards[player.selector];
             else fromPile = opponentCards[player.selector];
