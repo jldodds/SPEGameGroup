@@ -37,6 +37,7 @@ namespace Testgame
         float aspectRatio;
         Player player1;
         Player player2;
+        Drawable BadTime;
 
         public Game1()
         {
@@ -153,6 +154,19 @@ namespace Testgame
             instance = soeffect.CreateInstance();
 
             aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
+
+            BadTime = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("BadTime"),
+                    color = Color.White,
+                    position = new Vector2(512, 400),
+                    depth = 0,
+                    scale = new Vector2(1.5f,1.5f),
+                }, 
+                isSeeable = false,
+            };
             
             // loads card selector
             selector = this.Content.Load<Texture2D>("CardSelector");
@@ -269,10 +283,15 @@ namespace Testgame
                 speed.Resume();
                 Pause.isPaused = true;
             }};
-            pauseActions[1] = delegate() { Console.WriteLine("Instructions"); };
+            pauseActions[1] = delegate()
+            {
+                BadTime.isSeeable = true; Pause.keysOff = true; Timer timer = new Timer(1);
+                Pause.Add(timer); timer.SetTimer(0, 4, delegate() { BadTime.isSeeable = false; Pause.keysOff = false; });
+            };
             pauseActions[2] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; if (speed != null) speed.isHalted = false; speed.isPaused = true; };
             // creates instance of pause menu
             Pause = new Menu(playAgainBackground, 3, pause, pauseNames, pauseActions, font);
+            Pause.Add(BadTime);
 
             #endregion
 

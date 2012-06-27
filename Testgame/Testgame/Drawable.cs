@@ -176,5 +176,22 @@ namespace Testgame
         {
             tweenerA.Ended += process;
         }
+
+        public void ClearTweeners()
+        {
+            tweenerX = null;
+            tweenerColorR = null;
+
+            tweenerY = null;
+            tweenerRotate = null;
+            tweenerDepth = null;
+            
+
+            tweenerColorG = null;
+            tweenerColorB = null;
+            tweenerA = null;
+            tweenerScaleX = null;
+            tweenerScaleY = null;
+        }
     }
 }

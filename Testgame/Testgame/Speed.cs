@@ -59,6 +59,8 @@ namespace Testgame
                 cards[i].isFaceUp = false;
                 cards[i].isSeeable = true;
                 cards[i].attributes.color = Color.White;
+                cards[i].attributes.rotation = 0;
+                cards[i].ClearTweeners();
             }
             yourStack = new Pile(new Vector2(897, 675));
             opponentStack = new Pile(new Vector2(127, 125));
@@ -80,28 +82,28 @@ namespace Testgame
             yourName.attributes.position = new Vector2((yourCards[3].position.X + yourCards[4].position.X)/2, (yourCards[3].position.Y + lGameStack.position.Y) / 2);
             yourName.isSeeable = true;
             yourName.attributes.color = Color.LightSkyBlue;
-            yourName.attributes.depth = 0;
+            yourName.attributes.depth = .02f;
             base.Add(yourName);
             oppName = new Text(" - " + opp.playerName, _font);
             oppName.height = 100;
             oppName.attributes.position = new Vector2((opponentCards[3].position.X + opponentCards[4].position.X)/2, (opponentCards[3].position.Y + lGameStack.position.Y) / 2);
             oppName.isSeeable = true;
             oppName.attributes.color = Color.Red;
-            oppName.attributes.depth = 0;
+            oppName.attributes.depth = .02f;
             base.Add(oppName);
             yourScore = new Text(you.score.ToString(), _font);
             yourScore.height = 100;
             yourScore.attributes.position = new Vector2(yourName.attributes.position.X + yourName.width/2 + 20, yourName.attributes.position.Y);
             yourScore.isSeeable = true;
             yourScore.attributes.color = Color.LightSkyBlue;
-            yourScore.attributes.depth = 0;
+            yourScore.attributes.depth = .02f;
             base.Add(yourScore);
             oppScore = new Text(opp.score.ToString(), _font);
             oppScore.height = 100;
             oppScore.attributes.position = new Vector2(oppName.attributes.position.X - oppName.width/2 - 20, oppName.attributes.position.Y);
             oppScore.isSeeable = true;
             oppScore.attributes.color = Color.Red;
-            oppScore.attributes.depth = 0;
+            oppScore.attributes.depth = .02f;
             base.Add(oppScore);
 
             for (int i = 0; i < cards.Length; i++)

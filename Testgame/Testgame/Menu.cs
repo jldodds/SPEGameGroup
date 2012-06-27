@@ -17,6 +17,7 @@ namespace Testgame
         int selected;
         menuState myState;
         private bool _isPaused;
+        public bool keysOff { get; set; }
         
         // this is a workaround to not have public variables
         // overrides other isPaused boolean and gives it the local _isPaused boolean
@@ -51,6 +52,7 @@ namespace Testgame
             buttons = new Button[numberOfButtons];
             base.Add(title);
             title.attributes.position = new Vector2(512, title.height / 2 + 40);
+            title.attributes.depth = .01f;
             maxButtonWidth = 0;
             
             // makes new buttons, adds heights, adds actions and events for if clicked
@@ -68,12 +70,14 @@ namespace Testgame
                 };
                 if (buttons[i].width > maxButtonWidth) maxButtonWidth = buttons[i].width;
                 base.Add(buttons[i]);
+                buttons[i].attributes.depth = .01f;
             }
 
             // sets selected button to the top button
             selected = 0;
             // initializes menu to off, then turns it on after .5 seconds
             myState = menuState.Off;
+            keysOff = false;
             Timer state = new Timer(1);
             base.Add(state);
             state.SetTimer(0, .5f, delegate() { myState = menuState.On; });
@@ -87,6 +91,7 @@ namespace Testgame
             buttons = new Button[numberOfButtons];
             base.Add(title);
             title.attributes.position = new Vector2(512, title.height / 2 + 40);
+            title.attributes.depth = .01f;
             maxButtonWidth = 0;
             for (int i = 0; i < numberOfButtons; i++)
             {
@@ -102,10 +107,12 @@ namespace Testgame
                 };
                 if (buttons[i].width > maxButtonWidth) maxButtonWidth = buttons[i].width;
                 base.Add(buttons[i]);
+                buttons[i].attributes.depth = .01f;
             }
 
             selected = 0;
             myState = menuState.Off;
+            keysOff = false;
             Timer state = new Timer(1);
             base.Add(state);
             state.SetTimer(0, .5f, delegate() { myState = menuState.On; });
@@ -150,7 +157,7 @@ namespace Testgame
             // only do the following if the menustate is on
             if (myState == menuState.Off) return;
             if (myState == menuState.Clicking) return;
-            
+            if (keysOff) return;
             // if up is pressed, moves selector up
             if (newState.IsKeyDown(Keys.Up))
             {

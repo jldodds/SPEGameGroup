@@ -14,16 +14,18 @@ namespace Testgame
         Texture2D cardBack;             // cardback image
         private int cardHeight = 180;   // card height in pixels
         private int cardWidth = 130;    // card width in pixels
+        private bool _isFaceUp;
         public bool isFaceUp 
         {
             // returns boolean isFaceUp
             get
             {
-                return isFaceUp;
+                return _isFaceUp;
             }
             // if card isFaceUp, displays front of card, otherwise does back of card
             set
             {
+                _isFaceUp = value;
                 if (value == true)
                 {
                     attributes.texture = cardFront;
@@ -113,7 +115,7 @@ namespace Testgame
         // raises cards
         public void Raise(float d, float delay)
         {
-            ChangeDepth(Actions.ExpoMove, 0f, d, delay);
+            ChangeDepth(Actions.ExpoMove, .1f, d, delay);
         }
 
         // lowers cards

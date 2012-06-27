@@ -32,6 +32,7 @@ namespace Testgame
         public readonly Node first;
         private Node last;
         public virtual bool isPaused { get; set; }
+
         
         // creates linked list of screens using drawables
         public Screen(Drawable background)
@@ -91,6 +92,7 @@ namespace Testgame
         {
             isPaused = false;
         }
+
     }
 }
 
