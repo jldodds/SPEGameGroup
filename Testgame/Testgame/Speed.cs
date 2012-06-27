@@ -26,8 +26,8 @@ namespace Testgame
         Drawable oppSelector;
         int yourSelectedPile;
         Drawable yourSelector;
-        Player you;
-        Player opp;
+        //Player you;
+        //Player opp;
 
         SpriteFont _font;
         public bool isHalted { get; set; }
@@ -129,11 +129,10 @@ namespace Testgame
         public void Deal()
         {
             speedState = gameState.Dealing;
-            Commands.Shuffle(cards);
+            Shuffle(cards);
             for (int i = 0; i < cards.Length; i++)
             {
                 cards[i].isFaceUp = false;
-
 
                 if (i % 4 == 3 && i < 16) cards[i].toPile(rSpitStack, (float)i / 13);
                 else if (i % 4 == 2 && i < 16) cards[i].toPile(lSpitStack, (float)i / 13);
@@ -170,7 +169,6 @@ namespace Testgame
                 DrawCard(opponentStack, opponentCards[i], i * .675f);
             }
 
-            
             Timer stopwatch = new Timer(3);
             base.Add(stopwatch);
             Text three = new Text("3", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
@@ -782,6 +780,19 @@ namespace Testgame
             base.Add(timer);
             isShaking = true;
             timer.SetTimer(0, .5f, delegate() { isShaking = false; });
+        }
+
+        public static void Shuffle(Card[] cards)
+        {
+            Random random = new Random();
+            int N = cards.Length;
+            for (int i = 0; i < N; i++)
+            {
+                int r = i + (int)(random.NextDouble() * (N - i));
+                Card temp = cards[r];
+                cards[r] = cards[i];
+                cards[i] = temp;
+            };
         }
     }
 }

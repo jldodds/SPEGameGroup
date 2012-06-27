@@ -55,10 +55,5 @@ namespace Testgame
             if (!isSeeable) return;
             spriteBatch.DrawString(_font, content, attributes.position, attributes.color, attributes.rotation, _font.MeasureString(content)/2, scale, spriteEffects, attributes.depth);
         }
-
-       
-
-        
-
     }
 }

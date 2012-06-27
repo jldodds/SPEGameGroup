@@ -12,20 +12,24 @@ namespace Testgame
 
     public class Drawable
     {
+
+        // constructor -- gives attributes what it has and sets drawable to isSeeable
         public Drawable()
         {
             attributes = new Attributes();
             isSeeable = true;
         }
+
+        // draws particle engine 
+        // draws any drawable which isSeeable based on its attributes
         public virtual void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             if (!isSeeable) return;
             spriteBatch.Draw(attributes.texture, attributes.position, null, attributes.color, attributes.rotation, attributes.origin, attributes.scale, spriteEffects, attributes.depth);
-            //if (particleEngine != null) particleEngine.Draw(spriteBatch);
+            if (particleEngine != null) particleEngine.Draw(spriteBatch);
         }
 
         public Attributes attributes { get; set; }
-        
         Tweener tweenerX;
         Tweener tweenerY;
         Tweener tweenerRotate;
@@ -33,34 +37,30 @@ namespace Testgame
         Tweener tweenerColorG;
         Tweener tweenerColorB;
         Tweener tweenerA;
-        protected Tweener tweenerScaleX;
+        public Tweener tweenerScaleX;
         Tweener tweenerScaleY;
-        protected Tweener tweenerDepth;
-
         public bool isMoving { get; set; }
+        public Tweener tweenerDepth;
         public bool isSeeable { get; set; }
-        
-        //ParticleEngine particleEngine;
-        //List<Texture2D> textures;
+        ParticleEngine particleEngine;
+        List<Texture2D> textures;
 
-
-
-
-
-         public void Rotate(float speed, float t)
-         {
+        // rotates drawables 
+        public void Rotate(float speed, float t)
+        {
              attributes.rotation += t * speed * 2 * (float)Math.PI;
-         }
+        }
 
+        // moves drawables
         public void Move(MoveDel action, Vector2 endPosition, float d)
         {
             isMoving = true;
             tweenerX = new Tweener(attributes.position.X, endPosition.X, d, action);
             tweenerY = new Tweener(attributes.position.Y, endPosition.Y, d, action);
             tweenerX.Ended += delegate() { this.isMoving = false; };
-
         }
 
+        // moves drawables with a delay
         public void Move(MoveDel action, Vector2 endPosition, float d, float delay)
         {
             isMoving = true;
@@ -69,6 +69,7 @@ namespace Testgame
             tweenerX.Ended += delegate() { this.isMoving = false; };
         }
 
+        // changes color of drawables as they move
         public void ChangeColor(MoveDel action, Color endColor, float d)
         {
             tweenerColorR = new Tweener(attributes.color.R, endColor.R, d, action);
@@ -77,51 +78,59 @@ namespace Testgame
             tweenerA = new Tweener(attributes.color.A, endColor.A, d, action);
         }
 
+        // makes drawables fade away given a certain amount of time
         public void Fade(float d)
-        {
-            
+        {           
             ChangeColor(Actions.LinearMove, Color.Transparent, d);
             tweenerA.Ended += delegate() { isSeeable = false; };
         }
 
+        // rotates drawables
         public void Rotate(MoveDel action, float endRotation, float d)
         {
             tweenerRotate = new Tweener(attributes.rotation, endRotation, d, action);
         }
 
+        // rescales drawables
         public void Scale(MoveDel action, Vector2 endScale, float d)
         {
             tweenerScaleX = new Tweener(attributes.scale.X, endScale.X, d, action);
             tweenerScaleY = new Tweener(attributes.scale.Y, endScale.Y, d, action);
         }
 
+        // rescales drawables with a delay
+        // not needed
         public void Scale(MoveDel action, Vector2 endScale, float d, float delay)
         {
             tweenerScaleX = new Tweener(attributes.scale.X, endScale.X, delay, d, action);
             tweenerScaleY = new Tweener(attributes.scale.Y, endScale.Y, delay, d, action);
         }
 
+        // reverses drawables
         public virtual void Reverse()
         {
             tweenerScaleX.Reverse();
         }
 
-
+        // flips drawables
         public void Flip(MoveDel action, float d)
         {
-            this.Scale(action, new Vector2(0, attributes.scale.Y), d);
-            
-    }
+            this.Scale(action, new Vector2(0, attributes.scale.Y), d);            
+        }
+        
+        // flips drawables with delay
         public void Flip(MoveDel action, float d, float delay)
         {
             this.Scale(action, new Vector2(0, attributes.scale.Y), d, delay);
         }
 
+        // changes depth of drawables w delay
         public void ChangeDepth(MoveDel action, float endDepth, float d, float delay)
         {
             tweenerDepth = new Tweener(attributes.depth, endDepth, delay, d, action);
         }
 
+        // updates tweeners which aren't null
         public virtual void Update(GameTime gameTime)
         {
             if (tweenerX != null)
@@ -155,12 +164,14 @@ namespace Testgame
                 attributes.depth = tweenerDepth.Position;
             }
         }
-
+        
+        // 
         public void WhenDoneMoving(Tweener.EndHandler process)
         {
             tweenerX.Ended += process;
         }
-
+        
+        // 
         public void WhenDoneFading(Tweener.EndHandler process)
         {
             tweenerA.Ended += process;
