@@ -43,7 +43,7 @@ namespace Testgame
         public Tweener tweenerDepth;
         public bool isSeeable { get; set; }
         ParticleEngine particleEngine;
-        List<Texture2D> textures;
+        public List<Texture2D> textures { get; set; }
 
         // rotates drawables 
         public void Rotate(float speed, float t)

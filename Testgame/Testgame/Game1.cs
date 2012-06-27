@@ -294,6 +294,11 @@ namespace Testgame
             textures.Add(Content.Load<Texture2D>("diamond"));
             textures.Add(Content.Load<Texture2D>("star"));
             //test = new ParticleEngine(textures, new Vector2(512, 400), .99f);
+
+            for (int i = 0; i < cards.Length; i++)
+            {
+                cards[i].textures = textures;
+            }
         }
 
 

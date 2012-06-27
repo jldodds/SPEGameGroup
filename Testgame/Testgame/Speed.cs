@@ -33,9 +33,11 @@ namespace Testgame
         Text oppName;
         Text yourScore;
         Text oppScore;
+        Random random;
 
         public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top):base(background)
         {
+            random = new Random();
             _font = font;
             isHalted = false;
             isShaking = false;
@@ -55,6 +57,8 @@ namespace Testgame
             {
                 cards[i].attributes.position = new Vector2(-100, 100);
                 cards[i].isFaceUp = false;
+                cards[i].isSeeable = true;
+                cards[i].attributes.color = Color.White;
             }
             yourStack = new Pile(new Vector2(897, 675));
             opponentStack = new Pile(new Vector2(127, 125));
@@ -340,8 +344,11 @@ namespace Testgame
 
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
+                m.Rotate(Actions.ExpoMove, (float)(random.NextDouble() - .5) / 2, .3f);
                 m.WhenDoneMoving(delegate()
                 {
+                    m.Move(Actions.LinearMove, m.attributes.position + new Vector2(random.Next(-5,5), random.Next(-5, 5)), 3f);
+                    
                     player.score++;
                     speedState = gameState.GamePlay;
                     if (player.isPlayer1)
@@ -493,6 +500,19 @@ namespace Testgame
             oppName.Fade(4);
             yourScore.Fade(4);
             oppScore.Fade(4);
+            for (int i = 0; i < yourCards.Length; i++)
+            {
+                if(yourCards[i].Count() != 0) yourCards[i].Take().Fade(4);
+                if(opponentCards[i].Count() != 0) opponentCards[i].Take().Fade(4);
+            }
+            while (yourStack.Count() != 0)
+            {
+                yourStack.Take().Fade(4);
+            }
+            while (opponentStack.Count() != 0)
+            {
+                opponentStack.Take().Fade(4);
+            }
             if (winner == null) Tie();
             else if (winner.isPlayer1) YourAWinner();
             else OppAWinner();
