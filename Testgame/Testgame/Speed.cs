@@ -22,23 +22,25 @@ namespace Testgame
         Pile[] opponentCards;
         KeyboardState oldState;
         public gameState speedState { get; set; }
-        int oppSelectedPile;
         Drawable oppSelector;
-        int yourSelectedPile;
         Drawable yourSelector;
         Player you;
         Player opp;
-
         SpriteFont _font;
         public bool isHalted { get; set; }
         public bool isShaking { get; set; }
-        YouPenaltyState youPenalty;
-        OppPenaltyState oppPenalty;
 
-        public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font):base(background)
+        public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top):base(background)
         {
             isHalted = false;
             isShaking = false;
+
+            you = bottom;
+            opp = top;
+            you.SelectedCardLeft += delegate(){PlayCard(you, you.selector, lGameStack);};
+            you.SelectedCardRight += delegate() { PlayCard(you, you.selector, rGameStack); };
+            opp.SelectedCardLeft += delegate() { PlayCard(opp, opp.selector, lGameStack); };
+            opp.SelectedCardRight += delegate() { PlayCard(opp, opp.selector, rGameStack); };
             
             cards = deck;
             for (int i = 0; i < cards.Length; i++)
@@ -98,8 +100,6 @@ namespace Testgame
             base.Add(yourSelector);
 
             _font = font;
-            youPenalty = YouPenaltyState.None;
-            oppPenalty = OppPenaltyState.None;
         }
 
         public enum gameState
@@ -112,18 +112,6 @@ namespace Testgame
             PlayingCard,
             Winner,
             PlayAgain,
-        }
-
-        public enum YouPenaltyState
-        {
-            YouScrewedUp,
-            None
-        }
-
-        public enum OppPenaltyState
-        {
-            OppScrewedUp,
-            None
         }
 
         public void Deal()
@@ -217,24 +205,24 @@ namespace Testgame
             switch (speedState)
             {
                 case gameState.Dealing:
-                    break;
                 case gameState.AskBegin:
-                    break;
                 case gameState.Beginning:
                     break;
                 case gameState.GamePlay:
-                    if(youPenalty != YouPenaltyState.YouScrewedUp) yourSelector.attributes.position = yourCards[yourSelectedPile].position;
-                    if(oppPenalty != OppPenaltyState.OppScrewedUp) oppSelector.attributes.position = opponentCards[oppSelectedPile].position;
-                        if (YouWin()) YourAWinner();
-                        else if (OppWin()) OppAWinner();
-                        
-                        else if (!ExistMoves()) ReBegin();
+                    you.Update(gameTime);
+                    opp.Update(gameTime);
+                    yourSelector.attributes.position = yourCards[you.selector].position;
+                    oppSelector.attributes.position = opponentCards[opp.selector].position;
+                    if (ExistWinner()) Winner(DetermineWinner());
+                    else if (!ExistMoves()) ReBegin();
                     break;
                 
                 case gameState.ReBeginning:
                 case gameState.PlayingCard:
-                    if (youPenalty != YouPenaltyState.YouScrewedUp) yourSelector.attributes.position = yourCards[yourSelectedPile].position;
-                    if (oppPenalty != OppPenaltyState.OppScrewedUp) oppSelector.attributes.position = opponentCards[oppSelectedPile].position;
+                    you.Update(gameTime);
+                    opp.Update(gameTime);
+                    yourSelector.attributes.position = yourCards[you.selector].position;
+                    oppSelector.attributes.position = opponentCards[opp.selector].position;
                     break;
                 case gameState.Winner:
                     break;
@@ -249,151 +237,16 @@ namespace Testgame
         protected void KeyUpdate(GameTime gameTime)
         {
             KeyboardState newState = Keyboard.GetState();
-
-            switch (speedState)
+            if (speedState == gameState.AskBegin)
             {
-                case gameState.Winner:
-                case gameState.Dealing:
-                case gameState.Beginning:
-                    DoNothing();
-                    break;
-                case gameState.AskBegin:
-                    if (newState.IsKeyDown(Keys.Enter))
+                if (newState.IsKeyDown(Keys.Enter))
+                {
+                    if (!oldState.IsKeyDown(Keys.Enter))
                     {
-                        if (!oldState.IsKeyDown(Keys.Enter))
-                        {
-                            Begin();
-                        }
+                        Begin();
                     }
-                    break;
-
-                case gameState.GamePlay:
-                    #region GameKeys
-                    if (youPenalty != YouPenaltyState.YouScrewedUp)
-                    {
-                        if (newState.IsKeyDown(Keys.Left))
-                        {
-                            if (!oldState.IsKeyDown(Keys.Left))
-                            {
-                                yourSelectedPile++;
-                                if (yourSelectedPile == 5) yourSelectedPile = 0;
-                            }
-                        }
-
-                        if (newState.IsKeyDown(Keys.Right))
-                        {
-                            if (!oldState.IsKeyDown(Keys.Right))
-                            {
-                                yourSelectedPile--;
-                                if (yourSelectedPile == -1) yourSelectedPile = 4;
-                            }
-                        }
-
-                        if (newState.IsKeyDown(Keys.Up))
-                        {
-                            if (!oldState.IsKeyDown(Keys.Up))
-                            {
-                                PlayYourCard(yourCards[yourSelectedPile], lGameStack);
-                            }
-                        }
-
-                        if (newState.IsKeyDown(Keys.Down))
-                        {
-                            if (!oldState.IsKeyDown(Keys.Down))
-                            {
-                                PlayYourCard(yourCards[yourSelectedPile], rGameStack);
-                            }
-                        }
-                    }
-
-                    if (oppPenalty != OppPenaltyState.OppScrewedUp)
-                    {
-                        if (newState.IsKeyDown(Keys.A))
-                        {
-                            if (!oldState.IsKeyDown(Keys.A))
-                            {
-                                oppSelectedPile--;
-                                if (oppSelectedPile == -1) oppSelectedPile = 4;
-                            }
-                        }
-
-                        if (newState.IsKeyDown(Keys.D))
-                        {
-                            if (!oldState.IsKeyDown(Keys.D))
-                            {
-                                oppSelectedPile++;
-                                if (oppSelectedPile == 5) oppSelectedPile = 0;
-                            }
-                        }
-
-                        if (newState.IsKeyDown(Keys.W))
-                        {
-                            if (!oldState.IsKeyDown(Keys.W))
-                            {
-                                PlayOppCard(opponentCards[oppSelectedPile], lGameStack);
-                            }
-                        }
-
-                        if (newState.IsKeyDown(Keys.S))
-                        {
-                            if (!oldState.IsKeyDown(Keys.S))
-                            {
-                                PlayOppCard(opponentCards[oppSelectedPile], rGameStack);
-                            }
-                        }
-                    }
-                    
-                    break;
-                    #endregion
-                case gameState.ReBeginning:
-                case gameState.PlayingCard:
-                    #region Selector Keys
-                    if (oppPenalty != OppPenaltyState.OppScrewedUp)
-                    {
-                        if (newState.IsKeyDown(Keys.D))
-                        {
-                            if (!oldState.IsKeyDown(Keys.D))
-                            {
-                                oppSelectedPile++;
-                                if (oppSelectedPile == 5) oppSelectedPile = 0;
-                            }
-                        }
-
-                        if (newState.IsKeyDown(Keys.A))
-                        {
-                            if (!oldState.IsKeyDown(Keys.A))
-                            {
-                                oppSelectedPile--;
-                                if (oppSelectedPile == -1) oppSelectedPile = 4;
-                            }
-                        }
-                    }
-                    if (youPenalty != YouPenaltyState.YouScrewedUp)
-                    {
-                        if (newState.IsKeyDown(Keys.Left))
-                        {
-                            if (!oldState.IsKeyDown(Keys.Left))
-                            {
-                                yourSelectedPile++;
-                                if (yourSelectedPile == 5) yourSelectedPile = 0;
-                            }
-                        }
-
-                        if (newState.IsKeyDown(Keys.Right))
-                        {
-                            if (!oldState.IsKeyDown(Keys.Right))
-                            {
-                                yourSelectedPile--;
-                                if (yourSelectedPile == -1) yourSelectedPile = 4;
-                            }
-                        }
-                    }
-                    break;
-                    #endregion
-                case gameState.PlayAgain:
-                    break;
+                }
             }
-            
 
             oldState = newState;
         }
@@ -427,10 +280,16 @@ namespace Testgame
             timer.SetTimer(0, .4f, delegate() { speedState = gameState.GamePlay; });
             DrawCard(lSpitStack, lGameStack, 0f);
             DrawCard(rSpitStack, rGameStack, 0f);
+            you.TurnOn();
+            opp.TurnOn();
         }
 
-        public void PlayYourCard(Pile fromPile, Pile destinationPile)
+        public void PlayCard(Player player, int selectedPile, Pile destinationPile)
         {
+            if (speedState == gameState.PlayingCard) return;
+            Pile fromPile;
+            if (player.isPlayer1) fromPile = yourCards[player.selector];
+            else fromPile = opponentCards[player.selector];
             if (fromPile.Count() == 0)
             {
                 return;
@@ -445,13 +304,29 @@ namespace Testgame
 
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
-                m.WhenDoneMoving( delegate()
+                m.WhenDoneMoving(delegate()
                 {
+                    player.score++;
                     speedState = gameState.GamePlay;
-                    if (yourStack.Count() != 0)
+                    if (player.isPlayer1)
                     {
-                        if (fromPile.Count() == 0)
-                            DrawCard(yourStack, fromPile, 0f);
+                        if (yourStack.Count() != 0)
+                        {
+                            if (fromPile.Count() == 0)
+                            {
+                                DrawCard(yourStack, fromPile, 0f);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (opponentStack.Count() != 0)
+                        {
+                            if (fromPile.Count() == 0)
+                            {
+                                DrawCard(opponentStack, fromPile, 0f);
+                            }
+                        }
                     }
                     Shake();
                 });
@@ -459,59 +334,12 @@ namespace Testgame
             else
             {
                 speedState = gameState.GamePlay;
-                YouPenalty();
+                c.attributes.color = Color.Red;
+                Timer timer = new Timer(1);
+                base.Add(timer);
+                timer.SetTimer(0, 1, delegate() { c.attributes.color = Color.White; player.RemovePenalty(); });
+                player.Penalize();
             }
-        }
-
-        public void PlayOppCard(Pile fromPile, Pile destinationPile)
-        {
-            if(fromPile.Count() == 0) return;
-            if (fromPile.drawnTo) return;
-            speedState = gameState.PlayingCard;
-            Card c = fromPile.Peek();
-            int cv = c.cardValue;
-            int value = destinationPile.Peek().cardValue;
-            if ((cv == 0 && value == 12) || (cv == 12 && value == 0) || (cv == value + 1 || cv == value - 1))
-            {
-                Card m = fromPile.Take();
-                m.toPile(destinationPile);
-                m.WhenDoneMoving( delegate()
-                {
-                    speedState = gameState.GamePlay;
-                    if (opponentStack.Count() != 0)
-                    {
-                        if (fromPile.Count() == 0)
-                            DrawCard(opponentStack, fromPile, .3f);
-                    }
-                    Shake();
-                });
-
-            }
-            else
-            {
-                speedState = gameState.GamePlay;
-                OppPenalty();
-            }
-        }
-
-        public void YouPenalty()
-        {
-            youPenalty = YouPenaltyState.YouScrewedUp;
-            Card c = yourCards[yourSelectedPile].Peek();
-            c.attributes.color = Color.Red;
-            Timer timer = new Timer(1);
-            base.Add(timer);
-            timer.SetTimer(0, 1, delegate() { c.attributes.color = Color.White; youPenalty = YouPenaltyState.None; });
-        }
-
-        public void OppPenalty()
-        {
-            oppPenalty = OppPenaltyState.OppScrewedUp;
-            Card c = opponentCards[oppSelectedPile].Peek();
-            c.attributes.color = Color.Red;
-            Timer timer = new Timer(1);
-            base.Add(timer);
-            timer.SetTimer(0, 1, delegate() { c.attributes.color = Color.White; oppPenalty = OppPenaltyState.None; });
         }
         
         public bool ExistMoves()
@@ -563,20 +391,20 @@ namespace Testgame
             {
                 Timer stopwatch = new Timer(5);
                 base.Add(stopwatch);
-                
+
                 stopwatch.SetTimer(0, 3, delegate()
                 {
                     Text two = new Text("2", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
                     base.Add(two);
                     two.Fade(1);
-                    
+
                 });
                 stopwatch.SetTimer(1, 4, delegate()
                 {
                     Text one = new Text("1", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
                     base.Add(one);
                     one.Fade(1);
-                    
+
                 });
                 stopwatch.SetTimer(2, 5, delegate()
                 {
@@ -585,52 +413,49 @@ namespace Testgame
                     title.Fade(.5f);
                     title.WhenDoneFading(new Tweener.EndHandler(BeginGame));
                 });
-                stopwatch.SetTimer(3,2, delegate()
+                stopwatch.SetTimer(3, 2, delegate()
                 {
                     Text three = new Text("3", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
-                base.Add(three);
-                three.Fade(1);
-                
+                    base.Add(three);
+                    three.Fade(1);
+
                 });
             }
 
-            else
-            {
-                int yourCount = 0;
-                int oppCount = 0;
-                for (int i = 0; i < yourCards.Length; i++)
-                {
-                    yourCount += yourCards[i].Count();
-                    oppCount += opponentCards[i].Count();
-                }
-                yourCount += yourStack.Count();
-                oppCount += opponentStack.Count();
-                if (oppCount > yourCount) YourAWinner();
-                else if (yourCount > oppCount) OppAWinner();
-                else if (yourCount == oppCount) Tie();
-            }
+            else Winner(DetermineWinner());
+
         }
 
-        public bool YouWin()
+        public bool ExistWinner()
         {
-            bool winner = true;
+            bool youWinner = true;
             for (int i = 0; i < yourCards.Length; i++)
             {
-                if (yourCards[i].Count() != 0) winner = false;
+                if (yourCards[i].Count() != 0) youWinner = false;
             }
-            if (yourStack.Count() != 0) winner = false;
-            return winner;
-        }
-
-        public bool OppWin()
-        {
-            bool winner = true;
+            if (yourStack.Count() != 0) youWinner = false;
+            
+            bool oppWinner = true;
             for (int i = 0; i < opponentCards.Length; i++)
             {
-                if (opponentCards[i].Count() != 0) winner = false;
+                if (opponentCards[i].Count() != 0) oppWinner = false;
             }
-            if (opponentStack.Count() != 0) winner = false;
-            return winner;
+            if (opponentStack.Count() != 0) oppWinner = false;
+            return youWinner || oppWinner;
+        }
+
+        public Player DetermineWinner()
+        {
+            if (you.score > opp.score) return you;
+            if (opp.score > you.score) return opp;
+            else return null;
+        }
+
+        public void Winner(Player winner)
+        {
+            if (winner == null) Tie();
+            else if (winner.isPlayer1) YourAWinner();
+            else OppAWinner();
         }
 
         public void YourAWinner()
