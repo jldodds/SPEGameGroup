@@ -10,7 +10,7 @@ namespace Testgame
 {
     public class Text : Drawable
     {
-        protected readonly String content;   // words of the text
+        protected String content;   // words of the text
         protected readonly SpriteFont _font; // text's font
 
         public Vector2 scale { get; set; }
@@ -47,6 +47,11 @@ namespace Testgame
             content = stuff;
             _font = font;
             scale = new Vector2(1, 1);
+        }
+
+        public void changeContent(String newText)
+        {
+            content = newText;
         }
 
         // draws the string if it's seeable based on attributes
