@@ -219,8 +219,8 @@ namespace Testgame
             
             // button names
             String[] PAButtonNames = new String[2];
-            PAButtonNames[0] = "Hell Yeah";
-            PAButtonNames[1] = "Nah Bro";
+            PAButtonNames[0] = "Yes";
+            PAButtonNames[1] = "No";
             
             // starts new game or goes to main menu depending on choice
             Button.ClickHandler[] playAgainAction = new Button.ClickHandler[2];
@@ -293,7 +293,7 @@ namespace Testgame
             textures.Add(Content.Load<Texture2D>("circle"));
             textures.Add(Content.Load<Texture2D>("diamond"));
             textures.Add(Content.Load<Texture2D>("star"));
-            test = new ParticleEngine(textures, new Vector2(512, 400), .99f);
+            //test = new ParticleEngine(textures, new Vector2(512, 400), .99f);
         }
 
 
@@ -329,7 +329,7 @@ namespace Testgame
                     speed.isHalted = true;
                 }
             }
-            test.Update(gameTime);
+            //test.Update(gameTime);
             MainMenu.Update(gameTime);
             Pause.Update(gameTime);
             PlayAgain.Update(gameTime);
@@ -402,7 +402,7 @@ namespace Testgame
             PlayAgain.Draw(spriteBatch);
             if (instructions != null) instructions.Draw(spriteBatch);
             freeze.Draw(spriteBatch, SpriteEffects.None);
-            test.Draw(spriteBatch);
+            //test.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

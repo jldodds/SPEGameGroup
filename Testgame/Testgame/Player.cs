@@ -25,7 +25,7 @@ namespace Testgame
             PlayingCard,
         }
 
-        String playerName;
+        public String playerName { get; set; }
         PlayerState myState;
         public int selector { get; set; }
         public readonly bool isPlayer1;

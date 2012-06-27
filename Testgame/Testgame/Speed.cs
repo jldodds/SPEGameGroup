@@ -29,9 +29,14 @@ namespace Testgame
         SpriteFont _font;
         public bool isHalted { get; set; }
         public bool isShaking { get; set; }
+        Text yourName;
+        Text oppName;
+        Text yourScore;
+        Text oppScore;
 
         public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top):base(background)
         {
+            _font = font;
             isHalted = false;
             isShaking = false;
 
@@ -44,14 +49,15 @@ namespace Testgame
             you.score = 0;
             opp.score = 0;
             
+            
             cards = deck;
             for (int i = 0; i < cards.Length; i++)
             {
                 cards[i].attributes.position = new Vector2(-100, 100);
                 cards[i].isFaceUp = false;
             }
-            yourStack = new Pile(new Vector2(897, 650));
-            opponentStack = new Pile(new Vector2(127, 150));
+            yourStack = new Pile(new Vector2(897, 675));
+            opponentStack = new Pile(new Vector2(127, 125));
             lSpitStack = new Pile(new Vector2(217, 400));
             rSpitStack = new Pile(new Vector2(807, 400));
             lGameStack = new Pile(new Vector2(413, 400));
@@ -64,6 +70,35 @@ namespace Testgame
                 opponentCards[i] = new Pile(new Vector2(opponentStack.position.X + (i + 1) * 154, opponentStack.position.Y));
                 yourCards[i] = new Pile(new Vector2(yourStack.position.X - (i + 1) * 154, yourStack.position.Y));
             }
+
+            yourName = new Text(you.playerName + " - ", _font);
+            yourName.height = 100;
+            yourName.attributes.position = new Vector2((yourCards[3].position.X + yourCards[4].position.X)/2, (yourCards[3].position.Y + lGameStack.position.Y) / 2);
+            yourName.isSeeable = true;
+            yourName.attributes.color = Color.LightSkyBlue;
+            yourName.attributes.depth = 0;
+            base.Add(yourName);
+            oppName = new Text(" - " + opp.playerName, _font);
+            oppName.height = 100;
+            oppName.attributes.position = new Vector2((opponentCards[3].position.X + opponentCards[4].position.X)/2, (opponentCards[3].position.Y + lGameStack.position.Y) / 2);
+            oppName.isSeeable = true;
+            oppName.attributes.color = Color.Red;
+            oppName.attributes.depth = 0;
+            base.Add(oppName);
+            yourScore = new Text(you.score.ToString(), _font);
+            yourScore.height = 100;
+            yourScore.attributes.position = new Vector2(yourName.attributes.position.X + yourName.width/2 + 20, yourName.attributes.position.Y);
+            yourScore.isSeeable = true;
+            yourScore.attributes.color = Color.LightSkyBlue;
+            yourScore.attributes.depth = 0;
+            base.Add(yourScore);
+            oppScore = new Text(opp.score.ToString(), _font);
+            oppScore.height = 100;
+            oppScore.attributes.position = new Vector2(oppName.attributes.position.X - oppName.width/2 - 20, oppName.attributes.position.Y);
+            oppScore.isSeeable = true;
+            oppScore.attributes.color = Color.Red;
+            oppScore.attributes.depth = 0;
+            base.Add(oppScore);
 
             for (int i = 0; i < cards.Length; i++)
             {
@@ -101,7 +136,7 @@ namespace Testgame
             base.Add(oppSelector);
             base.Add(yourSelector);
 
-            _font = font;
+            
         }
 
         public enum gameState
@@ -207,6 +242,8 @@ namespace Testgame
                     DoNothing();
                     break;
                 case gameState.GamePlay:
+                    yourScore.changeContent(you.score.ToString());
+                    oppScore.changeContent(opp.score.ToString());
                     if (ExistWinner()) Winner(DetermineWinner());
                     else if (!ExistMoves()) ReBegin();
                     you.Update(gameTime);
@@ -452,6 +489,10 @@ namespace Testgame
 
         public void Winner(Player winner)
         {
+            yourName.Fade(4);
+            oppName.Fade(4);
+            yourScore.Fade(4);
+            oppScore.Fade(4);
             if (winner == null) Tie();
             else if (winner.isPlayer1) YourAWinner();
             else OppAWinner();
@@ -495,7 +536,22 @@ namespace Testgame
             yourSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
             Timer endGame = new Timer(2);
             base.Add(endGame);
-            endGame.SetTimer(0, 6, delegate() { Reset(); });
+            endGame.SetTimer(0, 6, delegate()
+            {
+                yourScore.attributes.color = Color.LightSkyBlue;
+                yourScore.isSeeable = true;
+                yourScore.attributes.position = new Vector2(400, 675);
+                yourScore.height = 150;
+                oppScore.attributes.color = Color.Red;
+                oppScore.isSeeable = true;
+                oppScore.attributes.position = new Vector2(624, 675);
+                oppScore.height = 150;
+                Text dash = new Text(" - ", _font);
+                dash.attributes = new Attributes() { color = Color.Black, position = new Vector2(512, 675) };
+                dash.isSeeable = true;
+                dash.height = 150;
+                base.Add(dash);
+                Reset(); });
             endGame.SetTimer(1, 4, delegate() { winner.Fade(2); loser.Fade(2); });
         }
 
@@ -535,7 +591,22 @@ namespace Testgame
             oppSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
             Timer endGame = new Timer(2);
             base.Add(endGame);
-            endGame.SetTimer(0, 6, delegate() { Reset(); });
+            endGame.SetTimer(0, 6, delegate()
+            {
+                yourScore.attributes.color = Color.LightSkyBlue;
+                yourScore.isSeeable = true;
+                yourScore.attributes.position = new Vector2(624, 675);
+                yourScore.height = 150;
+                oppScore.attributes.color = Color.Red;
+                oppScore.isSeeable = true;
+                oppScore.attributes.position = new Vector2(400, 675);
+                oppScore.height = 150;
+                Text dash = new Text(" - ", _font);
+                dash.attributes = new Attributes() { color = Color.Black, position = new Vector2(512, 675) };
+                dash.isSeeable = true;
+                dash.height = 150;
+                base.Add(dash);
+                Reset(); });
             endGame.SetTimer(1, 4, delegate() { winner.Fade(2); loser.Fade(2); });
         }
 
@@ -591,7 +662,22 @@ namespace Testgame
             oppSelector.Scale(Actions.LinearMove, yourSelector.attributes.scale * 2, 2);
             Timer endGame = new Timer(2);
             base.Add(endGame);
-            endGame.SetTimer(0, 6, delegate() { Reset();});
+            endGame.SetTimer(0, 6, delegate()
+            {
+                yourScore.attributes.color = Color.LightSkyBlue;
+                yourScore.isSeeable = true;
+                yourScore.attributes.position = new Vector2(400, 675);
+                yourScore.height = 150;
+                oppScore.attributes.color = Color.Red;
+                oppScore.isSeeable = true;
+                oppScore.attributes.position = new Vector2(624, 675);
+                oppScore.height = 150;
+                Text dash = new Text(" - ", _font);
+                dash.attributes = new Attributes() { color = Color.Black, position = new Vector2(512, 675) };
+                dash.isSeeable = true;
+                dash.height = 150;
+                base.Add(dash);
+                Reset();});
             endGame.SetTimer(1, 4, delegate() { tieTop.Fade(2); tieMiddle.Fade(2); tieBottom.Fade(2); });
         }
 
