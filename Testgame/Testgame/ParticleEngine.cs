@@ -10,41 +10,55 @@ namespace Testgame
     public class ParticleEngine : Drawable
     {
         private Random random;
-        public Vector2 emitterLocation { get; set; }
         private List<Particle> particles;
         private List<Texture2D> textures;
-        public float depth { get; set; }
+        public bool isHalted { get; set; }
         float elapsed;
         float endTime;
 
+        Vector2 maxVelocity;
+
         // constructor, initializes variables
-        public ParticleEngine(List<Texture2D> Textures, Vector2 position, float Depth, float time)
+        public ParticleEngine(List<Texture2D> Textures, Vector2 position, Vector2 velocity, float Depth, Color color)
         {
             random = new Random();
-            emitterLocation = position;
+            attributes.position = position;
             particles = new List<Particle>();
+            maxVelocity = velocity;
             textures = Textures;
-            depth = Depth;
+            attributes.depth = Depth;
+            elapsed = 0;
+            attributes.color = color;
+        }
+        
+        public ParticleEngine(List<Texture2D> Textures, Vector2 position, Vector2 velocity, float Depth, float time, Color color)
+        {
+            random = new Random();
+            attributes.position = position;
+            particles = new List<Particle>();
+            maxVelocity = velocity;
+            textures = Textures;
+            attributes.depth = Depth;
             endTime = time;
             elapsed = 0;
+            attributes.color = color;
         }
 
         // makes new particles
         private Particle GenerateNewParticle()
         {
             Texture2D texture = textures[random.Next(textures.Count)];
-            Vector2 position = emitterLocation;
+            Vector2 position = attributes.position;
             Vector2 velocity = new Vector2(
-                    1f * (float)(random.NextDouble() * 600 - 300),
-                    1f * (float)(random.NextDouble() * 600 - 300));
+                    maxVelocity.X * (2 * (float) random.NextDouble() - 1),
+                    maxVelocity.Y * (2 * (float)random.NextDouble() - 1));
             float angle = 0;
             float angularVelocity = 1.5f * (float)(random.NextDouble() * 2 - 1);
-            Color color = new Color(random.Next(225,255), random.Next(225,255), random.Next(225,255), 255
-                    );
+            Color color = new Color(random.Next(attributes.color.R - 20, attributes.color.R+20), random.Next(attributes.color.G - 20, attributes.color.G +20), random.Next(attributes.color.B-20,attributes.color.B+20), random.Next(attributes.color.A-20,attributes.color.A+20));
             float size = (float)random.NextDouble() * .8f;
             float ttl = .3f + (float)random.NextDouble() / 10f;
 
-            return new Particle(texture, position, velocity, angle, angularVelocity, color, size, ttl, depth);
+            return new Particle(texture, position, velocity, angle, angularVelocity, color, size, ttl, attributes.depth);
         }
 
         // update method
@@ -55,7 +69,7 @@ namespace Testgame
             elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
             
             int total = 10;
-            if (elapsed <= endTime)
+            if ((endTime == null || elapsed <= endTime) && !isHalted)
             {
                 for (int i = 0; i < total; i++)
                 {

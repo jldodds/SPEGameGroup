@@ -17,7 +17,8 @@ namespace Testgame
         Pile rSpitStack;
         Pile lGameStack;
         Pile rGameStack;
-        Card[] cards;
+        Card[] deck;         //non-shuffled for reference
+        Card[] cards;        // shuffled cards (actually played with)
         Pile[] yourCards;
         Pile[] opponentCards;
         KeyboardState oldState;
@@ -33,13 +34,20 @@ namespace Testgame
         Text oppName;
         Text yourScore;
         Text oppScore;
+        Text time1;
+        Text time2;
         Random random;
         List<Texture2D> textures;
         ParticleEngine engine;
+        gameType myType;
+        int winningscore;
+        Timer gameTimer;
+        int gameLength;
 
         // initializes lots of variables
-        public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles):base(background)
+        public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, gameType gameType):base(background)
         {
+            myType = gameType;
             random = new Random();
             _font = font;
             isHalted = false;
@@ -55,7 +63,14 @@ namespace Testgame
             you.score = 0;
             opp.score = 0;
 
-            cards = deck;
+            deck = new Card[deckOfCards.Length];
+            cards = new Card[deckOfCards.Length];
+            for (int i = 0; i < deckOfCards.Length; i++)
+            {
+                this.deck[i] = deckOfCards[i];
+                cards[i] = deckOfCards[i];
+            }
+
             for (int i = 0; i < cards.Length; i++)
             {
                 cards[i].attributes.position = new Vector2(-100, 100);
@@ -86,28 +101,28 @@ namespace Testgame
             yourName.isSeeable = true;
             yourName.attributes.color = Color.LightSkyBlue;
             yourName.attributes.depth = .02f;
-            base.Add(yourName);
+            
             oppName = new Text(" - " + opp.playerName, _font);
             oppName.height = 100;
             oppName.attributes.position = new Vector2((opponentCards[3].position.X + opponentCards[4].position.X)/2, (opponentCards[3].position.Y + lGameStack.position.Y) / 2);
             oppName.isSeeable = true;
             oppName.attributes.color = Color.Red;
             oppName.attributes.depth = .02f;
-            base.Add(oppName);
+            
             yourScore = new Text(you.score.ToString(), _font);
             yourScore.height = 100;
             yourScore.attributes.position = new Vector2(yourName.attributes.position.X + yourName.width/2 + 20, yourName.attributes.position.Y);
             yourScore.isSeeable = true;
             yourScore.attributes.color = Color.LightSkyBlue;
             yourScore.attributes.depth = .02f;
-            base.Add(yourScore);
+            
             oppScore = new Text(opp.score.ToString(), _font);
             oppScore.height = 100;
             oppScore.attributes.position = new Vector2(oppName.attributes.position.X - oppName.width/2 - 20, oppName.attributes.position.Y);
             oppScore.isSeeable = true;
             oppScore.attributes.color = Color.Red;
             oppScore.attributes.depth = .02f;
-            base.Add(oppScore);
+            
 
             for (int i = 0; i < cards.Length; i++)
             {
@@ -144,7 +159,42 @@ namespace Testgame
 
             base.Add(oppSelector);
             base.Add(yourSelector);
+
+            if (myType == gameType.Marathon)
+            {
+                winningscore = 30;
+            }
+
+            if (myType == gameType.Timed)
+            {
+                gameLength = 120;
+                gameTimer = new Timer(1);
+                gameTimer.SetTimer(0, gameLength, delegate() { Winner(DetermineWinner()); time1.Fade(4); time2.Fade(4); });
+                
+                time1 = new Text(gameTimer.getCountDown(0, gameLength), _font);
+                time1.height = 100;
+                time1.attributes.position = new Vector2(yourName.attributes.position.X, oppName.attributes.position.Y);
+                time1.isSeeable = true;
+                time1.attributes.color = Color.Black;
+                time1.attributes.depth = .02f;
+                
+                time2 = new Text(gameTimer.getCountDown(0, gameLength), _font);
+                time2.height = 100;
+                time2.attributes.position = new Vector2(oppName.attributes.position.X, yourName.attributes.position.Y);
+                time2.isSeeable = true;
+                time2.attributes.color = Color.Black;
+                time2.attributes.depth = .02f;
+                
+            }
         }
+
+        public enum gameType
+        {
+            Normal,               // First to clear hand
+            Marathon,             // First to 30
+            Timed,                // Most in 2 minutes
+        }
+
 
         // different gamestates
         public enum gameState
@@ -193,6 +243,12 @@ namespace Testgame
         public void Begin()
         {
             base.RemoveLast();
+            base.Add(time1);
+            base.Add(time2);
+            base.Add(yourName);
+            base.Add(oppName);
+            base.Add(yourScore);
+            base.Add(oppScore);
             speedState = gameState.Beginning;
             for (int i = 0; i < 5; i++)
             {
@@ -226,6 +282,7 @@ namespace Testgame
                 base.Add(title);
                 title.Fade(.5f);
                 title.WhenDoneFading(new Tweener.EndHandler(BeginGame));
+                title.WhenDoneFading(delegate() { base.Add(gameTimer); });
             });
         }
 
@@ -234,7 +291,19 @@ namespace Testgame
         {
             if (destinationPile.drawnTo) return;
             destinationPile.drawnTo = true;
-            Card temp = drawPile.Take();
+            Card temp = null;
+            switch (myType)
+            {
+                case gameType.Normal:
+                    temp = drawPile.Take();
+                    break;
+                case gameType.Marathon:
+                case gameType.Timed:
+                    int x = random.Next(0, 52);
+                    temp = new Card(x, deck[x].cardFront, deck[x].cardBack, drawPile.position, false);
+                    base.Add(temp);
+                    break;
+            }
             temp.Flip(true, delay);
             temp.toPile(destinationPile, delay);
             temp.WhenDoneMoving(delegate() { destinationPile.drawnTo = false; });
@@ -245,6 +314,13 @@ namespace Testgame
         {
             if (base.isPaused) return;
             if (isHalted) return;
+            if (myType == gameType.Timed)
+            {
+                time1.changeContent(gameTimer.getCountDown(0, gameLength));
+                time2.changeContent(gameTimer.getCountDown(0, gameLength));
+                if (speedState == gameState.ReBeginning) gameTimer.isPaused = true;
+                else gameTimer.isPaused = false;
+            }
             switch (speedState)
             {
                 case gameState.Dealing:
@@ -326,6 +402,7 @@ namespace Testgame
         // starts the game
         public void BeginGame()
         {
+            
             Timer timer = new Timer(1);
             base.Add(timer);
             timer.SetTimer(0, .4f, delegate() { speedState = gameState.GamePlay; });
@@ -333,6 +410,7 @@ namespace Testgame
             DrawCard(rSpitStack, rGameStack, 0f);
             you.TurnOn();
             opp.TurnOn();
+            
         }
 
         // plays cards from selected piles to destination piles
@@ -384,8 +462,8 @@ namespace Testgame
                         }
                     }
                     Shake();
-                    ParticleEngine stuff = new ParticleEngine(textures, destinationPile.position, m.attributes.depth, .3f);
-                    base.Add(stuff);
+                    ParticleEngine smoke = new ParticleEngine(textures, destinationPile.position,new Vector2(300,300), m.attributes.depth, .3f, Color.WhiteSmoke);
+                    base.Add(smoke);
                 });
             }
             else
@@ -432,6 +510,7 @@ namespace Testgame
         // adds cards to game stacks if no cards are playable
         public void ReBegin()
         {
+            if (speedState == gameState.Winner) return;
             speedState = gameState.ReBeginning;
             Timer watch = new Timer(1);
             base.Add(watch);
@@ -484,23 +563,33 @@ namespace Testgame
             else Winner(DetermineWinner());
         }
 
-        // determines if there is a winner based on if one player's score higher than the other's
+        // determines if there is a winner
         public bool ExistWinner()
         {
-            bool youWinner = true;
-            for (int i = 0; i < yourCards.Length; i++)
+            if (myType == gameType.Normal)
             {
-                if (yourCards[i].Count() != 0) youWinner = false;
+                bool youWinner = true;
+                for (int i = 0; i < yourCards.Length; i++)
+                {
+                    if (yourCards[i].Count() != 0) youWinner = false;
+                }
+                if (yourStack.Count() != 0) youWinner = false;
+
+                bool oppWinner = true;
+                for (int i = 0; i < opponentCards.Length; i++)
+                {
+                    if (opponentCards[i].Count() != 0) oppWinner = false;
+                }
+                if (opponentStack.Count() != 0) oppWinner = false;
+                return youWinner || oppWinner;
             }
-            if (yourStack.Count() != 0) youWinner = false;
-            
-            bool oppWinner = true;
-            for (int i = 0; i < opponentCards.Length; i++)
+
+            if (myType == gameType.Marathon)
             {
-                if (opponentCards[i].Count() != 0) oppWinner = false;
+                return (you.score == winningscore) || (opp.score == winningscore);
             }
-            if (opponentStack.Count() != 0) oppWinner = false;
-            return youWinner || oppWinner;
+
+            else return false;
         }
 
         // returns the player who won based on their score

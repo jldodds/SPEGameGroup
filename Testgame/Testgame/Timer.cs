@@ -11,6 +11,7 @@ namespace Testgame
     class Timer : Drawable
     {
         Tweener[] timer;
+        public bool isPaused { get; set; }
         
         // constructor, allows for array of timers to be built
         public Timer(int x)
@@ -34,6 +35,7 @@ namespace Testgame
         // if the timer exists, updates it based on gameTime
         public override void Update(GameTime gameTime)
         {
+            if (isPaused) return;
             for (int i = 0; i < timer.Length; i++)
             {
                 if(timer[i] != null) timer[i].Update(gameTime);
@@ -47,6 +49,25 @@ namespace Testgame
             {
                 timer[i] = null;
             }
+        }
+
+        public String getTimeString(int time)
+        {
+            int min = time / 60;
+            int sec = time % 60;
+            return min + ":" + sec/10 +"" + sec%10;
+        }
+
+        public String getCountDown(int timerNumber, int finalTime)
+        {
+            int time = (int) timer[timerNumber].getElapsed();
+            int countDownTime = finalTime - time;
+            return getTimeString(countDownTime);
+        }
+
+        public void ResetTimer(int timerNumber)
+        {
+            timer[timerNumber].Reset();
         }
     }
 }

@@ -25,7 +25,8 @@ namespace Testgame
         public virtual void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             if (!isSeeable) return;
-            spriteBatch.Draw(attributes.texture, attributes.position, null, attributes.color, attributes.rotation, attributes.origin, attributes.scale, spriteEffects, attributes.depth);
+            spriteBatch.Draw(attributes.texture, attributes.position, null, attributes.color, 
+                attributes.rotation, attributes.origin, attributes.scale, spriteEffects, attributes.depth);
 
         }
 

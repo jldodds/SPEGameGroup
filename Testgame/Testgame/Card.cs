@@ -10,8 +10,8 @@ namespace Testgame
 {
     class Card : Drawable
     {
-        Texture2D cardFront;            // cardfront image
-        Texture2D cardBack;             // cardback image
+        public readonly Texture2D cardFront;            // cardfront image
+        public readonly Texture2D cardBack;             // cardback image
         private int cardHeight = 180;   // card height in pixels
         private int cardWidth = 130;    // card width in pixels
         private bool _isFaceUp;

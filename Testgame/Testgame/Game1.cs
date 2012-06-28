@@ -25,6 +25,7 @@ namespace Testgame
         Speed speed;
         KeyboardState oldState;
         Menu MainMenu;
+        Menu GameMenu;
         Menu PlayAgain;
         Menu Pause;
         Drawable freeze;
@@ -201,9 +202,7 @@ namespace Testgame
             // if "play game" is chosen from main menu, starts the game
             mainMenuAction[0] = delegate() 
             {
-                player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
-                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures); speed.TurnOn(); MainMenu.isPaused = true; 
+                MainMenu.isPaused = true; GameMenu.isPaused = false;
             };
             
             // if "instructions" chosen, displays instructions
@@ -247,7 +246,7 @@ namespace Testgame
             playAgainAction[0] = delegate() {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false); 
-                speed = new Speed(cards, background, selector, font, player1, player2, textures); speed.TurnOn(); PlayAgain.isPaused = true;
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed); speed.TurnOn(); PlayAgain.isPaused = true;
             };
             playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
             
@@ -282,12 +281,13 @@ namespace Testgame
                 },
             };
             // makes names for each button on pause menu
-            String[] pauseNames = new String[3];
+            String[] pauseNames = new String[4];
             pauseNames[0] = "Resume";
-            pauseNames[1] = "Instructions";
-            pauseNames[2] = "Main Menu";
+            pauseNames[1] = "Restart";
+            pauseNames[2] = "Instructions";
+            pauseNames[3] = "Main Menu";
             // sets up an array of events based on which button is clicked
-            Button.ClickHandler[] pauseActions = new Button.ClickHandler[3];
+            Button.ClickHandler[] pauseActions = new Button.ClickHandler[4];
             // resumes speed if that option is chosen, goes to instructions if that's chosen, and goes to main menu if these aren't the case
             pauseActions[0] = delegate() {if(speed != null && speed.isPaused == false){
                 speed.Resume();
@@ -295,15 +295,72 @@ namespace Testgame
             }};
             pauseActions[1] = delegate()
             {
+                player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
+                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed); speed.TurnOn();
+                Pause.isPaused = true;
+            };
+
+            pauseActions[2] = delegate()
+            {
                 BadTime.isSeeable = true; Pause.keysOff = true; Timer timer = new Timer(1);
                 Pause.Add(timer); timer.SetTimer(0, 4, delegate() { BadTime.isSeeable = false; Pause.keysOff = false; });
             };
-            pauseActions[2] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; speed = null; };
+            pauseActions[3] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; speed = null; };
             // creates instance of pause menu
-            Pause = new Menu(playAgainBackground, 3, pause, pauseNames, pauseActions, font);
+            Pause = new Menu(playAgainBackground, 4, pause, pauseNames, pauseActions, font);
             Pause.Add(BadTime);
 
             #endregion
+
+            #region GameMenu
+            Text playgame = new Text("Select Game", font)
+            {
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    rotation = -.05f,
+                    depth = 0f,
+                },
+                scale = new Vector2(.5f, .5f)
+            };
+
+            String[] gameMenuString = new String[4];
+            gameMenuString[0] = "Normal";
+            gameMenuString[1] = "Marathon";
+            gameMenuString[2] = "Timed";
+            gameMenuString[3] = "Back";
+            Button.ClickHandler[] gameMenuAction = new Button.ClickHandler[4];
+            
+
+            gameMenuAction[0] = delegate() 
+            {
+                player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
+                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal); speed.TurnOn(); GameMenu.isPaused = true; 
+            };
+            
+
+            gameMenuAction[1] = delegate() 
+            {
+                player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
+                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon); speed.TurnOn(); GameMenu.isPaused = true; 
+            };
+
+
+            gameMenuAction[2] = delegate() { player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
+                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed); speed.TurnOn(); GameMenu.isPaused = true;};
+            
+
+            gameMenuAction[3] = delegate() {GameMenu.isPaused = true; MainMenu.isPaused = false;};
+            
+
+            GameMenu = new Menu(background, 4, playgame, gameMenuString, gameMenuAction, font);
+            #endregion
+
+
 
             // makes the freeze icon
             freeze = new Drawable()
@@ -363,7 +420,7 @@ namespace Testgame
                     speed.isHalted = true;
                 }
             }
-            //test.Update(gameTime);
+            GameMenu.Update(gameTime);
             MainMenu.Update(gameTime);
             Pause.Update(gameTime);
             PlayAgain.Update(gameTime);
@@ -432,6 +489,7 @@ namespace Testgame
             // draws screens
             if (speed != null) speed.Draw(spriteBatch);
             MainMenu.Draw(spriteBatch);
+            GameMenu.Draw(spriteBatch);
             Pause.Draw(spriteBatch);
             PlayAgain.Draw(spriteBatch);
             if (instructions != null) instructions.Draw(spriteBatch);
