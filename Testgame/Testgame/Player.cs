@@ -113,7 +113,11 @@ namespace Testgame
             myState = PlayerState.Normal;
         }
         
+<<<<<<< HEAD
         // fail, garbage
+=======
+        // This has to be implemented by the extended classes
+>>>>>>> 07bb237cbf295c774a637deb4482591298001383
         public virtual void Update(GameTime gameTime)
         {
         }

@@ -26,7 +26,7 @@ namespace Testgame
         {
             if (!isSeeable) return;
             spriteBatch.Draw(attributes.texture, attributes.position, null, attributes.color, attributes.rotation, attributes.origin, attributes.scale, spriteEffects, attributes.depth);
-            if (particleEngine != null) particleEngine.Draw(spriteBatch);
+
         }
 
         public Attributes attributes { get; set; }

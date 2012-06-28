@@ -7,22 +7,26 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Testgame
 {
-    public class ParticleEngine
+    public class ParticleEngine : Drawable
     {
         private Random random;
         public Vector2 emitterLocation { get; set; }
         private List<Particle> particles;
         private List<Texture2D> textures;
         public float depth { get; set; }
+        float elapsed;
+        float endTime;
 
         // constructor, initializes variables
-        public ParticleEngine(List<Texture2D> Textures, Vector2 position, float Depth)
+        public ParticleEngine(List<Texture2D> Textures, Vector2 position, float Depth, float time)
         {
             random = new Random();
             emitterLocation = position;
             particles = new List<Particle>();
             textures = Textures;
             depth = Depth;
+            endTime = time;
+            elapsed = 0;
         }
 
         // makes new particles
@@ -35,12 +39,10 @@ namespace Testgame
                     1f * (float)(random.NextDouble() * 600 - 300));
             float angle = 0;
             float angularVelocity = 1.5f * (float)(random.NextDouble() * 2 - 1);
-            Color color = new Color(
-                    (float) random.NextDouble(),
-                    (float)random.NextDouble() * .5f + .5f,
-                    0);
-            float size = (float)random.NextDouble() * 1.2f;
-            float ttl = 2.0f + (float)random.NextDouble() / 5f;
+            Color color = new Color(random.Next(225,255), random.Next(225,255), random.Next(225,255), 255
+                    );
+            float size = (float)random.NextDouble() * .8f;
+            float ttl = .3f + (float)random.NextDouble() / 10f;
 
             return new Particle(texture, position, velocity, angle, angularVelocity, color, size, ttl, depth);
         }
@@ -48,13 +50,17 @@ namespace Testgame
         // update method
         // adds particles to list of particles using method above
         // removes "dead" particles
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
+            elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
+            
             int total = 10;
-
-            for (int i = 0; i < total; i++)
+            if (elapsed <= endTime)
             {
-                particles.Add(GenerateNewParticle());
+                for (int i = 0; i < total; i++)
+                {
+                    particles.Add(GenerateNewParticle());
+                }
             }
 
             for (int particle = 0; particle < particles.Count; particle++)
@@ -66,10 +72,12 @@ namespace Testgame
                     particle--;
                 }
             }
+
+            base.Update(gameTime);
         }
 
         // draws particles in the list
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             for (int index = 0; index < particles.Count; index++)
             {
