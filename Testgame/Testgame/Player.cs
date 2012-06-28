@@ -113,7 +113,7 @@ namespace Testgame
             myState = PlayerState.Normal;
         }
         
-        // fail, scrub
+        // This has to be implemented by the extended classes
         public virtual void Update(GameTime gameTime)
         {
         }

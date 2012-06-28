@@ -88,8 +88,8 @@ namespace Testgame
                 }
             };
 
-            player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Player 1", true);
-            player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Player 2", false);
+            player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
+            player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
             // TODO: use this.Content to load your game content here
 
             // loads up cards & assigns values
@@ -172,6 +172,10 @@ namespace Testgame
             selector = this.Content.Load<Texture2D>("CardSelector");
             // loads BadaBoom font
             font = Content.Load<SpriteFont>("SpriteFont3");
+            textures = new List<Texture2D>();
+            textures.Add(Content.Load<Texture2D>("circle"));
+            textures.Add(Content.Load<Texture2D>("diamond"));
+            textures.Add(Content.Load<Texture2D>("star"));
 
             #region MainMenu
             // game title
@@ -197,7 +201,9 @@ namespace Testgame
             // if "play game" is chosen from main menu, starts the game
             mainMenuAction[0] = delegate() 
             {
-                speed = new Speed(cards, background, selector, font, player1, player2); speed.TurnOn(); MainMenu.isPaused = true; 
+                player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
+                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures); speed.TurnOn(); MainMenu.isPaused = true; 
             };
             
             // if "instructions" chosen, displays instructions
@@ -238,7 +244,11 @@ namespace Testgame
             
             // starts new game or goes to main menu depending on choice
             Button.ClickHandler[] playAgainAction = new Button.ClickHandler[2];
-            playAgainAction[0] = delegate() { speed = new Speed(cards, background, selector, font, player1, player2); speed.TurnOn(); PlayAgain.isPaused = true; };
+            playAgainAction[0] = delegate() {
+                player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
+                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false); 
+                speed = new Speed(cards, background, selector, font, player1, player2, textures); speed.TurnOn(); PlayAgain.isPaused = true;
+            };
             playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
             
             // makes transparent background
@@ -288,7 +298,7 @@ namespace Testgame
                 BadTime.isSeeable = true; Pause.keysOff = true; Timer timer = new Timer(1);
                 Pause.Add(timer); timer.SetTimer(0, 4, delegate() { BadTime.isSeeable = false; Pause.keysOff = false; });
             };
-            pauseActions[2] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; if (speed != null) speed.isHalted = false; speed.isPaused = true; };
+            pauseActions[2] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; speed = null; };
             // creates instance of pause menu
             Pause = new Menu(playAgainBackground, 3, pause, pauseNames, pauseActions, font);
             Pause.Add(BadTime);

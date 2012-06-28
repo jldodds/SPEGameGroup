@@ -34,14 +34,17 @@ namespace Testgame
         Text yourScore;
         Text oppScore;
         Random random;
+        List<Texture2D> textures;
+        ParticleEngine engine;
 
         // initializes lots of variables
-        public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top):base(background)
+        public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles):base(background)
         {
             random = new Random();
             _font = font;
             isHalted = false;
             isShaking = false;
+            textures = particles;
 
             you = bottom;
             opp = top;
@@ -381,6 +384,8 @@ namespace Testgame
                         }
                     }
                     Shake();
+                    ParticleEngine stuff = new ParticleEngine(textures, destinationPile.position, m.attributes.depth, .3f);
+                    base.Add(stuff);
                 });
             }
             else
