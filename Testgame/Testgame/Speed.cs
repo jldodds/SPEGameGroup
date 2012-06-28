@@ -249,12 +249,15 @@ namespace Testgame
         public void Begin()
         {
             base.RemoveLast();
-            base.Add(time1);
-            base.Add(time2);
-            base.Add(yourName);
-            base.Add(oppName);
-            base.Add(yourScore);
-            base.Add(oppScore);
+            if (myType == gameType.Timed)
+            {
+                base.Add(time1);
+                base.Add(time2);
+            }
+                base.Add(yourName);
+                base.Add(oppName);
+                base.Add(yourScore);
+                base.Add(oppScore);
             speedState = gameState.Beginning;
             for (int i = 0; i < 5; i++)
             {
@@ -288,7 +291,7 @@ namespace Testgame
                 base.Add(title);
                 title.Fade(.5f);
                 title.WhenDoneFading(new Tweener.EndHandler(BeginGame));
-                title.WhenDoneFading(delegate() { base.Add(gameTimer); });
+                if(myType == gameType.Timed) title.WhenDoneFading(delegate() { base.Add(gameTimer); });
             });
         }
 
