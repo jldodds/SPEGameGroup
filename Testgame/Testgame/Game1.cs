@@ -38,6 +38,10 @@ namespace Testgame
         Player player1;
         Player player2;
         Drawable BadTime;
+        Drawable slide1;
+        Drawable slide2;
+        Drawable slide3;
+        Drawable slide4;
 
         public Game1()
         {
@@ -88,8 +92,60 @@ namespace Testgame
                 }
             };
 
-            player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Player 1", true);
-            player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Player 2", false);
+            // creates the drawable instructions slides
+            slide1 = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("Slide1"),
+                    color = Color.White,
+                    position = new Vector2(512, 400),
+                    depth = 0,
+                    scale = new Vector2(1.5f, 1.5f),
+                },
+                isSeeable = true,
+            };
+
+            slide2 = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("Slide2"),
+                    color = Color.White,
+                    position = new Vector2(512, 400),
+                    depth = 0,
+                    scale = new Vector2(1.5f, 1.5f),
+                },
+                isSeeable = false,
+            };
+            slide3 = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("Slide3"),
+                    color = Color.White,
+                    position = new Vector2(512, 400),
+                    depth = 0,
+                    scale = new Vector2(1.5f, 1.5f),
+                },
+                isSeeable = false,
+            };
+            slide4 = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("Slide4"),
+                    color = Color.White,
+                    position = new Vector2(512, 400),
+                    depth = 0,
+                    scale = new Vector2(1.5f, 1.5f),
+                },
+                isSeeable = false,
+            };
+
+            // creates players
+            player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
+            player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Garbage", false);
             // TODO: use this.Content to load your game content here
 
             // loads up cards & assigns values
@@ -203,7 +259,7 @@ namespace Testgame
             // if "instructions" chosen, displays instructions
             mainMenuAction[1] = delegate() 
             {
-                instructions = new Instructions(background, font); instructions.Start(); MainMenu.isPaused = true; 
+                instructions = new Instructions(background, slide1, slide2, slide3, slide4); instructions.Start(); MainMenu.isPaused = true; 
             };
 
             // if "settings" chosen, displays settings

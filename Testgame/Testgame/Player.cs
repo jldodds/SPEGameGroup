@@ -113,7 +113,7 @@ namespace Testgame
             myState = PlayerState.Normal;
         }
         
-        // fail, scrub
+        // fail, garbage
         public virtual void Update(GameTime gameTime)
         {
         }

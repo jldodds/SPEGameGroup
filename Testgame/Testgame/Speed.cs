@@ -257,10 +257,8 @@ namespace Testgame
                     you.Update(gameTime);
                     opp.Update(gameTime);
                     yourSelector.attributes.position = yourCards[you.selector].position;
-                    oppSelector.attributes.position = opponentCards[opp.selector].position;
-                    
-                    break;
-                
+                    oppSelector.attributes.position = opponentCards[opp.selector].position;                  
+                    break;             
                 case gameState.ReBeginning:
                 case gameState.PlayingCard:
                     you.Update(gameTime);
@@ -350,14 +348,12 @@ namespace Testgame
             int value = destinationPile.Peek().cardValue;
             if ((cv == 0 && value == 12) || (cv == 12 && value == 0) || (cv == value + 1 || cv == value - 1))
             {
-
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
                 m.Rotate(Actions.ExpoMove, (float)(random.NextDouble() - .5) / 2, .3f);
                 m.WhenDoneMoving(delegate()
                 {
-                    m.Move(Actions.LinearMove, m.attributes.position + new Vector2(random.Next(-5,5), random.Next(-5, 5)), 3f);
-                    
+                    m.Move(Actions.LinearMove, m.attributes.position + new Vector2(random.Next(-5,5), random.Next(-5, 5)), 3f); 
                     player.score++;
                     speedState = gameState.GamePlay;
                     if (player.isPlayer1)
