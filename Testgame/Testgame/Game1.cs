@@ -33,12 +33,17 @@ namespace Testgame
         ParticleEngine test;
         Random random = new Random();
         Instructions instructions;
-        SoundEffect soeffect;
+        SoundEffect shuffle;
+        SoundEffect playcard;
         SoundEffectInstance instance;
         float aspectRatio;
         Player player1;
         Player player2;
         Drawable BadTime;
+        Drawable slide1;
+        Drawable slide2;
+        Drawable slide3;
+        Drawable slide4;
 
         public Game1()
         {
@@ -89,8 +94,59 @@ namespace Testgame
                 }
             };
 
+            // creates the drawable instructions slides
+            slide1 = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("Slide1"),
+                    color = Color.White,
+                    position = new Vector2(512, 400),
+                    depth = 0,
+                    scale = new Vector2(1.5f, 1.5f),
+                },
+                isSeeable = true,
+            };
+            slide2 = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("Slide2"),
+                    color = Color.White,
+                    position = new Vector2(512, 400),
+                    depth = 0,
+                    scale = new Vector2(1.5f, 1.5f),
+                },
+                isSeeable = false,
+            };
+            slide3 = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("Slide3"),
+                    color = Color.White,
+                    position = new Vector2(512, 400),
+                    depth = 0,
+                    scale = new Vector2(1.5f, 1.5f),
+                },
+                isSeeable = false,
+            };
+            slide4 = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("Slide4"),
+                    color = Color.White,
+                    position = new Vector2(512, 400),
+                    depth = 0,
+                    scale = new Vector2(1.5f, 1.5f),
+                },
+                isSeeable = false,
+            };
+
+            // creates players
             player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
-            player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
+            player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Garbage", false);
             // TODO: use this.Content to load your game content here
 
             // loads up cards & assigns values
@@ -151,8 +207,7 @@ namespace Testgame
             #endregion Create cards[]
 
             // plays music
-            soeffect = Content.Load<SoundEffect>("Audio\\Waves\\engine_2");
-            instance = soeffect.CreateInstance();
+            shuffle = Content.Load<SoundEffect>("Audio\\Waves\\shuffle1");
 
             aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
 
@@ -202,13 +257,13 @@ namespace Testgame
             // if "play game" is chosen from main menu, starts the game
             mainMenuAction[0] = delegate() 
             {
-                MainMenu.isPaused = true; GameMenu.isPaused = false;
+                MainMenu.isPaused = true; GameMenu.isPaused = false; 
             };
             
             // if "instructions" chosen, displays instructions
             mainMenuAction[1] = delegate() 
             {
-                instructions = new Instructions(background, font); instructions.Start(); MainMenu.isPaused = true; 
+                instructions = new Instructions(background, slide1, slide2, slide3, slide4); instructions.Start(); MainMenu.isPaused = true; 
             };
 
             // if "settings" chosen, displays settings
@@ -220,7 +275,7 @@ namespace Testgame
             //makes main menu and turns it on
             MainMenu = new Menu(background, 4, title, mainMenuString, mainMenuAction, font);
             MainMenu.TurnOn();
-            soeffect.Play();
+            //soeffect.Play();
             #endregion
 
             #region PlayAgainMenu
@@ -245,8 +300,9 @@ namespace Testgame
             Button.ClickHandler[] playAgainAction = new Button.ClickHandler[2];
             playAgainAction[0] = delegate() {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
-                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false); 
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed); speed.TurnOn(); PlayAgain.isPaused = true;
+                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
+
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard); speed.TurnOn(); PlayAgain.isPaused = true;
             };
             playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
             
@@ -297,7 +353,7 @@ namespace Testgame
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed); speed.TurnOn();
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard); speed.TurnOn();
                 Pause.isPaused = true;
             };
 
@@ -337,7 +393,7 @@ namespace Testgame
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal); speed.TurnOn(); GameMenu.isPaused = true; 
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard); speed.TurnOn(); GameMenu.isPaused = true; 
             };
             
 
@@ -345,13 +401,13 @@ namespace Testgame
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon); speed.TurnOn(); GameMenu.isPaused = true; 
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard); speed.TurnOn(); GameMenu.isPaused = true; 
             };
 
 
             gameMenuAction[2] = delegate() { player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed); speed.TurnOn(); GameMenu.isPaused = true;};
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard); speed.TurnOn(); GameMenu.isPaused = true;};
             
 
             gameMenuAction[3] = delegate() {GameMenu.isPaused = true; MainMenu.isPaused = false;};

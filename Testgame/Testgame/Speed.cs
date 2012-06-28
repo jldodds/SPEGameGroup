@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Testgame
 {
@@ -39,17 +40,22 @@ namespace Testgame
         Random random;
         List<Texture2D> textures;
         ParticleEngine engine;
+
         gameType myType;
         int winningscore;
         Timer gameTimer;
         int gameLength;
+        SoundEffect shuffle;
+        SoundEffect playcard;
 
         // initializes lots of variables
-        public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, gameType gameType):base(background)
+        public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, SoundEffect playingcard):base(background)
         {
             myType = gameType;
             random = new Random();
             _font = font;
+            shuffle = shuffling;
+            playcard = playingcard;
             isHalted = false;
             isShaking = false;
             textures = particles;
@@ -336,10 +342,8 @@ namespace Testgame
                     you.Update(gameTime);
                     opp.Update(gameTime);
                     yourSelector.attributes.position = yourCards[you.selector].position;
-                    oppSelector.attributes.position = opponentCards[opp.selector].position;
-                    
-                    break;
-                
+                    oppSelector.attributes.position = opponentCards[opp.selector].position;                  
+                    break;             
                 case gameState.ReBeginning:
                 case gameState.PlayingCard:
                     you.Update(gameTime);
@@ -431,14 +435,12 @@ namespace Testgame
             int value = destinationPile.Peek().cardValue;
             if ((cv == 0 && value == 12) || (cv == 12 && value == 0) || (cv == value + 1 || cv == value - 1))
             {
-
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
                 m.Rotate(Actions.ExpoMove, (float)(random.NextDouble() - .5) / 2, .3f);
                 m.WhenDoneMoving(delegate()
                 {
-                    m.Move(Actions.LinearMove, m.attributes.position + new Vector2(random.Next(-5,5), random.Next(-5, 5)), 3f);
-                    
+                    m.Move(Actions.LinearMove, m.attributes.position + new Vector2(random.Next(-5,5), random.Next(-5, 5)), 3f); 
                     player.score++;
                     speedState = gameState.GamePlay;
                     if (player.isPlayer1)

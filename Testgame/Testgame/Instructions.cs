@@ -10,108 +10,88 @@ namespace Testgame
 {
     class Instructions : Screen
     {
-        Text _instructions1;
-        Text _instructions2;
-        Text _instructions3;
-        SpriteFont _font;
+        Drawable _slide1;
+        Drawable _slide2;
+        Drawable _slide3;
+        Drawable _slide4;
         KeyboardState oldState;
-        public instructionspage _instructionsPage;
+        instructionspage _instructionsPage;
 
-        public enum instructionspage
+        enum instructionspage
         {
             none,
             one,
             two,
-            three
+            three,
+            four
         }
 
-
-        public Instructions(Drawable background, SpriteFont font)
+        // initializes slides, sets instructions page to none, adds slides to screen
+        public Instructions(Drawable background, Drawable slide, Drawable slide2, Drawable slide3, Drawable slide4)
             : base(background)
         {
-            _font = font;
+            _slide1 = slide;
+            _slide2 = slide2;
+            _slide3 = slide3;
+            _slide4 = slide4;
             _instructionsPage = instructionspage.none;
-
-
-            
-                _instructions1 = new Text("Ok this is a test.", _font)
-                {
-                    attributes = new Attributes()
-                    {
-                        color = Color.Orange,
-                        position = new Vector2(512, 600),
-                        depth = .11f,
-                    },
-                    isSeeable = false,
-                    scale = new Vector2(.3f, .3f),
-                };
-                base.Add(_instructions1);
-
-                _instructions2 = new Text("Page2", _font)
-                {
-                    attributes = new Attributes()
-                    {
-                        color = Color.Orange,
-                        position = new Vector2(512, 600),
-                        depth = .1f,
-                    },
-                    scale = new Vector2(.8f, .8f),
-                    isSeeable = false,
-                };
-
-            
-                _instructions3 = new Text("Page2", _font)
-                {
-                    attributes = new Attributes()
-                    {
-                        color = Color.Orange,
-                        position = new Vector2(512, 600),
-                        depth = .1f,
-                    },
-                    scale = new Vector2(.8f, .8f),
-                    isSeeable = false,
-                };
-
+            base.Add(_slide1);
+            base.Add(_slide2);
+            base.Add(_slide3);
+            base.Add(_slide4);
         }
 
+        // turns on the first instructions page
         public void Start()
         {
             _instructionsPage = instructionspage.one;
             base.TurnOn();
         }
 
-        public void WriteText()
+        public void DisplayPage()
         {
+            // makes 1st slide visible
             if (_instructionsPage == instructionspage.one)
             {
-                _instructions1.isSeeable = true;
+                _slide2.isSeeable = false;
+                _slide3.isSeeable = false;
+                _slide4.isSeeable = false;
+                _slide1.isSeeable = true;
             }
 
+            // makes 2nd slide visible
             if (_instructionsPage == instructionspage.two)
             {
-                _instructions2.isSeeable = true;
+                _slide1.isSeeable = false;
+                _slide3.isSeeable = false;
+                _slide4.isSeeable = false;
+                _slide2.isSeeable = true;
             }
 
+            // makes 3rd slide visible
             if (_instructionsPage == instructionspage.three)
             {
-                _instructions3 = new Text("Page2", _font)
-                {
-                    attributes = new Attributes()
-                    {
-                        color = Color.Orange,
-                        position = new Vector2(512, 600),
-                        depth = .1f,
-                    },
-                    scale = new Vector2(.8f, .8f),
-                    isSeeable = false,
-                };
+                _slide1.isSeeable = false;
+                _slide2.isSeeable = false;
+                _slide4.isSeeable = false;
+                _slide3.isSeeable = true;
+            }
+            
+            // makes 4th slide visible
+            if (_instructionsPage == instructionspage.four)
+            {
+                _slide1.isSeeable = false;
+                _slide2.isSeeable = false;
+                _slide3.isSeeable = false;
+                _slide4.isSeeable = true;
             }
         }
 
+        // update method
         public override void Update(GameTime gameTime)
         {
+            DisplayPage();
             KeyboardUpdate();
-            WriteText();
             base.Update(gameTime);
         }
 
@@ -122,19 +102,25 @@ namespace Testgame
             if (_instructionsPage == instructionspage.none) return;
             if (newState.IsKeyDown(Keys.Left))
             {
+                // moves back an instructions page unless on the first one
                 if (!oldState.IsKeyDown(Keys.Left))
                 {
                     if (_instructionsPage == instructionspage.one) return;
-                    else _instructionsPage = instructionspage.two;
+                    else if (_instructionsPage == instructionspage.two) _instructionsPage = instructionspage.one;
+                    else if (_instructionsPage == instructionspage.three) _instructionsPage = instructionspage.two;
+                    else if (_instructionsPage == instructionspage.four) _instructionsPage = instructionspage.three;
                 }
             }
 
+            // moves forward an instructions page unless on the last one
             if (newState.IsKeyDown(Keys.Right))
             {
                 if (!oldState.IsKeyDown(Keys.Right))
                 {
-                    if (_instructionsPage == instructionspage.three) return;
-                    else _instructionsPage = instructionspage.two;
+                    if (_instructionsPage == instructionspage.one) _instructionsPage = instructionspage.two;
+                    else if (_instructionsPage == instructionspage.two) _instructionsPage = instructionspage.three;
+                    else if (_instructionsPage == instructionspage.three) _instructionsPage = instructionspage.four;
+                    else if (_instructionsPage == instructionspage.four) return;
                 }
             }
 
