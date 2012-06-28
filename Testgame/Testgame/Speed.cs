@@ -129,7 +129,6 @@ namespace Testgame
             oppScore.attributes.color = Color.Red;
             oppScore.attributes.depth = .02f;
             
-
             for (int i = 0; i < cards.Length; i++)
             {
                 base.Add(cards[i]);
@@ -220,6 +219,7 @@ namespace Testgame
         {
             speedState = gameState.Dealing;
             Shuffle(cards);
+            shuffle.Play();
             for (int i = 0; i < cards.Length; i++)
             {
                 cards[i].isFaceUp = false;
@@ -437,6 +437,7 @@ namespace Testgame
             {
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
+                playcard.Play();
                 m.Rotate(Actions.ExpoMove, (float)(random.NextDouble() - .5) / 2, .3f);
                 m.WhenDoneMoving(delegate()
                 {
