@@ -39,10 +39,8 @@ namespace Testgame
                     1f * (float)(random.NextDouble() * 600 - 300));
             float angle = 0;
             float angularVelocity = 1.5f * (float)(random.NextDouble() * 2 - 1);
-            Color color = new Color(
-                    (float) random.NextDouble(),
-                    (float)random.NextDouble() * .5f + .5f,
-                    0);
+            Color color = new Color(random.Next(225,255), random.Next(225,255), random.Next(225,255), 255
+                    );
             float size = (float)random.NextDouble() * .8f;
             float ttl = .3f + (float)random.NextDouble() / 10f;
 
