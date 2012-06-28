@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Testgame
 {
@@ -36,12 +37,16 @@ namespace Testgame
         Random random;
         List<Texture2D> textures;
         ParticleEngine engine;
+        SoundEffect shuffle;
+        SoundEffect playcard;
 
         // initializes lots of variables
-        public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles):base(background)
+        public Speed(Card[] deck, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, SoundEffect shuffling, SoundEffect playingcard):base(background)
         {
             random = new Random();
             _font = font;
+            shuffle = shuffling;
+            playcard = playingcard;
             isHalted = false;
             isShaking = false;
             textures = particles;

@@ -32,7 +32,8 @@ namespace Testgame
         ParticleEngine test;
         Random random = new Random();
         Instructions instructions;
-        SoundEffect soeffect;
+        SoundEffect shuffle;
+        SoundEffect playcard;
         SoundEffectInstance instance;
         float aspectRatio;
         Player player1;
@@ -105,7 +106,6 @@ namespace Testgame
                 },
                 isSeeable = true,
             };
-
             slide2 = new Drawable()
             {
                 attributes = new Attributes()
@@ -206,8 +206,7 @@ namespace Testgame
             #endregion Create cards[]
 
             // plays music
-            soeffect = Content.Load<SoundEffect>("Audio\\Waves\\engine_2");
-            instance = soeffect.CreateInstance();
+            shuffle = Content.Load<SoundEffect>("Audio\\Waves\\shuffle1");
 
             aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
 
@@ -258,8 +257,8 @@ namespace Testgame
             mainMenuAction[0] = delegate() 
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
-                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures); speed.TurnOn(); MainMenu.isPaused = true; 
+                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Garbage", false);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, shuffle, playcard); speed.TurnOn(); MainMenu.isPaused = true; 
             };
             
             // if "instructions" chosen, displays instructions
@@ -277,7 +276,7 @@ namespace Testgame
             //makes main menu and turns it on
             MainMenu = new Menu(background, 4, title, mainMenuString, mainMenuAction, font);
             MainMenu.TurnOn();
-            soeffect.Play();
+            //soeffect.Play();
             #endregion
 
             #region PlayAgainMenu
@@ -303,7 +302,7 @@ namespace Testgame
             playAgainAction[0] = delegate() {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false); 
-                speed = new Speed(cards, background, selector, font, player1, player2, textures); speed.TurnOn(); PlayAgain.isPaused = true;
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, shuffle, playcard); speed.TurnOn(); PlayAgain.isPaused = true;
             };
             playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
             
