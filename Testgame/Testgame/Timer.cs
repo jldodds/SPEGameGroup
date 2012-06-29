@@ -58,16 +58,23 @@ namespace Testgame
             return min + ":" + sec/10 +"" + sec%10;
         }
 
-        public String getCountDown(int timerNumber, int finalTime)
+        public String getCountDown(int timerNumber)
         {
             int time = (int) timer[timerNumber].getElapsed();
-            int countDownTime = finalTime - time;
+            int countDownTime = (int)timer[timerNumber].getDuration() - time;
             return getTimeString(countDownTime);
         }
 
         public void ResetTimer(int timerNumber)
         {
             timer[timerNumber].Reset();
+        }
+
+        public int getTimeLeft(int timerNumber)
+        {
+            int time = (int)timer[timerNumber].getElapsed();
+            int countDownTime = (int)timer[timerNumber].getDuration() - time;
+            return countDownTime;
         }
     }
 }

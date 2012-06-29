@@ -191,6 +191,11 @@ namespace Testgame
         {
             return elapsed;
         }
+
+        public float getDuration()
+        {
+            return duration;
+        }
         #endregion
     }
 }
