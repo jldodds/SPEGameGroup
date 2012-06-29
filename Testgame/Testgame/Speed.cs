@@ -41,7 +41,7 @@ namespace Testgame
         List<Texture2D> textures;
         ParticleEngine engine;
 
-        gameType myType;
+        public readonly gameType myType;
         int winningscore;
         Timer gameTimer;
         int gameLength;
@@ -440,7 +440,7 @@ namespace Testgame
             {
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
-                playcard.Play();
+                //playcard.Play();
                 m.Rotate(Actions.ExpoMove, (float)(random.NextDouble() - .5) / 2, .3f);
                 m.WhenDoneMoving(delegate()
                 {

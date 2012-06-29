@@ -146,7 +146,7 @@ namespace Testgame
 
             // creates players
             player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
-            player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Garbage", false);
+            player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
             // TODO: use this.Content to load your game content here
 
             // loads up cards & assigns values
@@ -302,7 +302,7 @@ namespace Testgame
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
 
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard); speed.TurnOn(); PlayAgain.isPaused = true;
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard); speed.TurnOn(); PlayAgain.isPaused = true;
             };
             playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
             
@@ -353,7 +353,7 @@ namespace Testgame
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard); speed.TurnOn();
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard); speed.TurnOn();
                 Pause.isPaused = true;
             };
 
