@@ -49,9 +49,11 @@ namespace Testgame
         int gameLength;
         SoundEffect shuffle;
         SoundEffect playcard;
+        SoundEffectInstance shuffleinstance;
+        bool isShuffling;
 
         // initializes lots of variables
-        public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, SoundEffect playingcard):base(background)
+        public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance):base(background)
         {
             myType = gameType;
             cardcounter = new int[52];
@@ -59,6 +61,7 @@ namespace Testgame
             _font = font;
             shuffle = shuffling;
             playcard = playingcard;
+            shuffleinstance = shuffinstance;
             isHalted = false;
             isShaking = false;
             textures = particles;
@@ -191,8 +194,7 @@ namespace Testgame
                 time2.attributes.position = new Vector2(oppName.attributes.position.X, yourName.attributes.position.Y);
                 time2.isSeeable = true;
                 time2.attributes.color = Color.Black;
-                time2.attributes.depth = .02f;
-                
+                time2.attributes.depth = .02f;                
             }
         }
 
@@ -222,11 +224,6 @@ namespace Testgame
         {
             speedState = gameState.Dealing;
             Shuffle(cards);
-            shuffle.Play();
-            shuffle.Play();
-            shuffle.Play();
-            shuffle.Play();
-            shuffle.Play();
             for (int i = 0; i < cards.Length; i++)
             {
                 cards[i].isFaceUp = false;
@@ -352,6 +349,7 @@ namespace Testgame
         {
             if (base.isPaused) return;
             if (isHalted) return;
+            //if (speedState != gameState.Dealing) shuffleinstance.IsLooped = false;
             if (myType == gameType.Timed)
             {
                 time1.changeContent(gameTimer.getCountDown(0));
@@ -362,6 +360,9 @@ namespace Testgame
             switch (speedState)
             {
                 case gameState.Dealing:
+                    if (shuffleinstance.State == SoundState.Stopped)
+                        shuffleinstance.Play();
+                    break;
                 case gameState.AskBegin:
                 case gameState.Beginning:
                     DoNothing();
@@ -437,16 +438,14 @@ namespace Testgame
 
         // starts the game
         public void BeginGame()
-        {
-            
+        {         
             Timer timer = new Timer(1);
             base.Add(timer);
             timer.SetTimer(0, .4f, delegate() { speedState = gameState.GamePlay; });
             DrawCard(lSpitStack, lGameStack, 0f);
             DrawCard(rSpitStack, rGameStack, 0f);
             you.TurnOn();
-            opp.TurnOn();
-            
+            opp.TurnOn();            
         }
 
         // plays cards from selected piles to destination piles
@@ -469,7 +468,7 @@ namespace Testgame
             {
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
-                //playcard.Play();
+                playcard.Play();
                 m.Rotate(Actions.ExpoMove, (float)(random.NextDouble() - .5) / 2, .3f);
                 m.WhenDoneMoving(delegate()
                 {
@@ -571,14 +570,12 @@ namespace Testgame
                     Text two = new Text("2", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
                     base.Add(two);
                     two.Fade(1);
-
                 });
                 stopwatch.SetTimer(1, 4, delegate()
                 {
                     Text one = new Text("1", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
                     base.Add(one);
                     one.Fade(1);
-
                 });
                 stopwatch.SetTimer(2, 5, delegate()
                 {
@@ -592,7 +589,6 @@ namespace Testgame
                     Text three = new Text("3", _font) { attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) } };
                     base.Add(three);
                     three.Fade(1);
-
                 });
             }
 
@@ -862,7 +858,7 @@ namespace Testgame
 
         // shuffles cards 
         public static void Shuffle(Card[] cards)
-        {
+        {         
             Random random = new Random();
             int N = cards.Length;
             for (int i = 0; i < N; i++)
