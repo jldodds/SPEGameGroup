@@ -40,8 +40,10 @@ namespace Testgame
         Random random;
         List<Texture2D> textures;
         ParticleEngine engine;
+        int[] cardcounter;            //keep track of generated cards;
+        int numberOfDecks = 1;        // number of decks to be used at a time
 
-        gameType myType;
+        public readonly gameType myType;
         int winningscore;
         Timer gameTimer;
         int gameLength;
@@ -52,6 +54,7 @@ namespace Testgame
         public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, SoundEffect playingcard):base(background)
         {
             myType = gameType;
+            cardcounter = new int[52];
             random = new Random();
             _font = font;
             shuffle = shuffling;
@@ -174,16 +177,16 @@ namespace Testgame
             {
                 gameLength = 120;
                 gameTimer = new Timer(1);
-                gameTimer.SetTimer(0, gameLength, delegate() { Winner(DetermineWinner()); time1.Fade(4); time2.Fade(4); });
+                gameTimer.SetTimer(0, gameLength, delegate() { Winner(DetermineWinner()); time1.Fade(4); time2.Fade(4); speedState = gameState.Winner; });
                 
-                time1 = new Text(gameTimer.getCountDown(0, gameLength), _font);
+                time1 = new Text(gameTimer.getCountDown(0), _font);
                 time1.height = 100;
                 time1.attributes.position = new Vector2(yourName.attributes.position.X, oppName.attributes.position.Y);
                 time1.isSeeable = true;
                 time1.attributes.color = Color.Black;
                 time1.attributes.depth = .02f;
                 
-                time2 = new Text(gameTimer.getCountDown(0, gameLength), _font);
+                time2 = new Text(gameTimer.getCountDown(0), _font);
                 time2.height = 100;
                 time2.attributes.position = new Vector2(oppName.attributes.position.X, yourName.attributes.position.Y);
                 time2.isSeeable = true;
@@ -312,14 +315,36 @@ namespace Testgame
                     break;
                 case gameType.Marathon:
                 case gameType.Timed:
-                    int x = random.Next(0, 52);
-                    temp = new Card(x, deck[x].cardFront, deck[x].cardBack, drawPile.position, false);
+
+
+                    temp = getRandomCard(drawPile);
                     base.Add(temp);
                     break;
             }
             temp.Flip(true, delay);
             temp.toPile(destinationPile, delay);
             temp.WhenDoneMoving(delegate() { destinationPile.drawnTo = false; });
+        }
+
+        private Card getRandomCard(Pile DrawPile)
+        {
+            bool foundint = false;
+            int s = 0;
+            while (!foundint)
+            {
+                int x = random.Next(0, 52);
+                if (cardcounter[x] < numberOfDecks) foundint = true;
+                s = x;
+            }
+            cardcounter[s]++;
+            bool full = true;
+            for (int i = 0; i < cardcounter.Length; i++)
+            {
+                if (cardcounter[i] < numberOfDecks) full = false;
+            }
+
+            if (full) cardcounter = new int[52];
+            return new Card(s, deck[s].cardFront, deck[s].cardBack, DrawPile.position, false);
         }
 
         // update method based on different gamestates
@@ -329,9 +354,9 @@ namespace Testgame
             if (isHalted) return;
             if (myType == gameType.Timed)
             {
-                time1.changeContent(gameTimer.getCountDown(0, gameLength));
-                time2.changeContent(gameTimer.getCountDown(0, gameLength));
-                if (speedState == gameState.ReBeginning) gameTimer.isPaused = true;
+                time1.changeContent(gameTimer.getCountDown(0));
+                time2.changeContent(gameTimer.getCountDown(0));
+                if (speedState == gameState.ReBeginning && gameTimer.getTimeLeft(0) <= 20) gameTimer.isPaused = true;
                 else gameTimer.isPaused = false;
             }
             switch (speedState)
@@ -444,7 +469,7 @@ namespace Testgame
             {
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
-                playcard.Play();
+                //playcard.Play();
                 m.Rotate(Actions.ExpoMove, (float)(random.NextDouble() - .5) / 2, .3f);
                 m.WhenDoneMoving(delegate()
                 {
@@ -490,6 +515,7 @@ namespace Testgame
         // determines if moves are still possible, returns boolean
         public bool ExistMoves()
         {
+            if (speedState == gameState.Winner) return true;
             bool oppMoves = false;
             for (int i = 0; i < opponentCards.Length; i++)
             {
