@@ -371,9 +371,6 @@ namespace Testgame
             GameMenu = new Menu(background, 4, playgame, gameMenuString, gameMenuAction, font);
             #endregion
 
-
-
-
             #region SettingsMenu
             // settings title
             Text settings = new Text("Settings", font)
@@ -417,7 +414,7 @@ namespace Testgame
             //exits game
             settingsactions[3] = delegate() 
             {
-                this.Exit(); 
+                
             };
 
             //makes main menu and turns it on
@@ -832,7 +829,7 @@ namespace Testgame
             GameMenu.Update(gameTime);
             InstructionsMenu.Update(gameTime);
             Controls.Update(gameTime);
-           Rules.Update(gameTime);
+            Rules.Update(gameTime);
             Winning.Update(gameTime);
             MainMenu.Update(gameTime);
             Pause.Update(gameTime);
