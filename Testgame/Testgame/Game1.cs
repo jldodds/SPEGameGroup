@@ -27,6 +27,8 @@ namespace Testgame
         KeyboardState oldState;
         Menu MainMenu;
         Menu GameMenu;
+        Menu MarathonMenu;
+        Menu TimedMenu;
         Menu PlayAgain;
         Menu Pause;
         Menu SettingsMenu;
@@ -264,8 +266,23 @@ namespace Testgame
             playAgainAction[0] = delegate() {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); PlayAgain.isPaused = true;
+                switch (speed.myType)
+                {
+                    case Speed.gameType.Timed:
+                        int x = speed.gameLength;
+                        speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                        speed.gameLength = x;
+                        break;
+                    case Speed.gameType.Marathon:
+                        int y = speed.winningscore;
+                        speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                        speed.winningscore = y;
+                        break;
+                    default:
+                        speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                        break;
+                }
+                 speed.TurnOn(); PlayAgain.isPaused = true;
             };
             playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
             
@@ -362,12 +379,12 @@ namespace Testgame
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true; 
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn); MarathonMenu.isPaused = false; GameMenu.isPaused = true; 
             };
 
             gameMenuAction[2] = delegate() { player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true;};
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn); TimedMenu.isPaused = false; GameMenu.isPaused = true;};
             
             gameMenuAction[3] = delegate() {GameMenu.isPaused = true; MainMenu.isPaused = false;};
             
@@ -772,6 +789,90 @@ namespace Testgame
             Winning.setButton(delegate() { Winning.isPaused = true; InstructionsMenu.isPaused = false; });
             #endregion
 
+            #region MarathonMenu
+            Text ChooseLength = new Text("Set Win Score", font)
+            {
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    rotation = -.05f,
+                    depth = 0f,
+                },
+                scale = new Vector2(.5f, .5f)
+            };
+
+            String[] marathonMenuString = new String[4];
+            marathonMenuString[0] = "Half Marathon (30)";
+            marathonMenuString[1] = "Marathon (50)";
+            marathonMenuString[2] = "Ultra Marathon (100)";
+            marathonMenuString[3] = "Back";
+            Button.ClickHandler[] marathonMenuAction = new Button.ClickHandler[4];
+
+            marathonMenuAction[0] = delegate()
+            {
+                speed.winningscore = 30; speed.TurnOn(); MarathonMenu.isPaused = true;
+            };
+
+            marathonMenuAction[1] = delegate()
+            {
+                speed.winningscore = 50; speed.TurnOn(); MarathonMenu.isPaused = true;
+            };
+
+            marathonMenuAction[2] = delegate()
+            {
+                speed.winningscore = 100; speed.TurnOn(); MarathonMenu.isPaused = true;
+            };
+
+            marathonMenuAction[3] = delegate() { MarathonMenu.isPaused = true; GameMenu.isPaused = false; };
+
+            MarathonMenu = new Menu(background, 4, ChooseLength, marathonMenuString, marathonMenuAction, font);
+            #endregion
+
+            #region TimedMenu
+            Text ChooseTime = new Text("Set Time", font)
+            {
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    rotation = -.05f,
+                    depth = 0f,
+                },
+                scale = new Vector2(.5f, .5f)
+            };
+
+            String[] TimedMenuString = new String[5];
+            TimedMenuString[0] = "30 seconds";
+            TimedMenuString[1] = "1 minute";
+            TimedMenuString[2] = "2 minutes";
+            TimedMenuString[3] = "5 minutes";
+            TimedMenuString[4] = "Back";
+            Button.ClickHandler[] TimedMenuAction = new Button.ClickHandler[5];
+
+            TimedMenuAction[0] = delegate()
+            {
+                speed.gameLength = 30; speed.TurnOn(); TimedMenu.isPaused = true;
+            };
+
+            TimedMenuAction[1] = delegate()
+            {
+                speed.gameLength = 60; speed.TurnOn(); TimedMenu.isPaused = true;
+            };
+
+            TimedMenuAction[2] = delegate()
+            {
+                speed.gameLength = 120; speed.TurnOn(); TimedMenu.isPaused = true;
+            };
+
+            TimedMenuAction[3] = delegate()
+            {
+                speed.gameLength = 300; speed.TurnOn(); TimedMenu.isPaused = true;
+            };
+
+            TimedMenuAction[4] = delegate() { TimedMenu.isPaused = true; GameMenu.isPaused = false; };
+
+            TimedMenu = new Menu(background, 5, ChooseTime, TimedMenuString, TimedMenuAction, font);
+            #endregion
+
             // makes the freeze icon
             freeze = new Drawable()
             {
@@ -836,6 +937,8 @@ namespace Testgame
             Rules.Update(gameTime);
             Winning.Update(gameTime);
             MainMenu.Update(gameTime);
+            MarathonMenu.Update(gameTime);
+            TimedMenu.Update(gameTime);
             Pause.Update(gameTime);
             PlayAgain.Update(gameTime);
             SettingsMenu.Update(gameTime);
@@ -907,8 +1010,10 @@ namespace Testgame
             InstructionsMenu.Draw(spriteBatch);
             GameMenu.Draw(spriteBatch);
             Pause.Draw(spriteBatch);
+            MarathonMenu.Draw(spriteBatch);
             PlayAgain.Draw(spriteBatch);
             Controls.Draw(spriteBatch);
+            TimedMenu.Draw(spriteBatch);
             Rules.Draw(spriteBatch);
             Winning.Draw(spriteBatch);
             freeze.Draw(spriteBatch, SpriteEffects.None);
