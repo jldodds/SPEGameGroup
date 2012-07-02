@@ -26,48 +26,6 @@ namespace Testgame
             normal,
         }
 
-        /*public bool MoveExists(Pile[] oppCards, Pile rgamestack, Pile lgamestack)
-        {
-            compMoves = false;
-            for (int i = 0; i < oppCards.Length; i++)
-            {
-                if (oppCards[i].Count() != 0)
-                {
-                    int cv = oppCards[i].Peek().cardValue;
-                    int leftValue = lgamestack.Peek().cardValue;
-                    int rightValue = rgamestack.Peek().cardValue;
-                    if ((cv == 0 && leftValue == 12) || (cv == 12 && leftValue == 0) || (cv == leftValue + 1 || cv == leftValue - 1)) compMoves = true;
-                    if ((cv == 0 && rightValue == 12) || (cv == 12 && rightValue == 0) || (cv == rightValue + 1 || cv == rightValue - 1)) compMoves = true;
-                }
-            }
-            return compMoves;
-        }*/
-
-       /* public void FindPileNumber(Pile[] oppCards, Pile rgamestack, Pile lgamestack)
-        {
-            compMoves = false;
-            pileNumber = 0;
-            isLeftPile = false;
-            for (int i = 0; i < oppCards.Length; i++)
-            {
-                if (oppCards[i].Count() != 0)
-                {
-                    int cv = oppCards[i].Peek().cardValue;
-                    int leftValue = lgamestack.Peek().cardValue;
-                    int rightValue = rgamestack.Peek().cardValue;
-                    if ((cv == 0 && leftValue == 12) || (cv == 12 && leftValue == 0) || (cv == leftValue + 1 || cv == leftValue - 1))
-                    {
-                        compMoves = true;
-                        isLeftPile = true;
-                    }
-                    if ((cv == 0 && rightValue == 12) || (cv == 12 && rightValue == 0) || (cv == rightValue + 1 || cv == rightValue - 1)) compMoves = true;
-                    pileNumber++;
-                    if (compMoves) break;
-                }
-            }
-            pileNumber =  Math.Abs(pileNumber - selector);
-        }*/
-
         public void BensMethod(Pile[] Hand, Pile rgamestack, Pile lgamestack)
         {
             if (myState == CompState.moving) return;
