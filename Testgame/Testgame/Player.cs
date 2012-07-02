@@ -159,7 +159,7 @@ namespace Testgame
         }
         
         // This has to be implemented by the extended classes
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(Pile[] Hand, Pile rgamestack, Pile lgamestack, GameTime gameTime)
         {
         }
     }

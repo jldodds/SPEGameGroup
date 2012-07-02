@@ -351,6 +351,7 @@ namespace Testgame
                 if (speedState == gameState.ReBeginning && gameTimer.getTimeLeft(0) <= 20) gameTimer.isPaused = true;
                 else gameTimer.isPaused = false;
             }
+
             switch (speedState)
             {
                 case gameState.Dealing:
@@ -366,15 +367,15 @@ namespace Testgame
                     oppScore.changeContent(opp.score.ToString());
                     if (ExistWinner()) Winner(DetermineWinner());
                     else if (!ExistMoves()) ReBegin();
-                    you.Update(gameTime);
-                    opp.Update(gameTime);
+                    you.Update(yourCards,rGameStack, lGameStack, gameTime);
+                    opp.Update(opponentCards, rGameStack, lGameStack, gameTime);
                     yourSelector.attributes.position = yourCards[you.selector].position;
                     oppSelector.attributes.position = opponentCards[opp.selector].position;                  
                     break;             
                 case gameState.ReBeginning:
                 case gameState.PlayingCard:
-                    you.Update(gameTime);
-                    opp.Update(gameTime);
+                    you.Update(yourCards, rGameStack, lGameStack, gameTime);
+                    opp.Update(opponentCards, rGameStack, lGameStack, gameTime);
                     yourSelector.attributes.position = yourCards[you.selector].position;
                     oppSelector.attributes.position = opponentCards[opp.selector].position;
                     break;

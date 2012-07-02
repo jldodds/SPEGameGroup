@@ -25,10 +25,10 @@ namespace Testgame
         }
 
         // update method
-        public override void Update(GameTime gameTime)
+        public override void Update(Pile[] Hand, Pile rgamestack, Pile lgamestack, GameTime gameTime)
         {
             KeyUpdate();
-            base.Update(gameTime);
+            base.Update(Hand, rgamestack,lgamestack,gameTime);
         }
 
         //update keys
