@@ -44,9 +44,9 @@ namespace Testgame
         int numberOfDecks = 1;        // number of decks to be used at a time
 
         public readonly gameType myType;
-        int winningscore;
+        public int winningscore { get; set; }
         Timer gameTimer;
-        int gameLength;
+        public int gameLength { get; set; }
         SoundEffect shuffle;
         SoundEffect playcard;
         SoundEffectInstance shuffleinstance;
@@ -186,24 +186,11 @@ namespace Testgame
             if (myType == gameType.Timed)
             {
                 gameLength = 120;
-                gameTimer = new Timer(1);
-                gameTimer.SetTimer(0, gameLength, delegate() { Winner(DetermineWinner()); time1.Fade(4); time2.Fade(4); speedState = gameState.Winner; });
-                
-                time1 = new Text(gameTimer.getCountDown(0), _font);
-                time1.height = 100;
-                time1.attributes.position = new Vector2(yourName.attributes.position.X, oppName.attributes.position.Y);
-                time1.isSeeable = true;
-                time1.attributes.color = Color.Black;
-                time1.attributes.depth = .02f;
-                
-                time2 = new Text(gameTimer.getCountDown(0), _font);
-                time2.height = 100;
-                time2.attributes.position = new Vector2(oppName.attributes.position.X, yourName.attributes.position.Y);
-                time2.isSeeable = true;
-                time2.attributes.color = Color.Black;
-                time2.attributes.depth = .02f;                
+                        
             }
         }
+
+
 
         public enum gameType
         {
@@ -428,6 +415,25 @@ namespace Testgame
         // turns game on
         public override void TurnOn()
         {
+            if (myType == gameType.Timed)
+            {
+                gameTimer = new Timer(1);
+                gameTimer.SetTimer(0, gameLength, delegate() { Winner(DetermineWinner()); time1.Fade(4); time2.Fade(4); speedState = gameState.Winner; });
+
+                time1 = new Text(gameTimer.getCountDown(0), _font);
+                time1.height = 100;
+                time1.attributes.position = new Vector2(yourName.attributes.position.X, oppName.attributes.position.Y);
+                time1.isSeeable = true;
+                time1.attributes.color = Color.Black;
+                time1.attributes.depth = .02f;
+
+                time2 = new Text(gameTimer.getCountDown(0), _font);
+                time2.height = 100;
+                time2.attributes.position = new Vector2(oppName.attributes.position.X, yourName.attributes.position.Y);
+                time2.isSeeable = true;
+                time2.attributes.color = Color.Black;
+                time2.attributes.depth = .02f;
+            }
             Deal();
             base.TurnOn();
         }
@@ -523,6 +529,7 @@ namespace Testgame
         public bool ExistMoves()
         {
             if (speedState == gameState.Winner) return true;
+            if (speedState == gameState.PlayAgain) return true;
             bool oppMoves = false;
             for (int i = 0; i < opponentCards.Length; i++)
             {
@@ -554,6 +561,7 @@ namespace Testgame
         public void ReBegin()
         {
             if (speedState == gameState.Winner) return;
+            if (speedState == gameState.PlayAgain) return;
             speedState = gameState.ReBeginning;
             Timer watch = new Timer(1);
             base.Add(watch);
@@ -643,6 +651,7 @@ namespace Testgame
         // does actions if player is a winner
         public void Winner(Player winner)
         {
+            speedState = gameState.Winner;
             yourName.Fade(4);
             oppName.Fade(4);
             yourScore.Fade(4);

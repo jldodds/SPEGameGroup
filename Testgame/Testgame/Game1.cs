@@ -27,6 +27,8 @@ namespace Testgame
         KeyboardState oldState;
         Menu MainMenu;
         Menu GameMenu;
+        Menu MarathonMenu;
+        Menu TimedMenu;
         Menu PlayAgain;
         Menu Pause;
         Menu SettingsMenu;
@@ -264,8 +266,23 @@ namespace Testgame
             playAgainAction[0] = delegate() {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); PlayAgain.isPaused = true;
+                switch (speed.myType)
+                {
+                    case Speed.gameType.Timed:
+                        int x = speed.gameLength;
+                        speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                        speed.gameLength = x;
+                        break;
+                    case Speed.gameType.Marathon:
+                        int y = speed.winningscore;
+                        speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                        speed.winningscore = y;
+                        break;
+                    default:
+                        speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                        break;
+                }
+                 speed.TurnOn(); PlayAgain.isPaused = true;
             };
             playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
             
@@ -362,12 +379,12 @@ namespace Testgame
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true; 
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn); MarathonMenu.isPaused = false; GameMenu.isPaused = true; 
             };
 
             gameMenuAction[2] = delegate() { player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true;};
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn); TimedMenu.isPaused = false; GameMenu.isPaused = true;};
             
             gameMenuAction[3] = delegate() {GameMenu.isPaused = true; MainMenu.isPaused = false;};
             
@@ -585,10 +602,10 @@ namespace Testgame
             #endregion
 
             #region Rules
-            Drawable[][] RulesText = new Drawable[2][];
+            Drawable[][] RulesText = new Drawable[1][];
             #region FirstPage
             
-            RulesText[0] = new Drawable[6];
+            RulesText[0] = new Drawable[8];
 
             RulesText[0][0] = new Text("Rules", instructionsfont)
             {
@@ -602,81 +619,27 @@ namespace Testgame
             };
             RulesText[0][1] = new Text("Each player has 5 cards in their hand at a time.", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 300),
+                    position = new Vector2(512, 250),
                 }
             };
             RulesText[0][2] = new Text("You can play a card if its value is one higher or lower", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 400),
+                    position = new Vector2(512, 310),
                 }
             };
             RulesText[0][3] = new Text("than a card in one of the middle piles.", instructionsfont)
             {
-                height = 100,
-                attributes = new Attributes()
-                {
-                    color = Color.Black,
-                    depth = 0f,
-                    position = new Vector2(512, 450),
-                }
-            };
-            RulesText[0][4] = new Text("Aces are both low and high, so they can be played", instructionsfont)
-            {
-                height = 100,
-                attributes = new Attributes()
-                {
-                    color = Color.Black,
-                    depth = 0f,
-                    position = new Vector2(512, 550),
-                }
-            };
-            RulesText[0][5] = new Text("on both a King and a Two.", instructionsfont)
-            {
-                height = 100,
-                attributes = new Attributes()
-                {
-                    color = Color.Black,
-                    depth = 0f,
-                    position = new Vector2(512, 600),
-                }
-            };
-            #endregion
-
-            #region SecondPage
-            RulesText[1] = new Drawable[3];
-            RulesText[1][0] = new Text("Rules", instructionsfont)
-            {
-                height = 200,
-                attributes = new Attributes()
-                {
-                    color = Color.Black,
-                    depth = 0f,
-                    position = new Vector2(512, 150),
-                }
-            };
-            RulesText[1][1] = new Text("If neither player has any moves, two new middle cards", instructionsfont)
-            {
-                height = 100,
-                attributes = new Attributes()
-                {
-                    color = Color.Black,
-                    depth = 0f,
-                    position = new Vector2(512, 300),
-                }
-            };
-            RulesText[1][2] = new Text("will be drawn and gameplay will continue as before.", instructionsfont)
-            {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
@@ -684,7 +647,49 @@ namespace Testgame
                     position = new Vector2(512, 350),
                 }
             };
+            RulesText[0][4] = new Text("Aces are both low and high, so they can be played", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 430),
+                }
+            };
+            RulesText[0][5] = new Text("on both a King and a Two.", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 470),
+                }
+            };
+            RulesText[0][6] = new Text("If neither player has any moves, two new middle cards", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 550),
+                }
+            };
+            RulesText[0][7] = new Text("will be drawn and gameplay will continue as before.", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 590),
+                }
+            };
             #endregion
+
+            
 
             Rules = new Instructions(background, RulesText, font);
             Rules.setButton(delegate() { Rules.isPaused = true; InstructionsMenu.isPaused = false; });
@@ -696,7 +701,7 @@ namespace Testgame
             Drawable[][] WinningText = new Drawable[1][];
 
             #region FirstPage
-            WinningText[0] = new Drawable[7];
+            WinningText[0] = new Drawable[8];
             WinningText[0][0] = new Text("Winning", instructionsfont)
             {
                 height = 200,
@@ -708,70 +713,164 @@ namespace Testgame
                 }
             };
 
-            WinningText[0][1] = new Text("In Normal Mode: The first person to play all 21", instructionsfont)
+            WinningText[0][1] = new Text("In Normal Mode: The first person to play all", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 275),
+                    position = new Vector2(512, 250),
                 }
             };
-            WinningText[0][2] = new Text("of their cards wins the game.", instructionsfont)
+            WinningText[0][2] = new Text("of their cards or the player with the highest score when", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 325),
+                    position = new Vector2(512, 290),
                 }
             };
-            WinningText[0][3] = new Text("In Marathon Mode: The first player to play a chosen", instructionsfont)
+            WinningText[0][3] = new Text("no more cards can be drawn wins the game.", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 425),
+                    position = new Vector2(512, 330),
                 }
             };
-            WinningText[0][4] = new Text("number of cards wins the game.", instructionsfont)
+            WinningText[0][4] = new Text("In Marathon Mode: The first player to play a chosen", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 475),
+                    position = new Vector2(512, 410),
                 }
             };
-            WinningText[0][5] = new Text("In Timed Mode: The player who plays the most cards", instructionsfont)
+            WinningText[0][5] = new Text("number of cards wins the game.", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 575),
+                    position = new Vector2(512, 450),
                 }
             };
-            WinningText[0][6] = new Text("before time runs out wins the game.", instructionsfont)
+            WinningText[0][6] = new Text("In Timed Mode: The player who plays the most cards", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 625),
+                    position = new Vector2(512, 530),
+                }
+            };
+            WinningText[0][7] = new Text("before time runs out wins the game.", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 570),
                 }
             };
             #endregion
 
             Winning = new Instructions(background, WinningText, font);
             Winning.setButton(delegate() { Winning.isPaused = true; InstructionsMenu.isPaused = false; });
+            #endregion
+
+            #region MarathonMenu
+            Text ChooseLength = new Text("Set Win Score", font)
+            {
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    rotation = -.05f,
+                    depth = 0f,
+                },
+                scale = new Vector2(.5f, .5f)
+            };
+
+            String[] marathonMenuString = new String[4];
+            marathonMenuString[0] = "Half Marathon (30)";
+            marathonMenuString[1] = "Marathon (50)";
+            marathonMenuString[2] = "Ultra Marathon (100)";
+            marathonMenuString[3] = "Back";
+            Button.ClickHandler[] marathonMenuAction = new Button.ClickHandler[4];
+
+            marathonMenuAction[0] = delegate()
+            {
+                speed.winningscore = 30; speed.TurnOn(); MarathonMenu.isPaused = true;
+            };
+
+            marathonMenuAction[1] = delegate()
+            {
+                speed.winningscore = 50; speed.TurnOn(); MarathonMenu.isPaused = true;
+            };
+
+            marathonMenuAction[2] = delegate()
+            {
+                speed.winningscore = 100; speed.TurnOn(); MarathonMenu.isPaused = true;
+            };
+
+            marathonMenuAction[3] = delegate() { MarathonMenu.isPaused = true; GameMenu.isPaused = false; };
+
+            MarathonMenu = new Menu(background, 4, ChooseLength, marathonMenuString, marathonMenuAction, font);
+            #endregion
+
+            #region TimedMenu
+            Text ChooseTime = new Text("Set Time", font)
+            {
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    rotation = -.05f,
+                    depth = 0f,
+                },
+                scale = new Vector2(.5f, .5f)
+            };
+
+            String[] TimedMenuString = new String[5];
+            TimedMenuString[0] = "30 seconds";
+            TimedMenuString[1] = "1 minute";
+            TimedMenuString[2] = "2 minutes";
+            TimedMenuString[3] = "5 minutes";
+            TimedMenuString[4] = "Back";
+            Button.ClickHandler[] TimedMenuAction = new Button.ClickHandler[5];
+
+            TimedMenuAction[0] = delegate()
+            {
+                speed.gameLength = 30; speed.TurnOn(); TimedMenu.isPaused = true;
+            };
+
+            TimedMenuAction[1] = delegate()
+            {
+                speed.gameLength = 60; speed.TurnOn(); TimedMenu.isPaused = true;
+            };
+
+            TimedMenuAction[2] = delegate()
+            {
+                speed.gameLength = 120; speed.TurnOn(); TimedMenu.isPaused = true;
+            };
+
+            TimedMenuAction[3] = delegate()
+            {
+                speed.gameLength = 300; speed.TurnOn(); TimedMenu.isPaused = true;
+            };
+
+            TimedMenuAction[4] = delegate() { TimedMenu.isPaused = true; GameMenu.isPaused = false; };
+
+            TimedMenu = new Menu(background, 5, ChooseTime, TimedMenuString, TimedMenuAction, font);
             #endregion
 
             // makes the freeze icon
@@ -838,6 +937,8 @@ namespace Testgame
             Rules.Update(gameTime);
             Winning.Update(gameTime);
             MainMenu.Update(gameTime);
+            MarathonMenu.Update(gameTime);
+            TimedMenu.Update(gameTime);
             Pause.Update(gameTime);
             PlayAgain.Update(gameTime);
             SettingsMenu.Update(gameTime);
@@ -909,8 +1010,10 @@ namespace Testgame
             InstructionsMenu.Draw(spriteBatch);
             GameMenu.Draw(spriteBatch);
             Pause.Draw(spriteBatch);
+            MarathonMenu.Draw(spriteBatch);
             PlayAgain.Draw(spriteBatch);
             Controls.Draw(spriteBatch);
+            TimedMenu.Draw(spriteBatch);
             Rules.Draw(spriteBatch);
             Winning.Draw(spriteBatch);
             freeze.Draw(spriteBatch, SpriteEffects.None);
