@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Testgame
 {
@@ -13,6 +14,7 @@ namespace Testgame
         int pileNumber;
         bool isLeftPile;
         CompState myState;
+        MouseState oldState;
 
         public ComputerPlayer(String name, bool isPlayer1) : base(name, isPlayer1)
         {
@@ -26,7 +28,7 @@ namespace Testgame
             normal,
         }
 
-        public void BensMethod(Pile[] Hand, Pile rgamestack, Pile lgamestack)
+        public void Move(Pile[] Hand, Pile rgamestack, Pile lgamestack)
         {
             if (myState == CompState.moving) return;
             if (ExistAMove(Hand, rgamestack, lgamestack))
@@ -79,31 +81,10 @@ namespace Testgame
             return moves;
         }
 
-        /*public void FindAndPlayCard(Pile[] Hand, Pile rgamestack, Pile lgamestack)
+        public override void Update(Pile[] Hand, Pile rgamestack, Pile lgamestack, GameTime gameTime)
         {
-            Random random = new Random();
-            FindPileNumber(Hand, rgamestack, lgamestack);
-            if (compMoves)
-            {
-                if (random.NextDouble() < .5)
-                {
-                    MoveSelectorLeft(pileNumber);
-                    SelectCard(isLeftPile);
-                }
-                else 
-                {
-                    MoveSelectorRight(pileNumber);
-                    SelectCard(isLeftPile);
-                }
-            }
-            
-        }*/
-
-        public override void  Update(Pile[] Hand, Pile rgamestack, Pile lgamestack, GameTime gameTime)
-        {
-
             if (moveDelay != null) moveDelay.Update(gameTime);
-            BensMethod(Hand, rgamestack, lgamestack);
+            Move(Hand, rgamestack, lgamestack);
  	        base.Update(Hand, rgamestack, lgamestack, gameTime);
         }
     }
