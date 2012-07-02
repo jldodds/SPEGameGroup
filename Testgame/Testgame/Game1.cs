@@ -29,6 +29,7 @@ namespace Testgame
         Menu GameMenu;
         Menu PlayAgain;
         Menu Pause;
+        Menu SettingsMenu;
         Drawable freeze;
         List<Texture2D> textures;
         ParticleEngine test;
@@ -165,6 +166,7 @@ namespace Testgame
 
             // plays music
             shuffle = Content.Load<SoundEffect>("Audio\\Waves\\shuffle1");
+            playcard = Content.Load<SoundEffect>("Audio\\Waves\\slapcard");
 
             aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
 
@@ -183,8 +185,7 @@ namespace Testgame
             
             // loads card selector
             selector = this.Content.Load<Texture2D>("CardSelector");
-            // loads BadaBoom font
-            
+
             textures = new List<Texture2D>();
             textures.Add(Content.Load<Texture2D>("circle"));
             textures.Add(Content.Load<Texture2D>("diamond"));
@@ -224,7 +225,10 @@ namespace Testgame
             };
 
             // if "settings" chosen, displays settings
-            mainMenuAction[2] = delegate() { Console.WriteLine("Settings"); };
+            mainMenuAction[2] = delegate() 
+            {
+                MainMenu.isPaused = true;  SettingsMenu.isPaused = false; 
+            };
             
             //exits game
             mainMenuAction[3] = delegate() { this.Exit(); };
@@ -232,7 +236,6 @@ namespace Testgame
             //makes main menu and turns it on
             MainMenu = new Menu(background, 4, title, mainMenuString, mainMenuAction, font);
             MainMenu.TurnOn();
-            //soeffect.Play();
             #endregion
 
             #region PlayAgainMenu
@@ -345,7 +348,6 @@ namespace Testgame
             gameMenuString[3] = "Back";
             Button.ClickHandler[] gameMenuAction = new Button.ClickHandler[4];
             
-
             gameMenuAction[0] = delegate() 
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
@@ -353,7 +355,6 @@ namespace Testgame
                 speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard); speed.TurnOn(); GameMenu.isPaused = true; 
             };
             
-
             gameMenuAction[1] = delegate() 
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
@@ -361,24 +362,75 @@ namespace Testgame
                 speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard); speed.TurnOn(); GameMenu.isPaused = true; 
             };
 
-
             gameMenuAction[2] = delegate() { player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
                 speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard); speed.TurnOn(); GameMenu.isPaused = true;};
             
-
             gameMenuAction[3] = delegate() {GameMenu.isPaused = true; MainMenu.isPaused = false;};
             
-
             GameMenu = new Menu(background, 4, playgame, gameMenuString, gameMenuAction, font);
             #endregion
 
+
+
+
+            #region SettingsMenu
+            // settings title
+            Text settings = new Text("Settings", font)
+            {
+           attributes = new Attributes()
+                {
+                    color = Color.Black,
+
+                    //rotation = -.2f,
+                    depth = 0f,
+                },
+                scale = new Vector2(.5f, .5f)
+            };
+
+            // creates settings buttons
+            String[] settingsbuttons = new String[4];
+            settingsbuttons[0] = "Sound Effects";
+            settingsbuttons[1] = "Power Ups";
+            settingsbuttons[2] = "         ";
+            settingsbuttons[3] = "Main Menu";
+            Button.ClickHandler[] settingsactions = new Button.ClickHandler[4];
+
+            // if "play game" is chosen from main menu, starts the game
+            settingsactions[0] = delegate()
+            {
+                
+            };
+
+            // if "instructions" chosen, displays instructions
+            settingsactions[1] = delegate()
+            {
+                
+            };
+
+            // if "settings" chosen, displays settings
+            settingsactions[2] = delegate() 
+            {
+                 
+            };
+
+            //exits game
+            settingsactions[3] = delegate() 
+            {
+                this.Exit(); 
+            };
+
+            //makes main menu and turns it on
+            SettingsMenu = new Menu(background, 4, settings, settingsbuttons, settingsactions, font);
+            #endregion
+
             #region InstructionsMenu
-            Text Instructions = new Text("Select Game Mode", font)
+            Text Instructions = new Text("Instructions", font)
             {
                 attributes = new Attributes()
                 {
                     color = Color.Black,
+
                     rotation = -.05f,
                     depth = 0f,
                 },
@@ -421,7 +473,6 @@ namespace Testgame
             };
 
             InstructionsMenuAction[4] = delegate() { InstructionsMenu.isPaused = true; MainMenu.isPaused = false; };
-
 
             InstructionsMenu = new Menu(background, 5, Instructions, InstructionsMenuString, InstructionsMenuAction, font);
             #endregion
@@ -786,6 +837,7 @@ namespace Testgame
             MainMenu.Update(gameTime);
             Pause.Update(gameTime);
             PlayAgain.Update(gameTime);
+            SettingsMenu.Update(gameTime);
             KeyUpdate(gameTime);
             base.Update(gameTime);
         }
@@ -860,6 +912,7 @@ namespace Testgame
             Winning.Draw(spriteBatch);
             freeze.Draw(spriteBatch, SpriteEffects.None);
             //test.Draw(spriteBatch);
+            SettingsMenu.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

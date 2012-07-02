@@ -229,6 +229,10 @@ namespace Testgame
             speedState = gameState.Dealing;
             Shuffle(cards);
             shuffle.Play();
+            shuffle.Play();
+            shuffle.Play();
+            shuffle.Play();
+            shuffle.Play();
             for (int i = 0; i < cards.Length; i++)
             {
                 cards[i].isFaceUp = false;
