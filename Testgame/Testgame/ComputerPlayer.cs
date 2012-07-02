@@ -13,11 +13,13 @@ namespace Testgame
         int pileNumber;
         bool isLeftPile;
         CompState myState;
+        Random random;
 
         public ComputerPlayer(String name, bool isPlayer1) : base(name, isPlayer1)
         {
             myState = CompState.normal;
-            timeDelay = .18f;
+            timeDelay = .40f;
+            random = new Random();
         }
 
         public enum CompState
@@ -26,7 +28,7 @@ namespace Testgame
             normal,
         }
 
-        public void BensMethod(Pile[] Hand, Pile rgamestack, Pile lgamestack)
+        public void Move(Pile[] Hand, Pile rgamestack, Pile lgamestack)
         {
             if (myState == CompState.moving) return;
             if (ExistAMove(Hand, rgamestack, lgamestack))
@@ -34,16 +36,32 @@ namespace Testgame
                 myState = CompState.moving;
                 if (pileNumber != selector)
                 {
-                    moveDelay = new Timer(1);
-                    moveDelay.SetTimer(0, timeDelay, delegate()
+                    int x = pileNumber - selector;
+                    if (x >= 3 || (x < 0 && x >= -2))
                     {
-                        MoveSelectorRight(); myState = CompState.normal;
-                    });
+                        moveDelay = new Timer(1);
+                        moveDelay.SetTimer(0, timeDelay + ((float)random.NextDouble() - .5f) * timeDelay, delegate()
+                        {
+                            if (!isPlayer1) MoveSelectorLeft();
+                            else MoveSelectorRight();
+                            myState = CompState.normal;
+                        });
+                    }
+                    else if (x <= -3 || (x > 0 && x < 3))
+                    {
+                        moveDelay = new Timer(1);
+                        moveDelay.SetTimer(0, timeDelay + ((float)random.NextDouble() - .5f) * timeDelay, delegate()
+                        {
+                            if (!isPlayer1) MoveSelectorRight();
+                            else MoveSelectorLeft();
+                                myState = CompState.normal;
+                        });
+                    }
                 }
                 else if (pileNumber == selector)
                 {
                     moveDelay = new Timer(1);
-                    moveDelay.SetTimer(0, timeDelay, delegate()
+                    moveDelay.SetTimer(0, timeDelay + ((float)random.NextDouble() - .5f) * timeDelay, delegate()
                     { SelectCard(isLeftPile); myState = CompState.normal; });
                 }
             }
@@ -79,32 +97,20 @@ namespace Testgame
             return moves;
         }
 
-        /*public void FindAndPlayCard(Pile[] Hand, Pile rgamestack, Pile lgamestack)
-        {
-            Random random = new Random();
-            FindPileNumber(Hand, rgamestack, lgamestack);
-            if (compMoves)
-            {
-                if (random.NextDouble() < .5)
-                {
-                    MoveSelectorLeft(pileNumber);
-                    SelectCard(isLeftPile);
-                }
-                else 
-                {
-                    MoveSelectorRight(pileNumber);
-                    SelectCard(isLeftPile);
-                }
-            }
-            
-        }*/
+        
 
         public override void  Update(Pile[] Hand, Pile rgamestack, Pile lgamestack, GameTime gameTime)
         {
-
             if (moveDelay != null) moveDelay.Update(gameTime);
-            BensMethod(Hand, rgamestack, lgamestack);
+            Move(Hand, rgamestack, lgamestack);
  	        base.Update(Hand, rgamestack, lgamestack, gameTime);
+        }
+
+        public override void Reset()
+        {
+            myState = CompState.normal;
+            
+            base.Reset();
         }
     }
 }

@@ -26,8 +26,8 @@ namespace Testgame
         public gameState speedState { get; set; }
         Drawable oppSelector;
         Drawable yourSelector;
-        Player you;
-        Player opp;
+        public readonly Player you;
+        public readonly Player opp;
         SpriteFont _font;
         public bool isHalted { get; set; }
         public bool isShaking { get; set; }
@@ -51,6 +51,8 @@ namespace Testgame
         SoundEffect playcard;
         SoundEffectInstance shuffleinstance;
         bool soundOn;
+        bool ableToReBegin;
+        bool ableToReBegin2;
 
         // initializes lots of variables
         public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn):base(background)
@@ -66,6 +68,8 @@ namespace Testgame
             isShaking = false;
             textures = particles;
             soundOn = isSoundOn;
+            ableToReBegin = true;
+            ableToReBegin2 = true;
 
             you = bottom;
             opp = top;
@@ -297,6 +301,7 @@ namespace Testgame
         public void DrawCard(Pile drawPile, Pile destinationPile, float delay)
         {
             if (destinationPile.drawnTo) return;
+            ableToReBegin = false;
             destinationPile.drawnTo = true;
             Card temp = null;
             switch (myType)
@@ -314,7 +319,8 @@ namespace Testgame
             }
             temp.Flip(true, delay);
             temp.toPile(destinationPile, delay);
-            temp.WhenDoneMoving(delegate() { destinationPile.drawnTo = false; });
+            temp.WhenDoneMoving(delegate() { destinationPile.drawnTo = false; Timer drawTimer = new Timer(1);
+                base.Add(drawTimer); drawTimer.SetTimer(0, .5f, delegate() { ableToReBegin = true; }); });
         }
 
         private Card getRandomCard(Pile DrawPile)
@@ -369,6 +375,8 @@ namespace Testgame
                     else if (!ExistMoves()) ReBegin();
                     you.Update(yourCards,rGameStack, lGameStack, gameTime);
                     opp.Update(opponentCards, rGameStack, lGameStack, gameTime);
+
+                    
                     yourSelector.attributes.position = yourCards[you.selector].position;
                     oppSelector.attributes.position = opponentCards[opp.selector].position;                  
                     break;             
@@ -419,7 +427,7 @@ namespace Testgame
             if (myType == gameType.Timed)
             {
                 gameTimer = new Timer(1);
-                gameTimer.SetTimer(0, gameLength, delegate() { Winner(DetermineWinner()); time1.Fade(4); time2.Fade(4); speedState = gameState.Winner; });
+                gameTimer.SetTimer(0, gameLength, delegate() { Winner(DetermineWinner()); ableToReBegin = false; ableToReBegin2 = false; time1.Fade(4); time2.Fade(4); speedState = gameState.Winner; });
 
                 time1 = new Text(gameTimer.getCountDown(0), _font);
                 time1.height = 100;
@@ -456,7 +464,7 @@ namespace Testgame
         {         
             Timer timer = new Timer(1);
             base.Add(timer);
-            timer.SetTimer(0, .4f, delegate() { speedState = gameState.GamePlay; });
+            timer.SetTimer(0, .4f, delegate() { speedState = gameState.GamePlay; ableToReBegin = true; });
             DrawCard(lSpitStack, lGameStack, 0f);
             DrawCard(rSpitStack, rGameStack, 0f);
             you.TurnOn();
@@ -481,6 +489,7 @@ namespace Testgame
             int value = destinationPile.Peek().cardValue;
             if ((cv == 0 && value == 12) || (cv == 12 && value == 0) || (cv == value + 1 || cv == value - 1))
             {
+                
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
                 playcard.Play();
@@ -531,6 +540,7 @@ namespace Testgame
         {
             if (speedState == gameState.Winner) return true;
             if (speedState == gameState.PlayAgain) return true;
+            if (!ableToReBegin || !ableToReBegin2) return true;
             bool oppMoves = false;
             for (int i = 0; i < opponentCards.Length; i++)
             {
@@ -561,8 +571,10 @@ namespace Testgame
         // adds cards to game stacks if no cards are playable
         public void ReBegin()
         {
+            if (!ableToReBegin || !ableToReBegin2) return;
             if (speedState == gameState.Winner) return;
             if (speedState == gameState.PlayAgain) return;
+            ableToReBegin = false;
             speedState = gameState.ReBeginning;
             Timer watch = new Timer(1);
             base.Add(watch);

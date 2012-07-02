@@ -162,5 +162,12 @@ namespace Testgame
         public virtual void Update(Pile[] Hand, Pile rgamestack, Pile lgamestack, GameTime gameTime)
         {
         }
+
+        public virtual void Reset()
+        {
+            score = 0;
+            myState = PlayerState.Off;
+            selector = 0;
+        }
     }
 }

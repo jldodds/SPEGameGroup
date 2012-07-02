@@ -100,7 +100,7 @@ namespace Testgame
             Move(Actions.ExpoMove, new Vector2(pile.position.X, pile.position.Y), .2f);
             pile.Add(this);
             Raise(.2f, 0);
-            tweenerDepth.Ended += delegate() { Lower(.99f - pile.Count() * .01f, .2f); };       
+            tweenerDepth.Ended += delegate() { Lower(.99f - pile.Count() * .001f, .2f); };       
         }
 
         // moves card to pile with delay
@@ -109,7 +109,7 @@ namespace Testgame
             Move(Actions.ExpoMove, new Vector2(pile.position.X, pile.position.Y), .4f, delay);
             pile.Add(this);
             Raise(.2f, delay);
-            tweenerDepth.Ended += delegate() { Lower(.99f - pile.Count() * .01f, .2f); };
+            tweenerDepth.Ended += delegate() { Lower(.99f - pile.Count() * .001f, .2f); };
         }
 
         // raises cards

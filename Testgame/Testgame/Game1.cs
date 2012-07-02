@@ -48,10 +48,18 @@ namespace Testgame
         Player player1;
         Player player2;
         Player computer;
+        Player computer2;
         Drawable BadTime;
         SoundEffectInstance shuffleinstance;
         bool soundOn = true;
         bool powerUpsOn = true;
+        Mode myMode;
+
+        public enum Mode
+        {
+            onePlayer,
+            twoPlayer,
+        }
 
         public Game1()
         {
@@ -61,6 +69,7 @@ namespace Testgame
             // set screen size to 1024x800
             graphics.PreferredBackBufferHeight = 800;
             graphics.PreferredBackBufferWidth = 1024;
+            myMode = Mode.twoPlayer;
         }
 
         /// <summary>
@@ -109,9 +118,10 @@ namespace Testgame
             
 
             // creates players
-            player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
+            player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Ben", true);
             player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
             computer = new ComputerPlayer("computer", false);
+            computer2 = new ComputerPlayer("computer2", true);
 
             // loads up cards & assigns values
             #region Create cards[]
@@ -212,36 +222,43 @@ namespace Testgame
             };
 
             // creates main menu buttons
-            String[] mainMenuString = new String[4];
-            mainMenuString[0] = "Play Game";
-            mainMenuString[1] = "Instructions";
-            mainMenuString[2] = "Settings";
-            mainMenuString[3] = "Exit";
-            Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[4];
+            String[] mainMenuString = new String[5];
+            mainMenuString[0] = "Single Player";
+            mainMenuString[1] = "Multiplayer";
+            mainMenuString[2] = "Instructions";
+            mainMenuString[3] = "Settings";
+            mainMenuString[4] = "Exit";
+            Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[5];
             
             // if "play game" is chosen from main menu, starts the game
             mainMenuAction[0] = delegate() 
             {
-                MainMenu.isPaused = true; GameMenu.isPaused = false; 
+                MainMenu.isPaused = true; GameMenu.isPaused = false;
+                myMode = Mode.onePlayer;
             };
-            
+
+            mainMenuAction[1] = delegate()
+            {
+                MainMenu.isPaused = true; GameMenu.isPaused = false;
+                myMode = Mode.twoPlayer;
+            };
             // if "instructions" chosen, displays instructions
-            mainMenuAction[1] = delegate() 
+            mainMenuAction[2] = delegate() 
             {
                 InstructionsMenu.isPaused = false; MainMenu.isPaused = true; 
             };
 
             // if "settings" chosen, displays settings
-            mainMenuAction[2] = delegate() 
+            mainMenuAction[3] = delegate() 
             {
                 MainMenu.isPaused = true;  SettingsMenu.isPaused = false; 
             };
             
             //exits game
-            mainMenuAction[3] = delegate() { this.Exit(); };
+            mainMenuAction[4] = delegate() { this.Exit(); };
             
             //makes main menu and turns it on
-            MainMenu = new Menu(background, 4, title, mainMenuString, mainMenuAction, font);
+            MainMenu = new Menu(background, 5, title, mainMenuString, mainMenuAction, font);
             MainMenu.TurnOn();
             #endregion
 
@@ -266,22 +283,21 @@ namespace Testgame
             // starts new game or goes to main menu depending on choice
             Button.ClickHandler[] playAgainAction = new Button.ClickHandler[2];
             playAgainAction[0] = delegate() {
-                player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
-                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
+                player1.Reset(); player2.Reset(); computer.Reset();
                 switch (speed.myType)
                 {
                     case Speed.gameType.Timed:
                         int x = speed.gameLength;
-                        speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                        speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
                         speed.gameLength = x;
                         break;
                     case Speed.gameType.Marathon:
                         int y = speed.winningscore;
-                        speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                        speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
                         speed.winningscore = y;
                         break;
                     default:
-                        speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                        speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
                         break;
                 }
                  speed.TurnOn(); PlayAgain.isPaused = true;
@@ -333,9 +349,8 @@ namespace Testgame
             }};
             pauseActions[1] = delegate()
             {
-                player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
-                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn();
+                player1.Reset(); player2.Reset(); computer.Reset();
+                speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn();
                 Pause.isPaused = true;
             };
 
@@ -372,21 +387,27 @@ namespace Testgame
             
             gameMenuAction[0] = delegate() 
             {
-                player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
-                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true; 
+                player1.Reset(); player2.Reset(); computer.Reset();
+                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn);
+                else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn);
+                    speed.TurnOn(); GameMenu.isPaused = true; 
             };
             
             gameMenuAction[1] = delegate() 
             {
-                player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
-                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn); MarathonMenu.isPaused = false; GameMenu.isPaused = true; 
+                player1.Reset(); player2.Reset(); computer.Reset();
+                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn);
+                else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn); 
+                MarathonMenu.isPaused = false; GameMenu.isPaused = true; 
             };
 
-            gameMenuAction[2] = delegate() { player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
-                player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn); TimedMenu.isPaused = false; GameMenu.isPaused = true;};
+            gameMenuAction[2] = delegate()
+            {
+                player1.Reset(); player2.Reset(); computer.Reset();
+                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn);
+                else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn);
+                TimedMenu.isPaused = false; GameMenu.isPaused = true;
+            };
             
             gameMenuAction[3] = delegate() {GameMenu.isPaused = true; MainMenu.isPaused = false;};
             
