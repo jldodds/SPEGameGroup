@@ -46,7 +46,9 @@ namespace Testgame
         Player player1;
         Player player2;
         Drawable BadTime;
-
+        SoundEffectInstance shuffleinstance;
+        bool soundOn = true;
+        bool powerUpsOn = true;
 
         public Game1()
         {
@@ -167,6 +169,7 @@ namespace Testgame
             // plays music
             shuffle = Content.Load<SoundEffect>("Audio\\Waves\\shuffle1");
             playcard = Content.Load<SoundEffect>("Audio\\Waves\\slapcard");
+            shuffleinstance = shuffle.CreateInstance();
 
             aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
 
@@ -262,7 +265,7 @@ namespace Testgame
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
 
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard); speed.TurnOn(); PlayAgain.isPaused = true;
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); PlayAgain.isPaused = true;
             };
             playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
             
@@ -313,7 +316,7 @@ namespace Testgame
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard); speed.TurnOn();
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn();
                 Pause.isPaused = true;
             };
 
@@ -352,19 +355,19 @@ namespace Testgame
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard); speed.TurnOn(); GameMenu.isPaused = true; 
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true; 
             };
             
             gameMenuAction[1] = delegate() 
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard); speed.TurnOn(); GameMenu.isPaused = true; 
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true; 
             };
 
             gameMenuAction[2] = delegate() { player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard); speed.TurnOn(); GameMenu.isPaused = true;};
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true;};
             
             gameMenuAction[3] = delegate() {GameMenu.isPaused = true; MainMenu.isPaused = false;};
             
@@ -389,32 +392,35 @@ namespace Testgame
             String[] settingsbuttons = new String[4];
             settingsbuttons[0] = "Sound Effects";
             settingsbuttons[1] = "Power Ups";
-            settingsbuttons[2] = "         ";
+            settingsbuttons[2] = "blah";
             settingsbuttons[3] = "Main Menu";
             Button.ClickHandler[] settingsactions = new Button.ClickHandler[4];
 
-            // if "play game" is chosen from main menu, starts the game
+            // toggles sound effects on or off
             settingsactions[0] = delegate()
             {
-                
+                if (speed != null)
+                speed.toggleSound();
             };
 
-            // if "instructions" chosen, displays instructions
+            // toggles power ups on or off
             settingsactions[1] = delegate()
             {
                 
             };
 
-            // if "settings" chosen, displays settings
+            // 
             settingsactions[2] = delegate() 
             {
                  
             };
 
-            //exits game
+            // changes back to main menu
             settingsactions[3] = delegate() 
             {
-                
+
+                SettingsMenu.isPaused = true; MainMenu.isPaused = false;
+
             };
 
             //makes main menu and turns it on
