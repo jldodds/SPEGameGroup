@@ -19,6 +19,7 @@ namespace Testgame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont font;
+        SpriteFont instructionsfont;
         Card[] cards;
         Drawable background;
         Texture2D selector;
@@ -32,7 +33,11 @@ namespace Testgame
         List<Texture2D> textures;
         ParticleEngine test;
         Random random = new Random();
-        Instructions instructions;
+        Menu InstructionsMenu;
+        Instructions Controls;
+        Instructions Rules;
+        Instructions PowerUps;
+        Instructions Winning;
         SoundEffect shuffle;
         SoundEffect playcard;
         SoundEffectInstance instance;
@@ -40,10 +45,7 @@ namespace Testgame
         Player player1;
         Player player2;
         Drawable BadTime;
-        Drawable slide1;
-        Drawable slide2;
-        Drawable slide3;
-        Drawable slide4;
+
 
         public Game1()
         {
@@ -79,7 +81,11 @@ namespace Testgame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            font = Content.Load<SpriteFont>("SpriteFont3");
+            SpriteFont instructionsfont = this.Content.Load<SpriteFont>("SpriteFont1");
             // loads up the background
+            
             background = new Drawable()
             {
                 attributes = new Attributes()
@@ -94,60 +100,11 @@ namespace Testgame
                 }
             };
 
-            // creates the drawable instructions slides
-            slide1 = new Drawable()
-            {
-                attributes = new Attributes()
-                {
-                    texture = this.Content.Load<Texture2D>("Slide1"),
-                    color = Color.White,
-                    position = new Vector2(512, 400),
-                    depth = 0,
-                    scale = new Vector2(1.5f, 1.5f),
-                },
-                isSeeable = true,
-            };
-            slide2 = new Drawable()
-            {
-                attributes = new Attributes()
-                {
-                    texture = this.Content.Load<Texture2D>("Slide2"),
-                    color = Color.White,
-                    position = new Vector2(512, 400),
-                    depth = 0,
-                    scale = new Vector2(1.5f, 1.5f),
-                },
-                isSeeable = false,
-            };
-            slide3 = new Drawable()
-            {
-                attributes = new Attributes()
-                {
-                    texture = this.Content.Load<Texture2D>("Slide3"),
-                    color = Color.White,
-                    position = new Vector2(512, 400),
-                    depth = 0,
-                    scale = new Vector2(1.5f, 1.5f),
-                },
-                isSeeable = false,
-            };
-            slide4 = new Drawable()
-            {
-                attributes = new Attributes()
-                {
-                    texture = this.Content.Load<Texture2D>("Slide4"),
-                    color = Color.White,
-                    position = new Vector2(512, 400),
-                    depth = 0,
-                    scale = new Vector2(1.5f, 1.5f),
-                },
-                isSeeable = false,
-            };
+            
 
             // creates players
             player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
             player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-            // TODO: use this.Content to load your game content here
 
             // loads up cards & assigns values
             #region Create cards[]
@@ -227,7 +184,7 @@ namespace Testgame
             // loads card selector
             selector = this.Content.Load<Texture2D>("CardSelector");
             // loads BadaBoom font
-            font = Content.Load<SpriteFont>("SpriteFont3");
+            
             textures = new List<Texture2D>();
             textures.Add(Content.Load<Texture2D>("circle"));
             textures.Add(Content.Load<Texture2D>("diamond"));
@@ -263,7 +220,7 @@ namespace Testgame
             // if "instructions" chosen, displays instructions
             mainMenuAction[1] = delegate() 
             {
-                instructions = new Instructions(background, slide1, slide2, slide3, slide4); instructions.Start(); MainMenu.isPaused = true; 
+                InstructionsMenu.isPaused = false; MainMenu.isPaused = true; 
             };
 
             // if "settings" chosen, displays settings
@@ -416,7 +373,352 @@ namespace Testgame
             GameMenu = new Menu(background, 4, playgame, gameMenuString, gameMenuAction, font);
             #endregion
 
+            #region InstructionsMenu
+            Text Instructions = new Text("Select Game Mode", font)
+            {
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    rotation = -.05f,
+                    depth = 0f,
+                },
+                scale = new Vector2(.4f, .4f)
+            };
 
+            String[] InstructionsMenuString = new String[5];
+            InstructionsMenuString[0] = "Controls";
+            InstructionsMenuString[1] = "Rules";
+            InstructionsMenuString[2] = "Winning";
+            InstructionsMenuString[3] = "PowerUps";
+            InstructionsMenuString[4] = "Back";
+            Button.ClickHandler[] InstructionsMenuAction = new Button.ClickHandler[5];
+
+
+            InstructionsMenuAction[0] = delegate()
+            {
+                Controls.isPaused = false;
+                InstructionsMenu.isPaused = true;
+            };
+
+
+            InstructionsMenuAction[1] = delegate()
+            {
+                InstructionsMenu.isPaused = true;
+                Rules.isPaused = false;
+            };
+
+
+            InstructionsMenuAction[2] = delegate()
+            {
+                InstructionsMenu.isPaused = true;
+                Winning.isPaused = false;
+            };
+
+            InstructionsMenuAction[3] = delegate()
+            {
+                InstructionsMenu.isPaused = true;
+                PowerUps.isPaused = false;
+            };
+
+            InstructionsMenuAction[4] = delegate() { InstructionsMenu.isPaused = true; MainMenu.isPaused = false; };
+
+
+            InstructionsMenu = new Menu(background, 5, Instructions, InstructionsMenuString, InstructionsMenuAction, font);
+            #endregion
+
+            #region Controls
+
+            
+            Drawable[][] ControlsText = new Drawable[1][];
+            #region FirstPage
+            
+            ControlsText[0] = new Drawable[9];
+            ControlsText[0][0] = new Text("Controls", instructionsfont)
+            {
+                height = 200,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 150),
+                }
+            };
+            ControlsText[0][1] = new Text("Bottom Player:", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 225),
+                }
+            };
+            ControlsText[0][2] = new Text("Scroll through your cards - left and right arrow keys", instructionsfont)
+            {
+                height = 75,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 285),
+                }
+            };
+            ControlsText[0][3] = new Text("Card to left pile - up arrow key.", instructionsfont)
+            {
+                height = 75,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 335),
+                }
+            };
+            ControlsText[0][4] = new Text("Card to right pile - down arrow key.", instructionsfont)
+            {
+                height = 75,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 385),
+                }
+            };
+            ControlsText[0][5] = new Text("Top Player:", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 485),
+                }
+            };
+            ControlsText[0][6] = new Text("Scroll through your cards - 'A' and 'D' keys", instructionsfont)
+            {
+                height = 75,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 545),
+                }
+            };
+            ControlsText[0][7] = new Text("Card to left pile - 'W' key.", instructionsfont)
+            {
+                height = 75,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 595),
+                }
+            };
+            ControlsText[0][8] = new Text("Card to right pile - 'S' key.", instructionsfont)
+            {
+                height = 75,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 645),
+                }
+            };
+            #endregion
+
+            Controls = new Instructions(background, ControlsText, font);
+            Controls.setButton(delegate() { Controls.isPaused = true; InstructionsMenu.isPaused = false; });
+
+            #endregion
+
+            #region Rules
+            Drawable[][] RulesText = new Drawable[2][];
+            #region FirstPage
+            
+            RulesText[0] = new Drawable[6];
+
+            RulesText[0][0] = new Text("Rules", instructionsfont)
+            {
+                height = 200,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 150),
+                }
+            };
+            RulesText[0][1] = new Text("Each player has 5 cards in their hand at a time.", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 300),
+                }
+            };
+            RulesText[0][2] = new Text("You can play a card if its value is one higher or lower", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 400),
+                }
+            };
+            RulesText[0][3] = new Text("than a card in one of the middle piles.", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 450),
+                }
+            };
+            RulesText[0][4] = new Text("Aces are both low and high, so they can be played", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 550),
+                }
+            };
+            RulesText[0][5] = new Text("on both a King and a Two.", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 600),
+                }
+            };
+            #endregion
+
+            #region SecondPage
+            RulesText[1] = new Drawable[3];
+            RulesText[1][0] = new Text("Rules", instructionsfont)
+            {
+                height = 200,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 150),
+                }
+            };
+            RulesText[1][1] = new Text("If neither player has any moves, two new middle cards", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 300),
+                }
+            };
+            RulesText[1][2] = new Text("will be drawn and gameplay will continue as before.", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 350),
+                }
+            };
+            #endregion
+
+            Rules = new Instructions(background, RulesText, font);
+            Rules.setButton(delegate() { Rules.isPaused = true; InstructionsMenu.isPaused = false; });
+
+            #endregion
+
+            #region Winning
+
+            Drawable[][] WinningText = new Drawable[1][];
+
+            #region FirstPage
+            WinningText[0] = new Drawable[7];
+            WinningText[0][0] = new Text("Winning", instructionsfont)
+            {
+                height = 200,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 150),
+                }
+            };
+
+            WinningText[0][1] = new Text("In Normal Mode: The first person to play all 21", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 275),
+                }
+            };
+            WinningText[0][2] = new Text("of their cards wins the game.", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 325),
+                }
+            };
+            WinningText[0][3] = new Text("In Marathon Mode: The first player to play a chosen", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 425),
+                }
+            };
+            WinningText[0][4] = new Text("number of cards wins the game.", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 475),
+                }
+            };
+            WinningText[0][5] = new Text("In Timed Mode: The player who plays the most cards", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 575),
+                }
+            };
+            WinningText[0][6] = new Text("before time runs out wins the game.", instructionsfont)
+            {
+                height = 100,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 625),
+                }
+            };
+            #endregion
+
+            Winning = new Instructions(background, WinningText, font);
+            Winning.setButton(delegate() { Winning.isPaused = true; InstructionsMenu.isPaused = false; });
+            #endregion
 
             // makes the freeze icon
             freeze = new Drawable()
@@ -477,6 +779,10 @@ namespace Testgame
                 }
             }
             GameMenu.Update(gameTime);
+            InstructionsMenu.Update(gameTime);
+            Controls.Update(gameTime);
+           Rules.Update(gameTime);
+            Winning.Update(gameTime);
             MainMenu.Update(gameTime);
             Pause.Update(gameTime);
             PlayAgain.Update(gameTime);
@@ -545,10 +851,13 @@ namespace Testgame
             // draws screens
             if (speed != null) speed.Draw(spriteBatch);
             MainMenu.Draw(spriteBatch);
+            InstructionsMenu.Draw(spriteBatch);
             GameMenu.Draw(spriteBatch);
             Pause.Draw(spriteBatch);
             PlayAgain.Draw(spriteBatch);
-            if (instructions != null) instructions.Draw(spriteBatch);
+            Controls.Draw(spriteBatch);
+            Rules.Draw(spriteBatch);
+            Winning.Draw(spriteBatch);
             freeze.Draw(spriteBatch, SpriteEffects.None);
             //test.Draw(spriteBatch);
             spriteBatch.End();
