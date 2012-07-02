@@ -585,10 +585,10 @@ namespace Testgame
             #endregion
 
             #region Rules
-            Drawable[][] RulesText = new Drawable[2][];
+            Drawable[][] RulesText = new Drawable[1][];
             #region FirstPage
             
-            RulesText[0] = new Drawable[6];
+            RulesText[0] = new Drawable[8];
 
             RulesText[0][0] = new Text("Rules", instructionsfont)
             {
@@ -602,81 +602,27 @@ namespace Testgame
             };
             RulesText[0][1] = new Text("Each player has 5 cards in their hand at a time.", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 300),
+                    position = new Vector2(512, 250),
                 }
             };
             RulesText[0][2] = new Text("You can play a card if its value is one higher or lower", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 400),
+                    position = new Vector2(512, 310),
                 }
             };
             RulesText[0][3] = new Text("than a card in one of the middle piles.", instructionsfont)
             {
-                height = 100,
-                attributes = new Attributes()
-                {
-                    color = Color.Black,
-                    depth = 0f,
-                    position = new Vector2(512, 450),
-                }
-            };
-            RulesText[0][4] = new Text("Aces are both low and high, so they can be played", instructionsfont)
-            {
-                height = 100,
-                attributes = new Attributes()
-                {
-                    color = Color.Black,
-                    depth = 0f,
-                    position = new Vector2(512, 550),
-                }
-            };
-            RulesText[0][5] = new Text("on both a King and a Two.", instructionsfont)
-            {
-                height = 100,
-                attributes = new Attributes()
-                {
-                    color = Color.Black,
-                    depth = 0f,
-                    position = new Vector2(512, 600),
-                }
-            };
-            #endregion
-
-            #region SecondPage
-            RulesText[1] = new Drawable[3];
-            RulesText[1][0] = new Text("Rules", instructionsfont)
-            {
-                height = 200,
-                attributes = new Attributes()
-                {
-                    color = Color.Black,
-                    depth = 0f,
-                    position = new Vector2(512, 150),
-                }
-            };
-            RulesText[1][1] = new Text("If neither player has any moves, two new middle cards", instructionsfont)
-            {
-                height = 100,
-                attributes = new Attributes()
-                {
-                    color = Color.Black,
-                    depth = 0f,
-                    position = new Vector2(512, 300),
-                }
-            };
-            RulesText[1][2] = new Text("will be drawn and gameplay will continue as before.", instructionsfont)
-            {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
@@ -684,7 +630,49 @@ namespace Testgame
                     position = new Vector2(512, 350),
                 }
             };
+            RulesText[0][4] = new Text("Aces are both low and high, so they can be played", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 430),
+                }
+            };
+            RulesText[0][5] = new Text("on both a King and a Two.", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 470),
+                }
+            };
+            RulesText[0][6] = new Text("If neither player has any moves, two new middle cards", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 550),
+                }
+            };
+            RulesText[0][7] = new Text("will be drawn and gameplay will continue as before.", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 590),
+                }
+            };
             #endregion
+
+            
 
             Rules = new Instructions(background, RulesText, font);
             Rules.setButton(delegate() { Rules.isPaused = true; InstructionsMenu.isPaused = false; });
@@ -696,7 +684,7 @@ namespace Testgame
             Drawable[][] WinningText = new Drawable[1][];
 
             #region FirstPage
-            WinningText[0] = new Drawable[7];
+            WinningText[0] = new Drawable[8];
             WinningText[0][0] = new Text("Winning", instructionsfont)
             {
                 height = 200,
@@ -708,64 +696,74 @@ namespace Testgame
                 }
             };
 
-            WinningText[0][1] = new Text("In Normal Mode: The first person to play all 21", instructionsfont)
+            WinningText[0][1] = new Text("In Normal Mode: The first person to play all", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 275),
+                    position = new Vector2(512, 250),
                 }
             };
-            WinningText[0][2] = new Text("of their cards wins the game.", instructionsfont)
+            WinningText[0][2] = new Text("of their cards or the player with the highest score when", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 325),
+                    position = new Vector2(512, 290),
                 }
             };
-            WinningText[0][3] = new Text("In Marathon Mode: The first player to play a chosen", instructionsfont)
+            WinningText[0][3] = new Text("no more cards can be drawn wins the game.", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 425),
+                    position = new Vector2(512, 330),
                 }
             };
-            WinningText[0][4] = new Text("number of cards wins the game.", instructionsfont)
+            WinningText[0][4] = new Text("In Marathon Mode: The first player to play a chosen", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 475),
+                    position = new Vector2(512, 410),
                 }
             };
-            WinningText[0][5] = new Text("In Timed Mode: The player who plays the most cards", instructionsfont)
+            WinningText[0][5] = new Text("number of cards wins the game.", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 575),
+                    position = new Vector2(512, 450),
                 }
             };
-            WinningText[0][6] = new Text("before time runs out wins the game.", instructionsfont)
+            WinningText[0][6] = new Text("In Timed Mode: The player who plays the most cards", instructionsfont)
             {
-                height = 100,
+                height = 80,
                 attributes = new Attributes()
                 {
                     color = Color.Black,
                     depth = 0f,
-                    position = new Vector2(512, 625),
+                    position = new Vector2(512, 530),
+                }
+            };
+            WinningText[0][7] = new Text("before time runs out wins the game.", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 570),
                 }
             };
             #endregion
