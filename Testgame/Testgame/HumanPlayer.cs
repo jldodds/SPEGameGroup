@@ -27,6 +27,7 @@ namespace Testgame
         // update method
         public override void Update(Pile[] Hand, Pile rgamestack, Pile lgamestack, GameTime gameTime)
         {
+            base.MouseUpdate();
             KeyUpdate();
             base.Update(Hand, rgamestack,lgamestack,gameTime);
         }

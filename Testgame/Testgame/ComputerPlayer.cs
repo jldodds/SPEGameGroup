@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Testgame
 {
@@ -13,7 +14,11 @@ namespace Testgame
         int pileNumber;
         bool isLeftPile;
         CompState myState;
+
         Random random;
+
+        MouseState oldState;
+
 
         public ComputerPlayer(String name, bool isPlayer1) : base(name, isPlayer1)
         {
@@ -97,9 +102,9 @@ namespace Testgame
             return moves;
         }
 
-        
 
-        public override void  Update(Pile[] Hand, Pile rgamestack, Pile lgamestack, GameTime gameTime)
+        public override void Update(Pile[] Hand, Pile rgamestack, Pile lgamestack, GameTime gameTime)
+
         {
             if (moveDelay != null) moveDelay.Update(gameTime);
             Move(Hand, rgamestack, lgamestack);

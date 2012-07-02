@@ -73,7 +73,7 @@ namespace Testgame
 
             you = bottom;
             opp = top;
-            you.SelectedCardLeft += delegate(){PlayCard(you, you.selector, lGameStack);};
+            you.SelectedCardLeft += delegate(){ PlayCard(you, you.selector, lGameStack);};
             you.SelectedCardRight += delegate() { PlayCard(you, you.selector, rGameStack); };
             opp.SelectedCardLeft += delegate() { PlayCard(opp, opp.selector, lGameStack); };
             opp.SelectedCardRight += delegate() { PlayCard(opp, opp.selector, rGameStack); };
@@ -99,7 +99,7 @@ namespace Testgame
                 deck[i].attributes.position = new Vector2(-100, 100);
                 deck[i].isFaceUp = false;
                 deck[i].isSeeable = true;
-               deck[i].attributes.color = Color.White;
+                deck[i].attributes.color = Color.White;
                 deck[i].attributes.rotation = 0;
                 deck[i].ClearTweeners();
             }
