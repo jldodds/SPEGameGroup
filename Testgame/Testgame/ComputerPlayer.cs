@@ -54,7 +54,7 @@ namespace Testgame
             return pileNumber;
         }
 
-        public Card FindPlayableCard()
+        public void FindPlayableCard()
         {
             Random random = new Random();
             if (compMoves)
@@ -63,7 +63,7 @@ namespace Testgame
                 {
                     MoveSelectorLeft();
                 }
-                if (random.NextDouble() < .5)
+                if (random.NextDouble() > .5)
                 {
                     MoveSelectorRight();
                 }

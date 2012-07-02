@@ -26,6 +26,7 @@ namespace Testgame
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             if (!isSeeable) return;
+            if (selected && !clicked) attributes.color = Color.Red;
             if (selected) spriteBatch.DrawString(_font, content, attributes.position, attributes.color, attributes.rotation, _font.MeasureString(content) / 2, scale * 1.3f, spriteEffects, attributes.depth);
             else base.Draw(spriteBatch, spriteEffects);
         }
@@ -39,7 +40,7 @@ namespace Testgame
         {
             clicked = true;
             attributes.color = Color.Orange;
-            buttonTimer.SetTimer(0, .5f, delegate() { Clicked(); clicked = false; });
+            buttonTimer.SetTimer(0, .5f, delegate() { Clicked(); clicked = false; attributes.color = Color.Black; });
         }
 
         // 

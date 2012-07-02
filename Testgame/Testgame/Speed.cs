@@ -80,7 +80,7 @@ namespace Testgame
             cards = new Card[deckOfCards.Length];
             for (int i = 0; i < deckOfCards.Length; i++)
             {
-                this.deck[i] = deckOfCards[i];
+                deck[i] = deckOfCards[i];
                 cards[i] = deckOfCards[i];
             }
 
@@ -92,6 +92,12 @@ namespace Testgame
                 cards[i].attributes.color = Color.White;
                 cards[i].attributes.rotation = 0;
                 cards[i].ClearTweeners();
+                deck[i].attributes.position = new Vector2(-100, 100);
+                deck[i].isFaceUp = false;
+                deck[i].isSeeable = true;
+               deck[i].attributes.color = Color.White;
+                deck[i].attributes.rotation = 0;
+                deck[i].ClearTweeners();
             }
             yourStack = new Pile(new Vector2(897, 675));
             opponentStack = new Pile(new Vector2(127, 125));
@@ -390,7 +396,7 @@ namespace Testgame
                 case gameState.PlayAgain:
                     break;
             }
-            bool moveExists = ComputerPlayer.FindPileNumber(opponentCards, lGameStack, rGameStack);
+            //bool moveExists = ComputerPlayer.FindPileNumber(opponentCards, lGameStack, rGameStack);
             KeyUpdate(gameTime);
             base.Update(gameTime);
         }
