@@ -47,6 +47,7 @@ namespace Testgame
         float aspectRatio;
         Player player1;
         Player player2;
+        Player computer;
         Drawable BadTime;
         SoundEffectInstance shuffleinstance;
         bool soundOn = true;
@@ -110,6 +111,7 @@ namespace Testgame
             // creates players
             player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
             player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
+            computer = new ComputerPlayer("computer", false);
 
             // loads up cards & assigns values
             #region Create cards[]
@@ -372,7 +374,7 @@ namespace Testgame
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true; 
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true; 
             };
             
             gameMenuAction[1] = delegate() 
