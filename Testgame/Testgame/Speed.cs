@@ -50,10 +50,10 @@ namespace Testgame
         SoundEffect shuffle;
         SoundEffect playcard;
         SoundEffectInstance shuffleinstance;
-        bool isShuffling;
+        bool soundOn;
 
         // initializes lots of variables
-        public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance):base(background)
+        public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn):base(background)
         {
             myType = gameType;
             cardcounter = new int[52];
@@ -65,6 +65,7 @@ namespace Testgame
             isHalted = false;
             isShaking = false;
             textures = particles;
+            soundOn = isSoundOn;
 
             you = bottom;
             opp = top;
@@ -360,7 +361,7 @@ namespace Testgame
             switch (speedState)
             {
                 case gameState.Dealing:
-                    if (shuffleinstance.State == SoundState.Stopped)
+                    if ((shuffleinstance.State == SoundState.Stopped) && soundOn)
                         shuffleinstance.Play();
                     break;
                 case gameState.AskBegin:
@@ -389,6 +390,7 @@ namespace Testgame
                 case gameState.PlayAgain:
                     break;
             }
+            bool moveExists = ComputerPlayer.FindPileNumber(opponentCards, lGameStack, rGameStack);
             KeyUpdate(gameTime);
             base.Update(gameTime);
         }
@@ -854,6 +856,13 @@ namespace Testgame
             base.Add(timer);
             isShaking = true;
             timer.SetTimer(0, .5f, delegate() { isShaking = false; });
+        }
+
+        // toggles sound method
+        public void toggleSound()
+        {
+            if (soundOn) soundOn = false;
+            else soundOn = true;
         }
 
         // shuffles cards 

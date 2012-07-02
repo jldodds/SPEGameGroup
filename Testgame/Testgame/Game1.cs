@@ -46,6 +46,8 @@ namespace Testgame
         Drawable slide3;
         Drawable slide4;
         SoundEffectInstance shuffleinstance;
+        bool soundOn = true;
+        bool powerUpsOn = true;
 
         public Game1()
         {
@@ -309,7 +311,7 @@ namespace Testgame
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
 
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance); speed.TurnOn(); PlayAgain.isPaused = true;
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); PlayAgain.isPaused = true;
             };
             playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
             
@@ -360,7 +362,7 @@ namespace Testgame
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance); speed.TurnOn();
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn();
                 Pause.isPaused = true;
             };
 
@@ -399,19 +401,19 @@ namespace Testgame
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance); speed.TurnOn(); GameMenu.isPaused = true; 
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true; 
             };
             
             gameMenuAction[1] = delegate() 
             {
                 player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance); speed.TurnOn(); GameMenu.isPaused = true; 
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true; 
             };
 
             gameMenuAction[2] = delegate() { player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Rahji", true);
                 player2 = new HumanPlayer(Keys.W, Keys.S, Keys.A, Keys.D, "Ben", false);
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance); speed.TurnOn(); GameMenu.isPaused = true;};
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn(); GameMenu.isPaused = true;};
             
             gameMenuAction[3] = delegate() {GameMenu.isPaused = true; MainMenu.isPaused = false;};
             
@@ -442,7 +444,8 @@ namespace Testgame
             // toggles sound effects on or off
             settingsactions[0] = delegate()
             {
-                
+                if (speed != null)
+                speed.toggleSound();
             };
 
             // toggles power ups on or off
