@@ -68,6 +68,29 @@ namespace Testgame
             }
         }
 
+        // moves selector right if called, assuming player is on and not penalized
+        public void MoveSelectorRight(int pileNumber)
+        {
+            if (myState == PlayerState.Off) return;
+            if (myState == PlayerState.Penalized) return;
+            if (!isPlayer1)
+            {
+                for (int i = 0; i < pileNumber; i++)
+                {
+                    selector++;
+                    if (selector == 5) selector = 0;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < pileNumber; i++)
+                {
+                    selector--;
+                    if (selector == -1) selector = 4;
+                }
+            }
+        }
+
         // moves selector left if called, assuming player is on and not penalized
         public void MoveSelectorLeft()
         {
@@ -82,6 +105,28 @@ namespace Testgame
             {
                 selector++;
                 if (selector == 5) selector = 0;
+            }
+        }
+
+        public void MoveSelectorLeft(int pileNumber)
+        {
+            if (myState == PlayerState.Off) return;
+            if (myState == PlayerState.Penalized) return;
+            if (!isPlayer1)
+            {
+                for (int i = 0; i < pileNumber; i++)
+                {
+                    selector--;
+                    if (selector == -1) selector = 4;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < pileNumber; i++)
+                {
+                    selector++;
+                    if (selector == 5) selector = 0;
+                }
             }
         }
 
