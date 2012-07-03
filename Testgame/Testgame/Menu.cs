@@ -18,6 +18,7 @@ namespace Testgame
         menuState myState;
         private bool _isPaused;
         public bool keysOff { get; set; }
+        int buttonAmount;
         
         // this is a workaround to not have public variables
         // overrides other isPaused boolean and gives it the local _isPaused boolean
@@ -50,6 +51,7 @@ namespace Testgame
             // gives buttons height & width, adds title, makes buttons & gives position in middle of screen
             buttonHeight = 75;
             buttons = new Button[numberOfButtons];
+            buttonAmount = numberOfButtons;
             base.Add(title);
             title.attributes.position = new Vector2(512, title.height / 2 + 40);
             title.attributes.depth = .01f;
@@ -131,6 +133,7 @@ namespace Testgame
         {
             if (isPaused) return;
             KeyUpdate();
+            MouseUpdate();
             for (int i = 0; i < buttons.Length; i++)
             {
                 if (i == selected)
@@ -191,6 +194,34 @@ namespace Testgame
 
             // makes the oldstate the previous state
             oldState = newState;
+        }
+
+        MouseState oldstate;
+
+        public void MouseUpdate()
+        {
+            MouseState newstate = Mouse.GetState();
+
+            float x = newstate.X;
+            float y = newstate.Y;
+            Vector2 mousePosition = new Vector2(x, y);
+            for (int i = 0; i < buttonAmount; i++)
+            {
+                float halfWidth = buttons[i].width / 2;
+                float halfHeight = buttons[i].height / 2;
+                float xOrigin = buttons[i].attributes.position.X;
+                float yOrigin = buttons[i].attributes.position.Y;
+                if ((x > (xOrigin - halfWidth)) && (x < (xOrigin + halfWidth)) && (y < (yOrigin + halfHeight)) && (yOrigin > (yOrigin - halfHeight)))
+                {
+                    selected = i;
+                    if ((newstate.LeftButton == ButtonState.Pressed) && (oldstate.LeftButton == ButtonState.Released))
+                    {
+                        myState = menuState.Clicking;
+                        buttons[selected].WhenButtonClicked(delegate() { myState = menuState.On; });
+                        buttons[selected].Click();
+                    }
+                }
+            }
         }
 
     }
