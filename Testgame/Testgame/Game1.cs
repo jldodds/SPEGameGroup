@@ -24,6 +24,7 @@ namespace Testgame
         Drawable background;
         Texture2D selector;
         Speed speed;
+        Levels levels;
         KeyboardState oldState;
         Menu MainMenu;
         Menu GameMenu;
@@ -222,13 +223,14 @@ namespace Testgame
             };
 
             // creates main menu buttons
-            String[] mainMenuString = new String[5];
+            String[] mainMenuString = new String[6];
             mainMenuString[0] = "Single Player";
             mainMenuString[1] = "Multiplayer";
             mainMenuString[2] = "Instructions";
             mainMenuString[3] = "Settings";
             mainMenuString[4] = "Exit";
-            Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[5];
+            mainMenuString[5] = "*Test* levels";
+            Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[6];
             
             // if "play game" is chosen from main menu, starts the game
             mainMenuAction[0] = delegate() 
@@ -256,9 +258,15 @@ namespace Testgame
             
             //exits game
             mainMenuAction[4] = delegate() { this.Exit(); };
+
+            mainMenuAction[5] = delegate()
+            {
+                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn);
+                MainMenu.isPaused = true; levels.StartGame();
+            };
             
             //makes main menu and turns it on
-            MainMenu = new Menu(background, 5, title, mainMenuString, mainMenuAction, font);
+            MainMenu = new Menu(background, 6, title, mainMenuString, mainMenuAction, font);
             MainMenu.TurnOn();
             #endregion
 
@@ -284,25 +292,38 @@ namespace Testgame
             Button.ClickHandler[] playAgainAction = new Button.ClickHandler[2];
             playAgainAction[0] = delegate() {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                switch (speed.myType)
+                if (speed != null)
                 {
-                    case Speed.gameType.Timed:
-                        int x = speed.gameLength;
-                        speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
-                        speed.gameLength = x;
-                        break;
-                    case Speed.gameType.Marathon:
-                        int y = speed.winningscore;
-                        speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
-                        speed.winningscore = y;
-                        break;
-                    default:
-                        speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
-                        break;
+                    switch (speed.myType)
+                    {
+                        case Speed.gameType.Timed:
+                            int x = speed.gameLength;
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                            speed.gameLength = x;
+                            break;
+                        case Speed.gameType.Marathon:
+                            int y = speed.winningscore;
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                            speed.winningscore = y;
+                            break;
+                        default:
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                            break;
+                    }
+                    speed.TurnOn(); PlayAgain.isPaused = true;
                 }
-                 speed.TurnOn(); PlayAgain.isPaused = true;
+                if (levels != null) {
+                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn);
+                    levels.StartGame();
+                    PlayAgain.isPaused = true;
+                }
             };
-            playAgainAction[1] = delegate() { speed.isPaused = true; PlayAgain.isPaused = true; speed.speedState = Speed.gameState.PlayingCard; MainMenu.isPaused = false; };
+            playAgainAction[1] = delegate()
+            {
+                if (speed != null) speed = null;
+                if (levels != null) levels = null; 
+                PlayAgain.isPaused = true; MainMenu.isPaused = false;
+            };
             
             // makes transparent background
             Drawable playAgainBackground = new Drawable()
@@ -343,15 +364,32 @@ namespace Testgame
             // sets up an array of events based on which button is clicked
             Button.ClickHandler[] pauseActions = new Button.ClickHandler[4];
             // resumes speed if that option is chosen, goes to instructions if that's chosen, and goes to main menu if these aren't the case
-            pauseActions[0] = delegate() {if(speed != null && speed.isPaused == false){
-                speed.Resume();
-                Pause.isPaused = true;
-            }};
+            pauseActions[0] = delegate()
+            {
+                if (speed != null && speed.isPaused == false)
+                {
+                    speed.Resume();
+                    Pause.isPaused = true;
+                }
+                if (levels != null && levels.isPaused == false)
+                {
+                    levels.Resume();
+                    Pause.isPaused = true;
+                }
+            };
             pauseActions[1] = delegate()
             {
+                
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn();
-                Pause.isPaused = true;
+                if (speed != null)
+                {
+                    speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn();
+                }
+                else if (levels != null)
+                {
+                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn); levels.StartGame();
+                }
+                    Pause.isPaused = true;
             };
 
             pauseActions[2] = delegate()
@@ -359,7 +397,7 @@ namespace Testgame
                 BadTime.isSeeable = true; Pause.keysOff = true; Timer timer = new Timer(1);
                 Pause.Add(timer); timer.SetTimer(0, 4, delegate() { BadTime.isSeeable = false; Pause.keysOff = false; });
             };
-            pauseActions[3] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; speed = null; };
+            pauseActions[3] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; speed = null; levels = null; };
             // creates instance of pause menu
             Pause = new Menu(playAgainBackground, 4, pause, pauseNames, pauseActions, font);
             Pause.Add(BadTime);
@@ -954,7 +992,18 @@ namespace Testgame
                     speed.isHalted = true;
                 }
             }
+            if (levels != null)
+            {
+                levels.Update(gameTime);
+                if (levels.myState == Levels.LevelState.PlayAgain)
+                {
+                    if (PlayAgain.isPaused) PlayAgain.isPaused = false;
+                    levels.Halt();
+                }
+            }
+
             GameMenu.Update(gameTime);
+            
             InstructionsMenu.Update(gameTime);
             Controls.Update(gameTime);
             Rules.Update(gameTime);
@@ -994,6 +1043,12 @@ namespace Testgame
                         speed.Halt();
                         Pause.isPaused = false;
                     }
+
+                    else if (levels != null && levels.myState != Levels.LevelState.PlayAgain)
+                    {
+                        levels.Halt();
+                        Pause.isPaused = false;
+                    }
                 }
             }
 
@@ -1024,11 +1079,13 @@ namespace Testgame
 
             // TODO: Add your drawing code here
             // shakes screen if card is played
-            if (speed != null && speed.isShaking) spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, translate);
+            if ((speed != null && speed.isShaking && Pause.isPaused) || levels!= null && levels.isShaking && Pause.isPaused ) 
+                spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, translate);
             else spriteBatch.Begin(SpriteSortMode.BackToFront, null);
             
             // draws screens
             if (speed != null) speed.Draw(spriteBatch);
+            if (levels != null) levels.Draw(spriteBatch);
             MainMenu.Draw(spriteBatch);
             InstructionsMenu.Draw(spriteBatch);
             GameMenu.Draw(spriteBatch);

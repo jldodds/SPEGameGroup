@@ -116,6 +116,7 @@
     <Compile Include="Drawable.cs" />
     <Compile Include="HumanPlayer.cs" />
     <Compile Include="Instructions.cs" />
+    <Compile Include="Levels.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="ParticleEngine.cs" />

@@ -9,7 +9,7 @@ namespace Testgame
 {
     class ComputerPlayer : Player
     {
-        float timeDelay;
+        public float timeDelay { get; set; }
         Timer moveDelay;
         int pileNumber;
         bool isLeftPile;
@@ -69,6 +69,17 @@ namespace Testgame
                     moveDelay.SetTimer(0, timeDelay + ((float)random.NextDouble() - .5f) * timeDelay, delegate()
                     { SelectCard(isLeftPile); myState = CompState.normal; });
                 }
+            }
+            else if (Hand[selector].Count() == 0)
+            {
+                myState = CompState.moving;
+                moveDelay = new Timer(1);
+                moveDelay.SetTimer(0, timeDelay + ((float)random.NextDouble() - .5f) * timeDelay, delegate()
+                {
+                    if (!isPlayer1) MoveSelectorRight();
+                    else MoveSelectorLeft();
+                    myState = CompState.normal;
+                });
             }
         }
 

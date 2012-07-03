@@ -53,6 +53,11 @@ namespace Testgame
         bool soundOn;
         bool ableToReBegin;
         bool ableToReBegin2;
+        public int level { get; set; }
+        public delegate void EndGameMethod();
+        public event EndGameMethod YouWon;
+        public event EndGameMethod YouLost;
+        public event EndGameMethod YouTie;
 
         // initializes lots of variables
         public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn):base(background)
@@ -201,6 +206,7 @@ namespace Testgame
             Normal,               // First to clear hand
             Marathon,             // First to 30
             Timed,                // Most in 2 minutes
+            Levels,               // Levels
         }
 
 
@@ -221,6 +227,21 @@ namespace Testgame
         public void Deal()
         {
             speedState = gameState.Dealing;
+            if (myType == gameType.Levels)
+            {
+                Text levelText = new Text("Level " + level, _font)
+                {
+                    height = 200,
+                    attributes = new Attributes()
+                    {
+                        color = Color.Yellow,
+                        depth = 0,
+                        position = new Vector2(512, 400),
+                    },
+                };
+                base.Add(levelText);
+                levelText.Fade(4);
+            }
             Shuffle(cards);
             for (int i = 0; i < cards.Length; i++)
             {
@@ -306,6 +327,7 @@ namespace Testgame
             Card temp = null;
             switch (myType)
             {
+                case gameType.Levels:
                 case gameType.Normal:
                     temp = drawPile.Take();
                     break;
@@ -627,7 +649,7 @@ namespace Testgame
         // determines if there is a winner
         public bool ExistWinner()
         {
-            if (myType == gameType.Normal)
+            if (myType == gameType.Normal || myType == gameType.Levels)
             {
                 bool youWinner = true;
                 for (int i = 0; i < yourCards.Length; i++)
@@ -691,6 +713,7 @@ namespace Testgame
         public void YourAWinner()
         {
             speedState = gameState.Winner;
+            
             Text winner = new Text("Winner!!!", _font)
             {
                 attributes = new Attributes()
@@ -739,7 +762,8 @@ namespace Testgame
                 dash.isSeeable = true;
                 dash.height = 150;
                 base.Add(dash);
-                Reset(); });
+                if (myType == gameType.Levels) YouWon();
+                else Reset(); });
             endGame.SetTimer(1, 4, delegate() { winner.Fade(2); loser.Fade(2); });
         }
 
@@ -795,7 +819,8 @@ namespace Testgame
                 dash.isSeeable = true;
                 dash.height = 150;
                 base.Add(dash);
-                Reset(); });
+                if (myType == gameType.Levels) YouLost();
+                else Reset(); });
             endGame.SetTimer(1, 4, delegate() { winner.Fade(2); loser.Fade(2); });
         }
 
@@ -814,6 +839,7 @@ namespace Testgame
                 },
                 scale = new Vector2(.8f,.8f)
             };
+            YouTie();
 
             Text tieMiddle = new Text("You're both", _font)
             {
