@@ -41,6 +41,7 @@ namespace Testgame
             }
         }
 
+
         // constructs the text based on words, font, and gives it a true scaling
         public Text(String stuff, SpriteFont font)
         {
