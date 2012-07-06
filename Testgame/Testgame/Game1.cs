@@ -19,7 +19,6 @@ namespace Testgame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont font;
-        SpriteFont instructionsfont;
         Card[] cards;
         Drawable background;
         Texture2D selector;
@@ -50,8 +49,8 @@ namespace Testgame
         float aspectRatio;
         Player player1;
         Player player2;
-        Player computer;
-        Player computer2;
+        ComputerPlayer computer;
+        ComputerPlayer computer2;
         Drawable BadTime;
         SoundEffectInstance shuffleinstance;
         bool soundOn = true;
@@ -450,7 +449,7 @@ namespace Testgame
             gameMenuAction[1] = delegate() 
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, computer2, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn);
+                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn);
                 else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn); 
                 MarathonMenu.isPaused = false; GameMenu.isPaused = true; 
             };
@@ -510,18 +509,21 @@ namespace Testgame
             settingsactions[2] = delegate() 
             {
                 difficulty = Levels.Difficulty.Easy;
+                computer.timeDelay = 1.3f;
             };
 
             // 
             settingsactions[3] = delegate()
             {
                 difficulty = Levels.Difficulty.Medium;
+                computer.timeDelay = .5f;
             };
 
             // 
             settingsactions[4] = delegate()
             {
                 difficulty = Levels.Difficulty.Hard;
+                computer.timeDelay = .3f;
             };
 
             // changes back to main menu
@@ -1029,13 +1031,15 @@ namespace Testgame
             #endregion
 
             // makes the freeze icon
-            freeze = new Drawable()
+            freeze = new PowerUp(Color.LightBlue, textures)
             {
                 attributes = new Attributes()
                 {
                     texture = this.Content.Load<Texture2D>("Freeze"),
                     position = new Vector2(300, 300),
-                    color = Color.White
+                    color = Color.White,
+                    height = 400,
+                    width = 400,
                 }
             };
             freeze.isSeeable = false;

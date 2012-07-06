@@ -61,9 +61,12 @@ namespace Testgame
         Timer delayTimer;
         Text levelsss;
         Text levelss;
+        PowerUp freeze;
 
         // initializes lots of variables
-        public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn):base(background)
+        public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, 
+            Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, 
+            SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn):base(background)
         {
             myType = gameType;
             cardcounter = new int[52];
@@ -78,6 +81,8 @@ namespace Testgame
             soundOn = isSoundOn;
             ableToReBegin = true;
             ableToReBegin2 = true;
+            //freeze = powerup;
+            //base.Add(freeze);
 
             you = bottom;
             opp = top;

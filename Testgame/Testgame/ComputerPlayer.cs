@@ -21,7 +21,7 @@ namespace Testgame
         {
             myState = CompState.normal;
             if (isPlayer1) timeDelay = .4f;
-            else timeDelay = .39f;
+            else timeDelay = .45f;
             random = new Random();
         }
 
