@@ -26,7 +26,8 @@ namespace Testgame
         Levels levels;
         KeyboardState oldState;
         Menu MainMenu;
-        Menu GameMenu;
+        Menu GameMenu1;
+        Menu GameMenu2;
         Menu MarathonMenu;
         Menu TimedMenu;
         Menu PlayAgain;
@@ -61,6 +62,7 @@ namespace Testgame
 
         public enum Mode
         {
+            none,
             onePlayer,
             twoPlayer,
         }
@@ -223,68 +225,6 @@ namespace Testgame
             textures.Add(Content.Load<Texture2D>("diamond"));
             textures.Add(Content.Load<Texture2D>("star"));
 
-            /*
-            #region MainMenu
-            // game title
-            Text title = new Text("Speed!", font)
-            {
-                attributes = new Attributes()
-                {
-                    color = Color.Black,
-                    rotation = -.2f,
-                    depth = 0f,
-                },
-                scale = new Vector2(.5f, .5f)
-            };
-
-            // creates main menu buttons
-            String[] mainMenuString = new String[6];
-            mainMenuString[0] = "Single Player";
-            mainMenuString[1] = "Multiplayer";
-            mainMenuString[2] = "Instructions";
-            mainMenuString[3] = "Settings";
-            mainMenuString[4] = "Exit";
-            mainMenuString[5] = "*Test* levels";
-            Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[6];
-            
-            // if "play game" is chosen from main menu, starts the game
-            mainMenuAction[0] = delegate() 
-            {
-                MainMenu.isPaused = true; GameMenu.isPaused = false;
-                myMode = Mode.onePlayer;
-            };
-
-            mainMenuAction[1] = delegate()
-            {
-                MainMenu.isPaused = true; GameMenu.isPaused = false;
-                myMode = Mode.twoPlayer;
-            };
-            // if "instructions" chosen, displays instructions
-            mainMenuAction[2] = delegate() 
-            {
-                InstructionsMenu.isPaused = false; MainMenu.isPaused = true; 
-            };
-
-            // if "settings" chosen, displays settings
-            mainMenuAction[3] = delegate() 
-            {
-                MainMenu.isPaused = true;  SettingsMenu.isPaused = false; 
-            };
-            
-            //exits game
-            mainMenuAction[4] = delegate() { this.Exit(); };
-
-            mainMenuAction[5] = delegate()
-            {
-                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn, easy, medium);
-                MainMenu.isPaused = true; levels.StartGame();
-            };
-            
-            //makes main menu and turns it on
-            MainMenu = new Menu(background, 6, title, mainMenuString, mainMenuAction, font);
-            MainMenu.TurnOn();
-            #endregion*/
-
             #region PlayAgainMenu
             // title for play again menu
             Text playAgain = new Text("Play Again?", font)
@@ -419,53 +359,6 @@ namespace Testgame
 
             #endregion
 
-            #region GameMenu
-            Text playgame = new Text("Select Game", font)
-            {
-                attributes = new Attributes()
-                {
-                    color = Color.Black,
-                    rotation = -.05f,
-                    depth = 0f,
-                },
-                scale = new Vector2(.5f, .5f)
-            };
-
-            String[] gameMenuString = new String[4];
-            gameMenuString[0] = "Normal";
-            gameMenuString[1] = "Marathon";
-            gameMenuString[2] = "Timed";
-            gameMenuString[3] = "Back";
-            Button.ClickHandler[] gameMenuAction = new Button.ClickHandler[4];
-            
-            gameMenuAction[0] = delegate() 
-            {
-                player1.Reset(); player2.Reset(); computer.Reset();
-                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn, freeze);
-                else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn, freeze);
-                    speed.TurnOn(); GameMenu.isPaused = true; 
-            };
-            
-            gameMenuAction[1] = delegate() 
-            {
-                player1.Reset(); player2.Reset(); computer.Reset();
-                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn, freeze);
-                else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn, freeze); 
-                MarathonMenu.isPaused = false; GameMenu.isPaused = true; 
-            };
-
-            gameMenuAction[2] = delegate()
-            {
-                player1.Reset(); player2.Reset(); computer.Reset();
-                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn, freeze);
-                else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn, freeze);
-                TimedMenu.isPaused = false; GameMenu.isPaused = true;
-            };
-            
-            gameMenuAction[3] = delegate() {GameMenu.isPaused = true; MainMenu.isPaused = false;};
-            
-            GameMenu = new Menu(background, 4, playgame, gameMenuString, gameMenuAction, font);
-            #endregion
 
             #region SettingsMenu
             // settings title
@@ -533,7 +426,7 @@ namespace Testgame
             };
 
             //makes main menu and turns it on
-            SettingsMenu = new Menu(background, 6, settings, settingsbuttons, settingsactions, font, true);
+            SettingsMenu = new Menu(background, 6, settings, settingsbuttons, settingsactions, font, checkMark);
             #endregion
 
             #region InstructionsMenu
@@ -607,25 +500,24 @@ namespace Testgame
             };
 
             // creates main menu buttons
-            String[] mainMenuString = new String[6];
+            String[] mainMenuString = new String[5];
             mainMenuString[0] = "Single Player";
             mainMenuString[1] = "Multiplayer";
             mainMenuString[2] = "Instructions";
             mainMenuString[3] = "Settings";
             mainMenuString[4] = "Exit";
-            mainMenuString[5] = "*Test* levels";
-            Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[6];
+            Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[5];
 
             // if "play game" is chosen from main menu, starts the game
             mainMenuAction[0] = delegate()
             {
-                MainMenu.isPaused = true; GameMenu.isPaused = false;
+                MainMenu.isPaused = true; GameMenu1.isPaused = false;
                 myMode = Mode.onePlayer;
             };
 
             mainMenuAction[1] = delegate()
             {
-                MainMenu.isPaused = true; GameMenu.isPaused = false;
+                MainMenu.isPaused = true; GameMenu2.isPaused = false;
                 myMode = Mode.twoPlayer;
             };
             // if "instructions" chosen, displays instructions
@@ -643,15 +535,110 @@ namespace Testgame
             //exits game
             mainMenuAction[4] = delegate() { this.Exit(); };
 
-            mainMenuAction[5] = delegate()
+            //makes main menu and turns it on
+            MainMenu = new Menu(background, 5, title, mainMenuString, mainMenuAction, font);
+            MainMenu.TurnOn();
+            #endregion
+
+            #region GameMenu1
+            Text playgame1 = new Text("Select Game", font)
             {
-                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty, freeze);
-                MainMenu.isPaused = true; levels.StartGame();
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    rotation = -.05f,
+                    depth = 0f,
+                },
+                scale = new Vector2(.5f, .5f)
             };
 
-            //makes main menu and turns it on
-            MainMenu = new Menu(background, 6, title, mainMenuString, mainMenuAction, font);
-            MainMenu.TurnOn();
+            String[] gameMenuString1 = new String[5];
+            gameMenuString1[0] = "Normal";
+            gameMenuString1[1] = "Marathon";
+            gameMenuString1[2] = "Timed";
+            gameMenuString1[3] = "Levels";
+            gameMenuString1[4] = "Back";
+            Button.ClickHandler[] gameMenuAction1 = new Button.ClickHandler[5];
+
+            gameMenuAction1[0] = delegate()
+            {
+                player1.Reset(); player2.Reset(); computer.Reset();
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed.TurnOn(); GameMenu1.isPaused = true;
+            };
+
+            gameMenuAction1[1] = delegate()
+            {
+                player1.Reset(); player2.Reset(); computer.Reset();
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                MarathonMenu.isPaused = false; GameMenu1.isPaused = true;
+            };
+
+            gameMenuAction1[2] = delegate()
+            {
+                player1.Reset(); player2.Reset(); computer.Reset();
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                TimedMenu.isPaused = false; GameMenu1.isPaused = true;
+            };
+
+            gameMenuAction1[3] = delegate()
+            {
+
+                player1.Reset(); computer.Reset();
+                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty, freeze);
+                GameMenu1.isPaused = true;
+                levels.StartGame();
+
+            };
+
+            gameMenuAction1[4] = delegate() { GameMenu1.isPaused = true; MainMenu.isPaused = false; };
+
+            GameMenu1 = new Menu(background, 5, playgame1, gameMenuString1, gameMenuAction1, font);
+            #endregion
+
+            #region GameMenu2
+            Text playgame2 = new Text("Select Game", font)
+            {
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    rotation = -.05f,
+                    depth = 0f,
+                },
+                scale = new Vector2(.5f, .5f)
+            };
+
+            String[] gameMenuString2 = new String[4];
+            gameMenuString2[0] = "Normal";
+            gameMenuString2[1] = "Marathon";
+            gameMenuString2[2] = "Timed";
+            gameMenuString2[3] = "Back";
+            Button.ClickHandler[] gameMenuAction2 = new Button.ClickHandler[4];
+
+            gameMenuAction2[0] = delegate()
+            {
+                player1.Reset(); player2.Reset(); computer.Reset();
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed.TurnOn(); GameMenu2.isPaused = true;
+            };
+
+            gameMenuAction2[1] = delegate()
+            {
+                player1.Reset(); player2.Reset(); computer.Reset();
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                MarathonMenu.isPaused = false; GameMenu2.isPaused = true;
+            };
+
+            gameMenuAction2[2] = delegate()
+            {
+                player1.Reset(); player2.Reset(); computer.Reset();
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                TimedMenu.isPaused = false; GameMenu2.isPaused = true;
+            };
+
+            gameMenuAction2[3] = delegate() { GameMenu2.isPaused = true; MainMenu.isPaused = false; };
+
+            GameMenu2 = new Menu(background, 4, playgame2, gameMenuString2, gameMenuAction2, font);
             #endregion
 
             #region Controls
@@ -980,7 +967,7 @@ namespace Testgame
                 speed.winningscore = 100; speed.TurnOn(); MarathonMenu.isPaused = true;
             };
 
-            marathonMenuAction[3] = delegate() { MarathonMenu.isPaused = true; GameMenu.isPaused = false; };
+            marathonMenuAction[3] = delegate() { MarathonMenu.isPaused = true; MainMenu.isPaused = false; };
 
             MarathonMenu = new Menu(background, 4, ChooseLength, marathonMenuString, marathonMenuAction, font);
             #endregion
@@ -1025,7 +1012,7 @@ namespace Testgame
                 speed.gameLength = 300; speed.TurnOn(); TimedMenu.isPaused = true;
             };
 
-            TimedMenuAction[4] = delegate() { TimedMenu.isPaused = true; GameMenu.isPaused = false; };
+            TimedMenuAction[4] = delegate() { TimedMenu.isPaused = true; MainMenu.isPaused = false; };
 
             TimedMenu = new Menu(background, 5, ChooseTime, TimedMenuString, TimedMenuAction, font);
             #endregion
@@ -1105,7 +1092,8 @@ namespace Testgame
             test2.attributes.position = new Vector2(random.Next(0, 1024), random.Next(0, 800));
             test3.attributes.position = new Vector2(random.Next(0, 1024), random.Next(0, 800));
 
-            GameMenu.Update(gameTime);
+            GameMenu1.Update(gameTime);
+            GameMenu2.Update(gameTime);
             test.Update(gameTime);
             test2.Update(gameTime);
             test3.Update(gameTime);
@@ -1193,7 +1181,8 @@ namespace Testgame
             if (levels != null) levels.Draw(spriteBatch);
             MainMenu.Draw(spriteBatch);
             InstructionsMenu.Draw(spriteBatch);
-            GameMenu.Draw(spriteBatch);
+            GameMenu1.Draw(spriteBatch);
+            GameMenu2.Draw(spriteBatch);
             Pause.Draw(spriteBatch);
             MarathonMenu.Draw(spriteBatch);
             PlayAgain.Draw(spriteBatch);

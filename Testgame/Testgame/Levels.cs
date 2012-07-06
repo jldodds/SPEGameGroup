@@ -83,6 +83,7 @@ namespace Testgame
             }
 
             speed = new Speed(deck, _background, _selector, _font, _player1, computer, _particles, Speed.gameType.Levels, shuffling, playingCard, shuffleInstance, isSoundOn, freeze);
+
             speed.level = _level;
             speed.TurnOn();
             myState = LevelState.Playing;
@@ -113,9 +114,13 @@ namespace Testgame
 
         public void Update(GameTime gameTime)
         {
-            if (speed != null) speed.Update(gameTime);
+            if (speed != null)
+            {
+                speed.Update(gameTime);
+                isShaking = speed.isShaking;
+            }
             if (timer != null) timer.Update(gameTime);
-            isShaking = speed.isShaking;
+
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -19,17 +19,8 @@ namespace Testgame
         private bool _isPaused;
         public bool keysOff { get; set; }
         int buttonAmount;
-        public bool isSetting
-        {
-            get
-            {
-                return true;
-            }
-            set
-            {
-                value = true;
-            }
-        }
+        public bool isSetting { get; set; }
+        Drawable _checkMark;
 
         // this is a workaround to not have public variables
         // overrides other isPaused boolean and gives it the local _isPaused boolean
@@ -97,13 +88,14 @@ namespace Testgame
         }
 
         // menu constructor
-        public Menu(Drawable background, int numberOfButtons, Text title, String[] buttonNames, Button.ClickHandler[] buttonActions, SpriteFont buttonFont, bool cooool)
+        public Menu(Drawable background, int numberOfButtons, Text title, String[] buttonNames, Button.ClickHandler[] buttonActions, SpriteFont buttonFont, Drawable checkMark)
             : base(background)
         {
             // gives buttons height & width, adds title, makes buttons & gives position in middle of screen
             buttonHeight = 75;
             buttons = new Button[numberOfButtons];
             buttonAmount = numberOfButtons;
+            _checkMark = checkMark;
             base.Add(title);
             title.attributes.position = new Vector2(512, title.height / 2 + 40);
             title.attributes.depth = .01f;
@@ -112,7 +104,7 @@ namespace Testgame
             // makes new buttons, adds heights, adds actions and events for if clicked
             for (int i = 0; i < numberOfButtons; i++)
             {
-                buttons[i] = new Button(buttonNames[i], buttonFont, new Vector2(512, title.height + 140 + ((800 - title.height - 80 - buttonHeight) / numberOfButtons) * i), Color.Black, true);
+                buttons[i] = new Button(buttonNames[i], buttonFont, new Vector2(512, title.height + 140 + ((800 - title.height - 80 - buttonHeight) / numberOfButtons) * i), Color.Black, _checkMark);
                 buttons[i].height = buttonHeight;
                 buttons[i].Clicked += buttonActions[i];
                 buttons[i].Clicked += delegate()
