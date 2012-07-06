@@ -30,7 +30,9 @@ namespace Testgame
         public bool isPaused { get; set; }
         public LevelState myState { get; set; }
         public bool isShaking { get; set; }
-
+        Game1 game;
+        bool easy;
+        bool medium;
 
         public enum LevelState
         {
@@ -38,7 +40,7 @@ namespace Testgame
             PlayAgain,
         }
         
-        public Levels(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player player1, List<Texture2D> particles, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn)
+        public Levels(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player player1, List<Texture2D> particles, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, bool easydiff, bool mediumdiff)
         {
             computer = new ComputerPlayer("Computer", false);
             deck = deckOfCards;
@@ -53,13 +55,20 @@ namespace Testgame
             this.isSoundOn = isSoundOn;
             _level = 1;
             myState = LevelState.Playing;
+            easy = easydiff;
+            medium = mediumdiff;
         }
 
         public void StartGame()
         {
             _player1.Reset();
             computer.Reset();
-            computer.timeDelay = .5f - (.03f * _level);
+            if (easy)
+                computer.timeDelay = 2.0f - (.027f * _level);
+            else if (medium)
+                computer.timeDelay = .5f - (.03f * _level);
+            else
+                computer.timeDelay = .43f - (.025f * _level);
             speed = new Speed(deck, _background, _selector, _font, _player1, computer, _particles, Speed.gameType.Levels, shuffling, playingCard, shuffleInstance, isSoundOn);
             speed.level = _level;
             speed.TurnOn();

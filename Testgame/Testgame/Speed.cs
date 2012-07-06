@@ -912,13 +912,6 @@ namespace Testgame
             timer.SetTimer(0, .5f, delegate() { isShaking = false; });
         }
 
-        // toggles sound method
-        public void toggleSound()
-        {
-            if (soundOn) soundOn = false;
-            else soundOn = true;
-        }
-
         // shuffles cards 
         public static void Shuffle(Card[] cards)
         {         

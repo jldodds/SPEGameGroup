@@ -19,7 +19,18 @@ namespace Testgame
         private bool _isPaused;
         public bool keysOff { get; set; }
         int buttonAmount;
-        
+        public bool isSetting
+        {
+            get
+            {
+                return true;
+            }
+            set
+            {
+                value = true;
+            }
+        }
+
         // this is a workaround to not have public variables
         // overrides other isPaused boolean and gives it the local _isPaused boolean
         public override bool isPaused
@@ -61,6 +72,47 @@ namespace Testgame
             for (int i = 0; i < numberOfButtons; i++)
             {
                 buttons[i] = new Button(buttonNames[i], buttonFont, new Vector2(512, title.height + 140 + ((800 - title.height - 80 - buttonHeight) / numberOfButtons) * i), Color.Black);
+                buttons[i].height = buttonHeight;
+                buttons[i].Clicked += buttonActions[i];
+                buttons[i].Clicked += delegate()
+                {
+                    for (int j = 0; j < numberOfButtons; j++)
+                    {
+                        if (j != i) buttons[j].Remove();
+                    }
+                };
+                if (buttons[i].width > maxButtonWidth) maxButtonWidth = buttons[i].width;
+                base.Add(buttons[i]);
+                buttons[i].attributes.depth = .01f;
+            }
+
+            // sets selected button to the top button
+            selected = 0;
+            // initializes menu to off, then turns it on after .5 seconds
+            myState = menuState.Off;
+            keysOff = false;
+            Timer state = new Timer(1);
+            base.Add(state);
+            state.SetTimer(0, .5f, delegate() { myState = menuState.On; });
+        }
+
+        // menu constructor
+        public Menu(Drawable background, int numberOfButtons, Text title, String[] buttonNames, Button.ClickHandler[] buttonActions, SpriteFont buttonFont, bool cooool)
+            : base(background)
+        {
+            // gives buttons height & width, adds title, makes buttons & gives position in middle of screen
+            buttonHeight = 75;
+            buttons = new Button[numberOfButtons];
+            buttonAmount = numberOfButtons;
+            base.Add(title);
+            title.attributes.position = new Vector2(512, title.height / 2 + 40);
+            title.attributes.depth = .01f;
+            maxButtonWidth = 0;
+
+            // makes new buttons, adds heights, adds actions and events for if clicked
+            for (int i = 0; i < numberOfButtons; i++)
+            {
+                buttons[i] = new Button(buttonNames[i], buttonFont, new Vector2(512, title.height + 140 + ((800 - title.height - 80 - buttonHeight) / numberOfButtons) * i), Color.Black, true);
                 buttons[i].height = buttonHeight;
                 buttons[i].Clicked += buttonActions[i];
                 buttons[i].Clicked += delegate()
@@ -211,7 +263,7 @@ namespace Testgame
                 float halfHeight = buttons[i].height / 2;
                 float xOrigin = buttons[i].attributes.position.X;
                 float yOrigin = buttons[i].attributes.position.Y;
-                if ((x > (xOrigin - halfWidth)) && (x < (xOrigin + halfWidth)) && (y < (yOrigin + halfHeight)) && (yOrigin > (yOrigin - halfHeight)))
+                if ((x > (xOrigin - halfWidth)) && (x < (xOrigin + halfWidth)) && (y < (yOrigin + halfHeight)) && (y > (yOrigin - halfHeight)))
                 {
                     selected = i;
                     if ((newstate.LeftButton == ButtonState.Pressed) && (oldstate.LeftButton == ButtonState.Released))
