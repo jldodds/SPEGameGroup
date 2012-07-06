@@ -111,6 +111,7 @@
     <Compile Include="Attributes.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Card.cs" />
+    <Compile Include="Check.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="ComputerPlayer.cs" />
     <Compile Include="Drawable.cs" />

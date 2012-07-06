@@ -15,6 +15,8 @@ namespace Testgame
         bool clicked;
         bool isSetting;
         int toggled;
+        int moduloToggled;
+        Drawable _checkMark;
         
         // gives buttons colors, position, makes buttontimer
         public Button(String stuff, SpriteFont font, Vector2 position, Color color): base(stuff, font)
@@ -24,7 +26,7 @@ namespace Testgame
             buttonTimer = new Timer(1);
         }
 
-        public Button(String stuff, SpriteFont font, Vector2 position, Color color, bool cooool)
+        public Button(String stuff, SpriteFont font, Vector2 position, Color color, Drawable checkMark)
             : base(stuff, font)
         {
             attributes.color = color;
@@ -32,20 +34,16 @@ namespace Testgame
             buttonTimer = new Timer(1);
             isSetting = true;
             toggled = 0;
+            _checkMark = checkMark;
+            _checkMark.attributes.position = new Vector2(attributes.position.X + 300, attributes.position.Y);
         }
 
         // draws buttons if they should be drawn, then makes selected buttons larger than normal
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             if (!isSeeable) return;
-            //if (!isSetting)
-            //{
-                if (selected && !clicked) attributes.color = Color.Red;
-                if (selected) spriteBatch.DrawString(_font, content, attributes.position, attributes.color, attributes.rotation, _font.MeasureString(content) / 2, scale * 1.3f, spriteEffects, attributes.depth);
-            //}
-            //if (isSetting)
-            //{
-            //}
+            if (selected && !clicked) attributes.color = Color.Red;
+            if (selected) spriteBatch.DrawString(_font, content, attributes.position, attributes.color, attributes.rotation, _font.MeasureString(content) / 2, scale * 1.3f, spriteEffects, attributes.depth);
             else base.Draw(spriteBatch, spriteEffects);
         }
 
@@ -67,7 +65,7 @@ namespace Testgame
                 toggled++;
                 clicked = true;
                 attributes.color = Color.Orange;
-                int moduloToggled = toggled % 2;
+                moduloToggled = toggled % 2;
                 if (moduloToggled == 0)
                     buttonTimer.SetTimer(0, .5f, delegate() { Clicked(); clicked = false; attributes.color = Color.Black; });
                 else
@@ -86,6 +84,8 @@ namespace Testgame
         // update method
         public override void Update(GameTime gameTime)
         {
+            if (moduloToggled == 1)
+                _checkMark.isSeeable = true;
             if (buttonTimer != null) buttonTimer.Update(gameTime);
             base.Update(gameTime);
         }

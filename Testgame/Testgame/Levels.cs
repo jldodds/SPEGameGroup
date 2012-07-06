@@ -112,9 +112,13 @@ namespace Testgame
 
         public void Update(GameTime gameTime)
         {
-            if (speed != null) speed.Update(gameTime);
+            if (speed != null)
+            {
+                speed.Update(gameTime);
+                isShaking = speed.isShaking;
+            }
             if (timer != null) timer.Update(gameTime);
-            isShaking = speed.isShaking;
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
