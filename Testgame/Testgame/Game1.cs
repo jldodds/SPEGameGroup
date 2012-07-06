@@ -19,6 +19,7 @@ namespace Testgame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont font;
+        SpriteFont instructionsfont;
         Card[] cards;
         Drawable background;
         Texture2D selector;
@@ -33,7 +34,7 @@ namespace Testgame
         Menu PlayAgain;
         Menu Pause;
         Menu SettingsMenu;
-        PowerUp freeze;
+        Drawable freeze;
         List<Texture2D> textures;
         ParticleEngine test;
         ParticleEngine test2;
@@ -50,8 +51,8 @@ namespace Testgame
         float aspectRatio;
         Player player1;
         Player player2;
-        ComputerPlayer computer;
-        ComputerPlayer computer2;
+        Player computer;
+        Player computer2;
         Drawable BadTime;
         SoundEffectInstance shuffleinstance;
         bool soundOn = true;
@@ -220,6 +221,7 @@ namespace Testgame
             // loads card selector
             selector = this.Content.Load<Texture2D>("CardSelector");
 
+            // loads circles, diamonds, stars for the particle generator
             textures = new List<Texture2D>();
             textures.Add(Content.Load<Texture2D>("circle"));
             textures.Add(Content.Load<Texture2D>("diamond"));
@@ -253,22 +255,22 @@ namespace Testgame
                     {
                         case Speed.gameType.Timed:
                             int x = speed.gameLength;
-                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
                             speed.gameLength = x;
                             break;
                         case Speed.gameType.Marathon:
                             int y = speed.winningscore;
-                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
                             speed.winningscore = y;
                             break;
                         default:
-                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
                             break;
                     }
                     speed.TurnOn(); PlayAgain.isPaused = true;
                 }
                 if (levels != null) {
-                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty, freeze);
+                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty);
                     levels.StartGame();
                     PlayAgain.isPaused = true;
                 }
@@ -318,7 +320,7 @@ namespace Testgame
             pauseNames[3] = "Main Menu";
             // sets up an array of events based on which button is clicked
             Button.ClickHandler[] pauseActions = new Button.ClickHandler[4];
-            // resumes speed if that option is chosen, goes to instructions if that's chosen, and goes to main menu if these aren't the case
+            // disables pause menu & resumes speed goes to instructions if that's chosen, and goes to main menu if these aren't the case
             pauseActions[0] = delegate()
             {
                 if (speed != null && speed.isPaused == false)
@@ -332,33 +334,34 @@ namespace Testgame
                     Pause.isPaused = true;
                 }
             };
+            // disables pause menu & displays instructions
             pauseActions[1] = delegate()
             {
                 
                 player1.Reset(); player2.Reset(); computer.Reset();
                 if (speed != null)
                 {
-                    speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, freeze); speed.TurnOn();
+                    speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn();
                 }
                 else if (levels != null)
                 {
-                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty, freeze); levels.StartGame();
+                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty); levels.StartGame();
                 }
                     Pause.isPaused = true;
             };
-
+            // disables pause menu & shows (fake) instructions.. just a funny image
             pauseActions[2] = delegate()
             {
                 BadTime.isSeeable = true; Pause.keysOff = true; Timer timer = new Timer(1);
                 Pause.Add(timer); timer.SetTimer(0, 4, delegate() { BadTime.isSeeable = false; Pause.keysOff = false; });
             };
+            // returns to main menu
             pauseActions[3] = delegate() { MainMenu.isPaused = false; Pause.isPaused = true; speed = null; levels = null; };
             // creates instance of pause menu
             Pause = new Menu(playAgainBackground, 4, pause, pauseNames, pauseActions, font);
             Pause.Add(BadTime);
 
             #endregion
-
 
             #region SettingsMenu
             // settings title
@@ -402,21 +405,18 @@ namespace Testgame
             settingsactions[2] = delegate() 
             {
                 difficulty = Levels.Difficulty.Easy;
-                computer.timeDelay = 1.3f;
             };
 
             // 
             settingsactions[3] = delegate()
             {
                 difficulty = Levels.Difficulty.Medium;
-                computer.timeDelay = .5f;
             };
 
             // 
             settingsactions[4] = delegate()
             {
                 difficulty = Levels.Difficulty.Hard;
-                computer.timeDelay = .3f;
             };
 
             // changes back to main menu
@@ -563,32 +563,30 @@ namespace Testgame
             gameMenuAction1[0] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn);
                 speed.TurnOn(); GameMenu1.isPaused = true;
             };
 
             gameMenuAction1[1] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn);
                 MarathonMenu.isPaused = false; GameMenu1.isPaused = true;
             };
 
             gameMenuAction1[2] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn);
                 TimedMenu.isPaused = false; GameMenu1.isPaused = true;
             };
 
             gameMenuAction1[3] = delegate()
             {
-
                 player1.Reset(); computer.Reset();
-                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty, freeze);
+                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty);
                 GameMenu1.isPaused = true;
                 levels.StartGame();
-
             };
 
             gameMenuAction1[4] = delegate() { GameMenu1.isPaused = true; MainMenu.isPaused = false; };
@@ -618,21 +616,21 @@ namespace Testgame
             gameMenuAction2[0] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn);
                 speed.TurnOn(); GameMenu2.isPaused = true;
             };
 
             gameMenuAction2[1] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn);
                 MarathonMenu.isPaused = false; GameMenu2.isPaused = true;
             };
 
             gameMenuAction2[2] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn);
                 TimedMenu.isPaused = false; GameMenu2.isPaused = true;
             };
 
@@ -1018,15 +1016,13 @@ namespace Testgame
             #endregion
 
             // makes the freeze icon
-            freeze = new PowerUp(Color.LightBlue, textures)
+            freeze = new Drawable()
             {
                 attributes = new Attributes()
                 {
                     texture = this.Content.Load<Texture2D>("Freeze"),
                     position = new Vector2(300, 300),
-                    color = Color.White,
-                    height = 100,
-                    width = 100,
+                    color = Color.White
                 }
             };
             freeze.isSeeable = false;
