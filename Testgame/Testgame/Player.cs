@@ -166,7 +166,7 @@ namespace Testgame
             myState = PlayerState.Normal;
         }
 
-        public void MouseUpdate()
+        /*public void MouseUpdate()
         {
             // keeps track of what key currently being pressed
             MouseState newstate = Mouse.GetState();
@@ -240,7 +240,7 @@ namespace Testgame
 
             // updates old mouse state
             oldstate = newstate;
-        }
+        }*/
         
         
         // This has to be implemented by the extended classes

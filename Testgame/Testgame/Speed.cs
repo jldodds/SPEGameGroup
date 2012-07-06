@@ -58,6 +58,9 @@ namespace Testgame
         public event EndGameMethod YouWon;
         public event EndGameMethod YouLost;
         public event EndGameMethod YouTie;
+        Timer delayTimer;
+        Text levelsss;
+        Text levelss;
 
         // initializes lots of variables
         public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn):base(background)
@@ -195,8 +198,29 @@ namespace Testgame
             if (myType == gameType.Timed)
             {
                 gameLength = 120;
+                delayTimer = new Timer(1);
+                delayTimer.SetTimer(0, 4, delegate()
+                {
+                    speedState = gameState.ReBeginning;
+                    Text delay = new Text("Delay", font)
+                    {
+                        attributes = new Attributes()
+                            {
+                                color = Color.Yellow,
+                                position = new Vector2(512, 400),
+                                depth = .001f,
+                            },
+                        height = 400,
+                    };
+                    base.Add(delay);
+                    delay.Fade(2);
+                    delay.WhenDoneFading(delegate() { BeginGame(); });
+
+                });
                         
             }
+
+
         }
 
 
@@ -276,6 +300,33 @@ namespace Testgame
             {
                 base.Add(time1);
                 base.Add(time2);
+            }
+
+            if (myType == gameType.Levels)
+            {
+                levelsss = new Text("Level " + level, _font)
+                {
+                    height = 100,
+                    attributes = new Attributes()
+                    {
+                        color = Color.Black,
+                        position = new Vector2(lSpitStack.position.X, oppName.attributes.position.Y),
+                        depth = .01f
+                    },
+                };
+                levelss = new Text("Level " + level, _font)
+                {
+                    height = 100,
+                    attributes = new Attributes()
+                    {
+                        color = Color.Black,
+                        position = new Vector2(rSpitStack.position.X, yourName.attributes.position.Y),
+                        depth = .01f
+                    },
+                };
+                base.Add(levelsss);
+                base.Add(levelss);
+
             }
                 base.Add(yourName);
                 base.Add(oppName);
@@ -376,6 +427,7 @@ namespace Testgame
             {
                 time1.changeContent(gameTimer.getCountDown(0));
                 time2.changeContent(gameTimer.getCountDown(0));
+                if (speedState == gameState.GamePlay) delayTimer.Update(gameTime);
                 if (speedState == gameState.ReBeginning && gameTimer.getTimeLeft(0) <= 20) gameTimer.isPaused = true;
                 else gameTimer.isPaused = false;
             }
@@ -511,7 +563,7 @@ namespace Testgame
             int value = destinationPile.Peek().cardValue;
             if ((cv == 0 && value == 12) || (cv == 12 && value == 0) || (cv == value + 1 || cv == value - 1))
             {
-                
+                if(myType == gameType.Timed) delayTimer.ResetTimer(0);
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
                 playcard.Play();
@@ -598,19 +650,19 @@ namespace Testgame
             if (speedState == gameState.PlayAgain) return;
             ableToReBegin = false;
             speedState = gameState.ReBeginning;
-            Timer watch = new Timer(1);
-            base.Add(watch);
-            watch.SetTimer(0, 1, delegate()
-            {
-                Text nomove = new Text("No Moves", _font)
+                Timer watch = new Timer(1);
+                base.Add(watch);
+                watch.SetTimer(0, 1, delegate()
                 {
-                    attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) },
-                    scale = new Vector2(.5f, .5f)
-                };
-                base.Add(nomove);
-                nomove.Move(Actions.LinearMove, nomove.attributes.position, 1);
-                nomove.WhenDoneMoving(delegate() { nomove.isSeeable = false; });
-            });
+                    Text nomove = new Text("No Moves", _font)
+                    {
+                        attributes = new Attributes() { color = Color.Yellow, position = new Vector2(512, 400) },
+                        scale = new Vector2(.5f, .5f)
+                    };
+                    base.Add(nomove);
+                    nomove.Move(Actions.LinearMove, nomove.attributes.position, 1);
+                    nomove.WhenDoneMoving(delegate() { nomove.isSeeable = false; });
+                });
             if (lSpitStack.Count() != 0)
             {
                 Timer stopwatch = new Timer(5);
@@ -691,6 +743,11 @@ namespace Testgame
             oppName.Fade(4);
             yourScore.Fade(4);
             oppScore.Fade(4);
+            if (myType == gameType.Levels)
+            {
+                levelss.Fade(4);
+                levelsss.Fade(4);
+            }
             for (int i = 0; i < yourCards.Length; i++)
             {
                 if(yourCards[i].Count() != 0) yourCards[i].Take().Fade(4);
@@ -909,7 +966,7 @@ namespace Testgame
             Timer timer = new Timer(1);
             base.Add(timer);
             isShaking = true;
-            timer.SetTimer(0, .5f, delegate() { isShaking = false; });
+            timer.SetTimer(0, .2f, delegate() { isShaking = false; });
         }
 
         // toggles sound method

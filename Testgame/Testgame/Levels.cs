@@ -25,7 +25,6 @@ namespace Testgame
         SoundEffectInstance shuffleInstance;
         bool isSoundOn;
         Timer timer;
-        Text YouLose;
         public bool isHalted { get; set; }
         public bool isPaused { get; set; }
         public LevelState myState { get; set; }
@@ -59,7 +58,7 @@ namespace Testgame
         {
             _player1.Reset();
             computer.Reset();
-            computer.timeDelay = .5f - (.03f * _level);
+            computer.timeDelay = .6f - (.03f * _level);
             speed = new Speed(deck, _background, _selector, _font, _player1, computer, _particles, Speed.gameType.Levels, shuffling, playingCard, shuffleInstance, isSoundOn);
             speed.level = _level;
             speed.TurnOn();

@@ -201,7 +201,7 @@ namespace Testgame
         public void MouseUpdate()
         {
             MouseState newstate = Mouse.GetState();
-
+            if (newstate == oldstate) return;
             float x = newstate.X;
             float y = newstate.Y;
             Vector2 mousePosition = new Vector2(x, y);
@@ -211,7 +211,7 @@ namespace Testgame
                 float halfHeight = buttons[i].height / 2;
                 float xOrigin = buttons[i].attributes.position.X;
                 float yOrigin = buttons[i].attributes.position.Y;
-                if ((x > (xOrigin - halfWidth)) && (x < (xOrigin + halfWidth)) && (y < (yOrigin + halfHeight)) && (yOrigin > (yOrigin - halfHeight)))
+                if ((x > (xOrigin - halfWidth)) && (x < (xOrigin + halfWidth)) && (y < (yOrigin + halfHeight)) && (y > (yOrigin - halfHeight)))
                 {
                     selected = i;
                     if ((newstate.LeftButton == ButtonState.Pressed) && (oldstate.LeftButton == ButtonState.Released))
@@ -222,6 +222,7 @@ namespace Testgame
                     }
                 }
             }
+            oldstate = newstate;
         }
 
     }

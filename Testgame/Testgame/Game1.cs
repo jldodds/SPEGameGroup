@@ -36,6 +36,8 @@ namespace Testgame
         Drawable freeze;
         List<Texture2D> textures;
         ParticleEngine test;
+        ParticleEngine test2;
+        ParticleEngine test3;
         Random random = new Random();
         Menu InstructionsMenu;
         Instructions Controls;
@@ -434,7 +436,7 @@ namespace Testgame
             gameMenuAction[1] = delegate() 
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn);
+                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, computer2, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn);
                 else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn); 
                 MarathonMenu.isPaused = false; GameMenu.isPaused = true; 
             };
@@ -951,7 +953,9 @@ namespace Testgame
             textures.Add(Content.Load<Texture2D>("circle"));
             textures.Add(Content.Load<Texture2D>("diamond"));
             textures.Add(Content.Load<Texture2D>("star"));
-            //test = new ParticleEngine(textures, new Vector2(512, 400), .99f);
+            test = new ParticleEngine(textures, new Vector2(512, 400), new Vector2(1000,1000), .99f, Color.Blue);
+            test2 = new ParticleEngine(textures, new Vector2(256, 400), new Vector2(1000, 1000), .99f, Color.Red);
+            test3 = new ParticleEngine(textures, new Vector2(768, 400), new Vector2(1000, 1000), .99f, Color.White);
 
             for (int i = 0; i < cards.Length; i++)
             {
@@ -1001,9 +1005,14 @@ namespace Testgame
                     levels.Halt();
                 }
             }
+            test.attributes.position = new Vector2(random.Next(0, 1024), random.Next(0, 800));
+            test2.attributes.position = new Vector2(random.Next(0, 1024), random.Next(0, 800));
+            test3.attributes.position = new Vector2(random.Next(0, 1024), random.Next(0, 800));
 
             GameMenu.Update(gameTime);
-            
+            test.Update(gameTime);
+            test2.Update(gameTime);
+            test3.Update(gameTime);
             InstructionsMenu.Update(gameTime);
             Controls.Update(gameTime);
             Rules.Update(gameTime);
@@ -1097,7 +1106,9 @@ namespace Testgame
             Rules.Draw(spriteBatch);
             Winning.Draw(spriteBatch);
             freeze.Draw(spriteBatch, SpriteEffects.None);
-            //test.Draw(spriteBatch);
+            //test.Draw(spriteBatch, SpriteEffects.None);
+            //test2.Draw(spriteBatch, SpriteEffects.None);
+            //test3.Draw(spriteBatch, SpriteEffects.None);
             SettingsMenu.Draw(spriteBatch);
             spriteBatch.End();
 

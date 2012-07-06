@@ -69,7 +69,7 @@ namespace Testgame
             elapsed += (float) gameTime.ElapsedGameTime.TotalSeconds;
             
             int total = 10;
-            if ((endTime == null || elapsed <= endTime) && !isHalted)
+            if ((endTime == 0 || elapsed <= endTime) && !isHalted)
             {
                 for (int i = 0; i < total; i++)
                 {
