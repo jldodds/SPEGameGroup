@@ -109,7 +109,9 @@ namespace Testgame
             font = Content.Load<SpriteFont>("SpriteFont3");
             SpriteFont instructionsfont = this.Content.Load<SpriteFont>("SpriteFont1");
             // loads up the background
+
             
+
             background = new Drawable()
             {
                 attributes = new Attributes()
@@ -226,6 +228,18 @@ namespace Testgame
             textures.Add(Content.Load<Texture2D>("circle"));
             textures.Add(Content.Load<Texture2D>("diamond"));
             textures.Add(Content.Load<Texture2D>("star"));
+
+            // makes the freeze icon
+            freeze = new PowerUp(Color.LightBlue, textures)
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("Freeze"),
+                    position = new Vector2(100, 100),
+                    color = Color.White
+                }
+            };
+            freeze.isSeeable = false;
 
             #region PlayAgainMenu
             // title for play again menu
@@ -1015,23 +1029,9 @@ namespace Testgame
             TimedMenu = new Menu(background, 5, ChooseTime, TimedMenuString, TimedMenuAction, font);
             #endregion
 
-            // makes the freeze icon
-            freeze = new PowerUp(Color.LightBlue, textures)
-            {
-                attributes = new Attributes()
-                {
-                    texture = this.Content.Load<Texture2D>("Freeze"),
-                    position = new Vector2(300, 300),
-                    color = Color.White
-                }
-            };
-            freeze.isSeeable = false;
 
-            // load images for particleengine and make a new one
-            textures = new List<Texture2D>();
-            textures.Add(Content.Load<Texture2D>("circle"));
-            textures.Add(Content.Load<Texture2D>("diamond"));
-            textures.Add(Content.Load<Texture2D>("star"));
+
+
             test = new ParticleEngine(textures, new Vector2(512, 400), new Vector2(1000,1000), .99f, Color.Blue);
             test2 = new ParticleEngine(textures, new Vector2(256, 400), new Vector2(1000, 1000), .99f, Color.Red);
             test3 = new ParticleEngine(textures, new Vector2(768, 400), new Vector2(1000, 1000), .99f, Color.White);

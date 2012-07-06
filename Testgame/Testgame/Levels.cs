@@ -29,7 +29,6 @@ namespace Testgame
         public bool isPaused { get; set; }
         public LevelState myState { get; set; }
         public bool isShaking { get; set; }
-        Game1 game;
         Difficulty myDiff;
         PowerUp freeze;
 
@@ -62,6 +61,7 @@ namespace Testgame
             _level = 1;
             myState = LevelState.Playing;
             myDiff = difficulty;
+            freeze = powerup;
         }
 
         public void StartGame()
