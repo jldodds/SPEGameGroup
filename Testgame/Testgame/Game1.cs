@@ -57,6 +57,8 @@ namespace Testgame
         bool soundOn = true;
         bool powerUpsOn = true;
         Mode myMode;
+        Drawable checkMark;
+        Levels.Difficulty difficulty;
 
         public enum Mode
         {
@@ -73,6 +75,8 @@ namespace Testgame
             graphics.PreferredBackBufferHeight = 800;
             graphics.PreferredBackBufferWidth = 1024;
             myMode = Mode.twoPlayer;
+
+            difficulty = Levels.Difficulty.Medium;
         }
 
         /// <summary>
@@ -117,8 +121,6 @@ namespace Testgame
                     rotation = 0
                 }
             };
-
-            
 
             // creates players
             player1 = new HumanPlayer(Keys.Up, Keys.Down, Keys.Left, Keys.Right, "Ben", true);
@@ -202,6 +204,17 @@ namespace Testgame
                 }, 
                 isSeeable = false,
             };
+
+            checkMark = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("checkMark"),
+                    color = Color.Orange,
+                    depth = 0,
+                },
+                isSeeable = false,
+            };
             
             // loads card selector
             selector = this.Content.Load<Texture2D>("CardSelector");
@@ -211,6 +224,7 @@ namespace Testgame
             textures.Add(Content.Load<Texture2D>("diamond"));
             textures.Add(Content.Load<Texture2D>("star"));
 
+            /*
             #region MainMenu
             // game title
             Text title = new Text("Speed!", font)
@@ -263,14 +277,14 @@ namespace Testgame
 
             mainMenuAction[5] = delegate()
             {
-                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn);
+                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn, easy, medium);
                 MainMenu.isPaused = true; levels.StartGame();
             };
             
             //makes main menu and turns it on
             MainMenu = new Menu(background, 6, title, mainMenuString, mainMenuAction, font);
             MainMenu.TurnOn();
-            #endregion
+            #endregion*/
 
             #region PlayAgainMenu
             // title for play again menu
@@ -315,7 +329,7 @@ namespace Testgame
                     speed.TurnOn(); PlayAgain.isPaused = true;
                 }
                 if (levels != null) {
-                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn);
+                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty);
                     levels.StartGame();
                     PlayAgain.isPaused = true;
                 }
@@ -389,7 +403,7 @@ namespace Testgame
                 }
                 else if (levels != null)
                 {
-                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn); levels.StartGame();
+                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty); levels.StartGame();
                 }
                     Pause.isPaused = true;
             };
@@ -469,42 +483,55 @@ namespace Testgame
             };
 
             // creates settings buttons
-            String[] settingsbuttons = new String[4];
+            String[] settingsbuttons = new String[6];
             settingsbuttons[0] = "Sound Effects";
             settingsbuttons[1] = "Power Ups";
-            settingsbuttons[2] = "blah";
-            settingsbuttons[3] = "Main Menu";
-            Button.ClickHandler[] settingsactions = new Button.ClickHandler[4];
+            settingsbuttons[2] = "Easy";
+            settingsbuttons[3] = "Medium";
+            settingsbuttons[4] = "Hard";
+            settingsbuttons[5] = "Main Menu";
+            Button.ClickHandler[] settingsactions = new Button.ClickHandler[6];
 
             // toggles sound effects on or off
             settingsactions[0] = delegate()
             {
-                if (speed != null)
-                speed.toggleSound();
+                toggleSound();
+                checkMark.isSeeable = true;
+                //checkMark.attributes.position = settingsbuttons[0].
             };
 
             // toggles power ups on or off
             settingsactions[1] = delegate()
             {
-                
+                   
             };
 
             // 
             settingsactions[2] = delegate() 
             {
-                 
+                difficulty = Levels.Difficulty.Easy;
+            };
+
+            // 
+            settingsactions[3] = delegate()
+            {
+                difficulty = Levels.Difficulty.Medium;
+            };
+
+            // 
+            settingsactions[4] = delegate()
+            {
+                difficulty = Levels.Difficulty.Hard;
             };
 
             // changes back to main menu
-            settingsactions[3] = delegate() 
+            settingsactions[5] = delegate() 
             {
-
                 SettingsMenu.isPaused = true; MainMenu.isPaused = false;
-
             };
 
             //makes main menu and turns it on
-            SettingsMenu = new Menu(background, 4, settings, settingsbuttons, settingsactions, font);
+            SettingsMenu = new Menu(background, 6, settings, settingsbuttons, settingsactions, font, true);
             #endregion
 
             #region InstructionsMenu
@@ -555,9 +582,74 @@ namespace Testgame
                 PowerUps.isPaused = false;
             };
 
-            InstructionsMenuAction[4] = delegate() { InstructionsMenu.isPaused = true; MainMenu.isPaused = false; };
+            InstructionsMenuAction[4] = delegate()
+            {
+                InstructionsMenu.isPaused = true; 
+                MainMenu.isPaused = false;
+            };
 
             InstructionsMenu = new Menu(background, 5, Instructions, InstructionsMenuString, InstructionsMenuAction, font);
+            #endregion
+
+            #region MainMenu
+            // game title
+            Text title = new Text("Speed!", font)
+            {
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    rotation = -.2f,
+                    depth = 0f,
+                },
+                scale = new Vector2(.5f, .5f)
+            };
+
+            // creates main menu buttons
+            String[] mainMenuString = new String[6];
+            mainMenuString[0] = "Single Player";
+            mainMenuString[1] = "Multiplayer";
+            mainMenuString[2] = "Instructions";
+            mainMenuString[3] = "Settings";
+            mainMenuString[4] = "Exit";
+            mainMenuString[5] = "*Test* levels";
+            Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[6];
+
+            // if "play game" is chosen from main menu, starts the game
+            mainMenuAction[0] = delegate()
+            {
+                MainMenu.isPaused = true; GameMenu.isPaused = false;
+                myMode = Mode.onePlayer;
+            };
+
+            mainMenuAction[1] = delegate()
+            {
+                MainMenu.isPaused = true; GameMenu.isPaused = false;
+                myMode = Mode.twoPlayer;
+            };
+            // if "instructions" chosen, displays instructions
+            mainMenuAction[2] = delegate()
+            {
+                InstructionsMenu.isPaused = false; MainMenu.isPaused = true;
+            };
+
+            // if "settings" chosen, displays settings
+            mainMenuAction[3] = delegate()
+            {
+                MainMenu.isPaused = true; SettingsMenu.isPaused = false;
+            };
+
+            //exits game
+            mainMenuAction[4] = delegate() { this.Exit(); };
+
+            mainMenuAction[5] = delegate()
+            {
+                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty);
+                MainMenu.isPaused = true; levels.StartGame();
+            };
+
+            //makes main menu and turns it on
+            MainMenu = new Menu(background, 6, title, mainMenuString, mainMenuAction, font);
+            MainMenu.TurnOn();
             #endregion
 
             #region Controls
@@ -1121,5 +1213,11 @@ namespace Testgame
            return new Vector3((float)random.NextDouble() * 4 - 2, (float)random.NextDouble() * 4 - 2, 0);
        }
 
+       // toggle sound method
+       public void toggleSound()
+       {
+           if (soundOn) soundOn = false;
+           else soundOn = true;
+       }
     }
 }

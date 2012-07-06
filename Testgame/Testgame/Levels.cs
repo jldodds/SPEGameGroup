@@ -29,15 +29,23 @@ namespace Testgame
         public bool isPaused { get; set; }
         public LevelState myState { get; set; }
         public bool isShaking { get; set; }
-
+        Game1 game;
+        Difficulty myDiff;
 
         public enum LevelState
         {
             Playing,
             PlayAgain,
         }
+
+        public enum Difficulty
+        {
+            Easy,
+            Medium,
+            Hard
+        }
         
-        public Levels(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player player1, List<Texture2D> particles, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn)
+        public Levels(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player player1, List<Texture2D> particles, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, Difficulty difficulty)
         {
             computer = new ComputerPlayer("Computer", false);
             deck = deckOfCards;
@@ -52,13 +60,27 @@ namespace Testgame
             this.isSoundOn = isSoundOn;
             _level = 1;
             myState = LevelState.Playing;
+            myDiff = difficulty;
         }
 
         public void StartGame()
         {
             _player1.Reset();
             computer.Reset();
-            computer.timeDelay = .6f - (.03f * _level);
+
+            switch (myDiff)
+            {
+                case Difficulty.Easy:
+                    computer.timeDelay = 2.0f - (.027f * _level);
+                    break;
+                case Difficulty.Medium:
+                    computer.timeDelay = .6f - (.03f * _level);
+                    break;
+                case Difficulty.Hard:
+                    computer.timeDelay = .43f - (.025f * _level);
+                    break;
+            }
+
             speed = new Speed(deck, _background, _selector, _font, _player1, computer, _particles, Speed.gameType.Levels, shuffling, playingCard, shuffleInstance, isSoundOn);
             speed.level = _level;
             speed.TurnOn();
