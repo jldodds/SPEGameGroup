@@ -31,6 +31,7 @@ namespace Testgame
         public bool isShaking { get; set; }
         Game1 game;
         Difficulty myDiff;
+        PowerUp freeze;
 
         public enum LevelState
         {
@@ -45,7 +46,7 @@ namespace Testgame
             Hard
         }
         
-        public Levels(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player player1, List<Texture2D> particles, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, Difficulty difficulty)
+        public Levels(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player player1, List<Texture2D> particles, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, Difficulty difficulty, PowerUp powerup)
         {
             computer = new ComputerPlayer("Computer", false);
             deck = deckOfCards;
@@ -81,7 +82,7 @@ namespace Testgame
                     break;
             }
 
-            speed = new Speed(deck, _background, _selector, _font, _player1, computer, _particles, Speed.gameType.Levels, shuffling, playingCard, shuffleInstance, isSoundOn);
+            speed = new Speed(deck, _background, _selector, _font, _player1, computer, _particles, Speed.gameType.Levels, shuffling, playingCard, shuffleInstance, isSoundOn, freeze);
             speed.level = _level;
             speed.TurnOn();
             myState = LevelState.Playing;

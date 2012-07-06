@@ -13,6 +13,8 @@ namespace Testgame
         Stack<Card> stack;
         public readonly Vector2 position;
         public bool drawnTo { get; set; }    // boolean for whether or not drawn to
+        public bool hasPowerUp { get; set; }
+        PowerUp powerUp;
 
         // places a stack at the position, pile isn't drawn to
         public Pile(Vector2 p)
@@ -20,6 +22,7 @@ namespace Testgame
             stack = new Stack<Card>();
             position = p;
             drawnTo = false;
+            hasPowerUp = false;
         }
 
         // adds card to top of pile
@@ -46,5 +49,24 @@ namespace Testgame
         {
             return stack.Peek();
         }
+
+        public void GivePowerUp(PowerUp powerup)
+        {
+            this.powerUp = powerup;
+            hasPowerUp = true;
+            this.powerUp.attributes.depth = .1f;
+           
+            this.powerUp.isSeeable = true;
+            this.powerUp.attributes.position = this.position;
+        }
+
+        public void PlayPowerUp(Player victim)
+        {
+            if (!hasPowerUp) return;
+            powerUp.HitPlayer(victim);
+            powerUp = null;
+            hasPowerUp = false;
+        }
+
     }
 }

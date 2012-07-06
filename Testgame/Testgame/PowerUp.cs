@@ -12,10 +12,12 @@ namespace Testgame
         ParticleEngine engine;
         public delegate void PowerAction(Player player);
         public event PowerAction Played;
+        Random random;
 
         public PowerUp(Color color, List<Texture2D> particles)
         {
-            engine = new ParticleEngine(particles, attributes.position, new Vector2(20, 20), attributes.depth, color);
+            engine = new ParticleEngine(particles, attributes.position, new Vector2(150, 150), attributes.depth - .001f, color);
+            random = new Random();
         }
 
         public void WhenPlayed(PowerAction action)
@@ -25,14 +27,23 @@ namespace Testgame
 
         public void HitPlayer(Player player)
         {
-            Played(player);
+            if (Played != null) Played(player);
         }
 
         public override void Update(GameTime gameTime)
         {
             engine.attributes.depth = attributes.depth;
-            engine.attributes.position = attributes.position;
+            float x = attributes.position.X + (float) (random.NextDouble() - .5) * attributes.width;
+            float y = attributes.position.Y + (float) (random.NextDouble() - .5) * attributes.height;
+            engine.attributes.position = new Vector2(x,y);
+            engine.Update(gameTime);
             base.Update(gameTime);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
+        {
+            if (isSeeable) engine.Draw(spriteBatch, spriteEffects);
+            base.Draw(spriteBatch, spriteEffects);
         }
 
 

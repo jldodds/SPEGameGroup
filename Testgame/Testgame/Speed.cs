@@ -66,7 +66,7 @@ namespace Testgame
         // initializes lots of variables
         public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, 
             Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, 
-            SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn):base(background)
+            SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, PowerUp powerup):base(background)
         {
             myType = gameType;
             cardcounter = new int[52];
@@ -81,8 +81,19 @@ namespace Testgame
             soundOn = isSoundOn;
             ableToReBegin = true;
             ableToReBegin2 = true;
-            //freeze = powerup;
-            //base.Add(freeze);
+            freeze = powerup;
+            base.Add(freeze);
+            freeze.WhenPlayed(delegate(Player player)
+            {
+                player.Freeze(); 
+                Timer timer = new Timer(1); base.Add(timer); timer.SetTimer(0, 4, delegate()
+                {
+                    player.UnFreeze();
+                }); 
+                freeze.Fade(4); 
+                if (player.isPlayer1) freeze.Move(Actions.ExpoMove, yourCards[2].position, 1);
+                else freeze.Move(Actions.ExpoMove, opponentCards[2].position, 1);
+            });
 
             you = bottom;
             opp = top;
@@ -398,7 +409,24 @@ namespace Testgame
             temp.Flip(true, delay);
             temp.toPile(destinationPile, delay);
             temp.WhenDoneMoving(delegate() { destinationPile.drawnTo = false; Timer drawTimer = new Timer(1);
-                base.Add(drawTimer); drawTimer.SetTimer(0, .5f, delegate() { ableToReBegin = true; }); });
+            base.Add(drawTimer); drawTimer.SetTimer(0, .5f, delegate() { ableToReBegin = true; });
+            if (destinationPile == lGameStack || destinationPile == rGameStack) SelectPowerUp(destinationPile);
+            });
+        }
+
+        public enum PowerUps
+        {
+            freeze
+        }
+
+        private void SelectPowerUp(Pile pile)
+        {
+            double r = random.NextDouble();
+            if (r < .1)
+            {
+                int x = random.Next(0, (int)PowerUps.freeze);
+                pile.GivePowerUp(freeze);
+            }
         }
 
         private Card getRandomCard(Pile DrawPile)
@@ -577,6 +605,13 @@ namespace Testgame
                 {
                     m.Move(Actions.LinearMove, m.attributes.position + new Vector2(random.Next(-5,5), random.Next(-5, 5)), 3f); 
                     player.score++;
+                    if (destinationPile.hasPowerUp)
+                    {
+                        Player victim;
+                        if (player.isPlayer1) victim = opp;
+                        else victim = you;
+                        destinationPile.PlayPowerUp(victim);
+                    }
                     speedState = gameState.GamePlay;
                     if (player.isPlayer1)
                     {
@@ -599,6 +634,7 @@ namespace Testgame
                         }
                     }
                     Shake();
+                    SelectPowerUp(destinationPile);
                     ParticleEngine smoke = new ParticleEngine(textures, destinationPile.position,new Vector2(300,300), m.attributes.depth, .3f, Color.WhiteSmoke);
                     base.Add(smoke);
                 });
@@ -901,7 +937,7 @@ namespace Testgame
                 },
                 scale = new Vector2(.8f,.8f)
             };
-            YouTie();
+            if (myType == gameType.Levels) YouTie();
 
             Text tieMiddle = new Text("You're both", _font)
             {

@@ -64,6 +64,7 @@ namespace Testgame
         {
             if (myState == PlayerState.Off) return;
             if (myState == PlayerState.Penalized) return;
+            if (myState == PlayerState.Frozen) return;
             if (!isPlayer1)
             {
                 selector++;
@@ -81,6 +82,7 @@ namespace Testgame
         {
             if (myState == PlayerState.Off) return;
             if (myState == PlayerState.Penalized) return;
+            if (myState == PlayerState.Frozen) return;
             if (!isPlayer1)
             {
                 for (int i = 0; i < pileNumber; i++)
@@ -104,6 +106,7 @@ namespace Testgame
         {
             if (myState == PlayerState.Off) return;
             if (myState == PlayerState.Penalized) return;
+            if (myState == PlayerState.Frozen) return;
             if (!isPlayer1)
             {
                 selector--;
@@ -120,6 +123,7 @@ namespace Testgame
         {
             if (myState == PlayerState.Off) return;
             if (myState == PlayerState.Penalized) return;
+            if (myState == PlayerState.Frozen) return;
             if (!isPlayer1)
             {
                 for (int i = 0; i < pileNumber; i++)
@@ -144,18 +148,21 @@ namespace Testgame
             if (myState == PlayerState.Off) return;
             if (myState == PlayerState.Penalized) return;
             if (myState == PlayerState.PlayingCard) return;
+            if (myState == PlayerState.Frozen) return;
             if (isLeftPile) SelectedCardLeft();
             else SelectedCardRight();
         }
 
         public void Freeze()
         {
-            //remember to change oldstate to frozen to come out of penalty frozen
+            oldState = PlayerState.Frozen;
+            if (myState != PlayerState.Penalized) myState = PlayerState.Frozen;
         }
 
         public void UnFreeze()
         {
-            //remember to change oldstate to normal to come out of penalty normal
+            oldState = PlayerState.Normal;
+            if (myState != PlayerState.Penalized) myState = PlayerState.Normal;
         }
 
         public int score { get; set; }

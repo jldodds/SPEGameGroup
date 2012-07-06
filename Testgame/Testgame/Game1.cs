@@ -32,7 +32,7 @@ namespace Testgame
         Menu PlayAgain;
         Menu Pause;
         Menu SettingsMenu;
-        Drawable freeze;
+        PowerUp freeze;
         List<Texture2D> textures;
         ParticleEngine test;
         ParticleEngine test2;
@@ -313,22 +313,22 @@ namespace Testgame
                     {
                         case Speed.gameType.Timed:
                             int x = speed.gameLength;
-                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, freeze);
                             speed.gameLength = x;
                             break;
                         case Speed.gameType.Marathon:
                             int y = speed.winningscore;
-                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, freeze);
                             speed.winningscore = y;
                             break;
                         default:
-                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn);
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, freeze);
                             break;
                     }
                     speed.TurnOn(); PlayAgain.isPaused = true;
                 }
                 if (levels != null) {
-                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty);
+                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty, freeze);
                     levels.StartGame();
                     PlayAgain.isPaused = true;
                 }
@@ -398,11 +398,11 @@ namespace Testgame
                 player1.Reset(); player2.Reset(); computer.Reset();
                 if (speed != null)
                 {
-                    speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn); speed.TurnOn();
+                    speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, freeze); speed.TurnOn();
                 }
                 else if (levels != null)
                 {
-                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty); levels.StartGame();
+                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty, freeze); levels.StartGame();
                 }
                     Pause.isPaused = true;
             };
@@ -441,24 +441,24 @@ namespace Testgame
             gameMenuAction[0] = delegate() 
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn);
-                else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn);
+                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn, freeze);
                     speed.TurnOn(); GameMenu.isPaused = true; 
             };
             
             gameMenuAction[1] = delegate() 
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn);
-                else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn); 
+                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn, freeze); 
                 MarathonMenu.isPaused = false; GameMenu.isPaused = true; 
             };
 
             gameMenuAction[2] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn);
-                else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn);
+                if (myMode == Mode.onePlayer) speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                else speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn, freeze);
                 TimedMenu.isPaused = false; GameMenu.isPaused = true;
             };
             
@@ -645,7 +645,7 @@ namespace Testgame
 
             mainMenuAction[5] = delegate()
             {
-                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty);
+                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty, freeze);
                 MainMenu.isPaused = true; levels.StartGame();
             };
 
@@ -1038,8 +1038,8 @@ namespace Testgame
                     texture = this.Content.Load<Texture2D>("Freeze"),
                     position = new Vector2(300, 300),
                     color = Color.White,
-                    height = 400,
-                    width = 400,
+                    height = 100,
+                    width = 100,
                 }
             };
             freeze.isSeeable = false;

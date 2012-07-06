@@ -58,7 +58,8 @@ namespace Testgame
             isMoving = true;
             tweenerX = new Tweener(attributes.position.X, endPosition.X, d, action);
             tweenerY = new Tweener(attributes.position.Y, endPosition.Y, d, action);
-            tweenerX.Ended += delegate() { this.isMoving = false; };
+            tweenerX.Ended += delegate() { this.isMoving = false; tweenerX = null; };
+            tweenerY.Ended += delegate() { tweenerY = null; };
         }
 
         // moves drawables with a delay
@@ -67,7 +68,8 @@ namespace Testgame
             isMoving = true;
             tweenerX = new Tweener(attributes.position.X, endPosition.X, delay, d, action);
             tweenerY = new Tweener(attributes.position.Y, endPosition.Y, delay, d, action);
-            tweenerX.Ended += delegate() { this.isMoving = false; };
+            tweenerX.Ended += delegate() { this.isMoving = false; tweenerX = null;};
+            tweenerY.Ended += delegate() { tweenerY = null; };
         }
 
         // changes color of drawables as they move
@@ -81,9 +83,17 @@ namespace Testgame
 
         // makes drawables fade away given a certain amount of time
         public void Fade(float d)
-        {           
+        {
+            Color oldColor = attributes.color;
             ChangeColor(Actions.LinearMove, Color.Transparent, d);
-            tweenerA.Ended += delegate() { isSeeable = false; };
+            tweenerColorB.Ended += delegate() { tweenerColorB = null; };
+            tweenerColorR.Ended += delegate() { tweenerColorR = null; };
+            tweenerColorG.Ended += delegate() { tweenerColorG = null; };
+            tweenerA.Ended += delegate() { 
+                isSeeable = false;
+                tweenerA = null;
+                attributes.color = oldColor;
+            };
         }
 
         // rotates drawables
@@ -134,11 +144,12 @@ namespace Testgame
         // updates tweeners which aren't null
         public virtual void Update(GameTime gameTime)
         {
-            if (tweenerX != null)
+            if (tweenerX != null && tweenerY != null)
             {
+                attributes.position = new Vector2(tweenerX.Position, tweenerY.Position);
                 tweenerX.Update(gameTime);
                 tweenerY.Update(gameTime);
-                attributes.position = new Vector2(tweenerX.Position, tweenerY.Position);
+                
             }
             if (tweenerRotate != null)
             {
@@ -147,11 +158,12 @@ namespace Testgame
             }
             if (tweenerColorR != null)
             {
+                attributes.color = new Color((int)tweenerColorR.Position, (int)tweenerColorG.Position, (int)tweenerColorB.Position, (int)tweenerA.Position);
                 tweenerColorR.Update(gameTime);
                 tweenerColorG.Update(gameTime);
                 tweenerColorB.Update(gameTime);
                 tweenerA.Update(gameTime);
-                attributes.color = new Color((int) tweenerColorR.Position, (int) tweenerColorG.Position,(int) tweenerColorB.Position, (int)tweenerA.Position);
+                
             }
             if (tweenerScaleX != null)
             {
