@@ -51,6 +51,7 @@ namespace Testgame
         SoundEffect playcard;
         SoundEffectInstance shuffleinstance;
         bool soundOn;
+        bool powerUpOn;
         bool ableToReBegin;
         bool ableToReBegin2;
         public int level { get; set; }
@@ -66,7 +67,7 @@ namespace Testgame
         // initializes lots of variables
         public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, 
             Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, 
-            SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, PowerUp powerup):base(background)
+            SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, bool isPowerUpOn, PowerUp powerup):base(background)
         {
             myType = gameType;
             cardcounter = new int[52];
@@ -79,6 +80,7 @@ namespace Testgame
             isShaking = false;
             textures = particles;
             soundOn = isSoundOn;
+            powerUpOn = isPowerUpOn;
             ableToReBegin = true;
             ableToReBegin2 = true;
             freeze = powerup;
@@ -423,16 +425,17 @@ namespace Testgame
             if (r < .1)
             {
                 int x = random.Next(0, (int)PowerUps.freeze);
-                PowerUp newPower = new PowerUp(freeze.engine.attributes.color, freeze.engine.textures, true)
+
+                PowerUp newPower = new PowerUp(freeze.engine.attributes.color, freeze.engine.textures, powerUpOn)
                 {
                     attributes = new Attributes()
                     {
                         texture = freeze.attributes.texture,
                         position = new Vector2(100, 100),
                         color = Color.White
-                    },
-                    isSeeable = false,
+                    }
                 };
+                    newPower.isSeeable = false;
                 newPower.WhenPlayed(delegate(Player player)
             {
                 player.Freeze();
@@ -442,10 +445,10 @@ namespace Testgame
             });
                 base.Add(newPower);
                 pile.GivePowerUp(newPower);
-
             }
         }
 
+        // 
         private Card getRandomCard(Pile DrawPile)
         {
             bool foundint = false;

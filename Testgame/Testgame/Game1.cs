@@ -230,7 +230,8 @@ namespace Testgame
             textures.Add(Content.Load<Texture2D>("star"));
 
             // makes the freeze icon
-            freeze = new PowerUp(Color.LightBlue, textures, true)
+
+            freeze = new PowerUp(Color.LightBlue, textures,powerUpsOn)
             {
                 attributes = new Attributes()
                 {
@@ -269,22 +270,22 @@ namespace Testgame
                     {
                         case Speed.gameType.Timed:
                             int x = speed.gameLength;
-                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                             speed.gameLength = x;
                             break;
                         case Speed.gameType.Marathon:
                             int y = speed.winningscore;
-                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                             speed.winningscore = y;
                             break;
                         default:
-                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                             break;
                     }
                     speed.TurnOn(); PlayAgain.isPaused = true;
                 }
                 if (levels != null) {
-                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty, freeze);
+                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, difficulty, freeze);
                     levels.StartGame();
                     PlayAgain.isPaused = true;
                 }
@@ -355,10 +356,11 @@ namespace Testgame
                 player1.Reset(); player2.Reset(); computer.Reset();
                 if (speed != null)
                 {
-                    speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, freeze); speed.TurnOn();
+                    speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze); speed.TurnOn();
                 }
                 else if (levels != null)
                 {
+
                     levels.myState = Levels.LevelState.Starting; levels.StartGame();
                 }
                     Pause.isPaused = true;
@@ -574,28 +576,28 @@ namespace Testgame
             gameMenuAction1[0] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                 speed.TurnOn(); GameMenu1.isPaused = true;
             };
 
             gameMenuAction1[1] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                 MarathonMenu.isPaused = false; GameMenu1.isPaused = true;
             };
 
             gameMenuAction1[2] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                 TimedMenu.isPaused = false; GameMenu1.isPaused = true;
             };
 
             gameMenuAction1[3] = delegate()
             {
                 player1.Reset(); computer.Reset();
-                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn, difficulty, freeze);
+                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, difficulty, freeze);
                 GameMenu1.isPaused = true;
                 levels.StartGame();
             };
@@ -627,21 +629,21 @@ namespace Testgame
             gameMenuAction2[0] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                 speed.TurnOn(); GameMenu2.isPaused = true;
             };
 
             gameMenuAction2[1] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                 MarathonMenu.isPaused = false; GameMenu2.isPaused = true;
             };
 
             gameMenuAction2[2] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn, freeze);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                 TimedMenu.isPaused = false; GameMenu2.isPaused = true;
             };
 
@@ -1026,6 +1028,17 @@ namespace Testgame
             TimedMenu = new Menu(background, 5, ChooseTime, TimedMenuString, TimedMenuAction, font);
             #endregion
 
+            // makes the freeze icon
+            freeze = new PowerUp(Color.LightBlue, textures, powerUpsOn)
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("Freeze"),
+                    position = new Vector2(300, 300),
+                    color = Color.White
+                }
+            };
+            freeze.isSeeable = false;
 
 
             test = new ParticleEngine(textures, new Vector2(512, 400), new Vector2(1000,1000), .99f, Color.Blue);
