@@ -230,7 +230,7 @@ namespace Testgame
             textures.Add(Content.Load<Texture2D>("star"));
 
             // makes the freeze icon
-            freeze = new PowerUp(Color.LightBlue, textures)
+            freeze = new PowerUp(Color.LightBlue, textures, true)
             {
                 attributes = new Attributes()
                 {
@@ -1025,21 +1025,6 @@ namespace Testgame
 
             TimedMenu = new Menu(background, 5, ChooseTime, TimedMenuString, TimedMenuAction, font);
             #endregion
-
-<<<<<<< HEAD
-            // makes the freeze icon
-            freeze = new PowerUp(Color.LightBlue, textures, powerUpsOn)
-            {
-                attributes = new Attributes()
-                {
-                    texture = this.Content.Load<Texture2D>("Freeze"),
-                    position = new Vector2(300, 300),
-                    color = Color.White
-                }
-            };
-            freeze.isSeeable = false;
-=======
->>>>>>> dae61059fa7777b82d3186f92939987dc9397c1c
 
 
 
