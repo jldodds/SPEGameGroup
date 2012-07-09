@@ -212,7 +212,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     texture = this.Content.Load<Texture2D>("checkMark"),
-                    color = Color.Orange,
+                    color = Color.White,
                     depth = 0,
                 },
                 isSeeable = false,
@@ -398,7 +398,7 @@ namespace Testgame
             // toggles power ups on or off
             settingsactions[1] = delegate()
             {
-                   
+                togglePowerUps();
             };
 
             // 
@@ -450,20 +450,17 @@ namespace Testgame
             InstructionsMenuString[4] = "Back";
             Button.ClickHandler[] InstructionsMenuAction = new Button.ClickHandler[5];
 
-
             InstructionsMenuAction[0] = delegate()
             {
                 Controls.isPaused = false;
                 InstructionsMenu.isPaused = true;
             };
 
-
             InstructionsMenuAction[1] = delegate()
             {
                 InstructionsMenu.isPaused = true;
                 Rules.isPaused = false;
             };
-
 
             InstructionsMenuAction[2] = delegate()
             {
@@ -1016,7 +1013,7 @@ namespace Testgame
             #endregion
 
             // makes the freeze icon
-            freeze = new PowerUp(Color.LightBlue, textures)
+            freeze = new PowerUp(Color.LightBlue, textures, powerUpsOn)
             {
                 attributes = new Attributes()
                 {
@@ -1207,6 +1204,13 @@ namespace Testgame
        {
            if (soundOn) soundOn = false;
            else soundOn = true;
+       }
+       
+       // toggle powerups method
+       public void togglePowerUps()
+       {
+           if (powerUpsOn) powerUpsOn = false;
+           else powerUpsOn = true;
        }
     }
 }

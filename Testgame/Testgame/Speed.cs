@@ -231,15 +231,9 @@ namespace Testgame
                     base.Add(delay);
                     delay.Fade(2);
                     delay.WhenDoneFading(delegate() { BeginGame(); });
-
-                });
-                        
+                });                   
             }
-
-
         }
-
-
 
         public enum gameType
         {
@@ -481,9 +475,7 @@ namespace Testgame
                     if (ExistWinner()) Winner(DetermineWinner());
                     else if (!ExistMoves()) ReBegin();
                     you.Update(yourCards,rGameStack, lGameStack, gameTime);
-                    opp.Update(opponentCards, rGameStack, lGameStack, gameTime);
-
-                    
+                    opp.Update(opponentCards, rGameStack, lGameStack, gameTime);              
                     yourSelector.attributes.position = yourCards[you.selector].position;
                     oppSelector.attributes.position = opponentCards[opp.selector].position;                  
                     break;             
@@ -818,7 +810,7 @@ namespace Testgame
                 {
                     color = Color.LightSkyBlue,
                     position = new Vector2(512, 600),
-                    rotation = -.2f,
+                    //rotation = -.2f,
                     depth = .1f,
                 },
                 scale = new Vector2(.8f,.8f)
@@ -829,7 +821,7 @@ namespace Testgame
                 {
                     color = Color.DarkRed,
                     position = new Vector2(512, 200),
-                    rotation = -.2f,
+                    //rotation = -.2f,
                     depth = .1f
                 },
                 scale = new Vector2(.8f,.8f)
@@ -875,7 +867,7 @@ namespace Testgame
                 {
                     color = Color.Red,
                     position = new Vector2(512, 200),
-                    rotation = -.2f,
+                    //rotation = -.2f,
                     depth = .1f
                 },
                 scale = new Vector2(.8f,.8f)
@@ -886,7 +878,7 @@ namespace Testgame
                 {
                     color = Color.DarkBlue,
                     position = new Vector2(512, 600),
-                    rotation = -.2f,
+                    //rotation = -.2f,
                     depth = .1f
                 },
                 scale = new Vector2(.8f,.8f)
@@ -932,7 +924,7 @@ namespace Testgame
                 {
                     position = new Vector2(512, 200),
                     color = Color.RoyalBlue,
-                    rotation = -.2f,
+                    //rotation = -.2f,
                     depth = .1f
                 },
                 scale = new Vector2(.8f,.8f)
@@ -945,7 +937,7 @@ namespace Testgame
                 {
                     position = new Vector2(512, 400),
                     color = Color.Red,
-                    rotation = -.2f,
+                    //rotation = -.2f,
                     depth = .1f
                 },
                 scale = new Vector2(.7f,.7f)
@@ -957,7 +949,7 @@ namespace Testgame
                 {
                     position = new Vector2(512, 600),
                     color = Color.Red,
-                    rotation = -.2f,
+                    //rotation = -.2f,
                     depth = .1f
                 },
                 scale = new Vector2(.7f,.7f)
