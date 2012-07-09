@@ -11,7 +11,7 @@ namespace Testgame
     {
         private Random random;
         private List<Particle> particles;
-        private List<Texture2D> textures;
+        public readonly List<Texture2D> textures;
         public bool isHalted { get; set; }
         float elapsed;
         float endTime;

@@ -9,7 +9,7 @@ namespace Testgame
 {
     class PowerUp : Drawable
     {
-        ParticleEngine engine;
+        public readonly ParticleEngine engine;
         public delegate void PowerAction(Player player);
         public event PowerAction Played;
         Random random;

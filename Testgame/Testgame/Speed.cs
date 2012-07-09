@@ -82,6 +82,7 @@ namespace Testgame
             ableToReBegin = true;
             ableToReBegin2 = true;
             freeze = powerup;
+            freeze.isSeeable = false;
             base.Add(freeze);
             freeze.WhenPlayed(delegate(Player player)
             {
@@ -91,8 +92,8 @@ namespace Testgame
                     player.UnFreeze();
                 }); 
                 freeze.Fade(4); 
-                if (player.isPlayer1) freeze.Move(Actions.ExpoMove, yourCards[2].position, 1);
-                else freeze.Move(Actions.ExpoMove, opponentCards[2].position, 1);
+                if (player.isPlayer1) freeze.Move(Actions.ExpoMove, yourSelector.attributes.position, 1);
+                else freeze.Move(Actions.ExpoMove, oppSelector.attributes.position, 1);
             });
 
             you = bottom;
@@ -425,7 +426,26 @@ namespace Testgame
             if (r < .1)
             {
                 int x = random.Next(0, (int)PowerUps.freeze);
-                pile.GivePowerUp(freeze);
+                PowerUp newPower = new PowerUp(freeze.engine.attributes.color, freeze.engine.textures)
+                {
+                    attributes = new Attributes()
+                    {
+                        texture = freeze.attributes.texture,
+                        position = new Vector2(100, 100),
+                        color = Color.White
+                    },
+                    isSeeable = false,
+                };
+                newPower.WhenPlayed(delegate(Player player)
+            {
+                player.Freeze();
+                newPower.Fade(4);
+                if (player.isPlayer1) newPower.Move(Actions.ExpoMove, yourSelector.attributes.position, 1);
+                else newPower.Move(Actions.ExpoMove, oppSelector.attributes.position, 1);
+            });
+                base.Add(newPower);
+                pile.GivePowerUp(newPower);
+
             }
         }
 
@@ -970,6 +990,7 @@ namespace Testgame
             oppSelector.WhenDoneMoving( delegate()
             {
                 base.Add(tieTop);
+                if (myType == gameType.Levels) YouTie();
                 base.Add(tieMiddle);
                 base.Add(tieBottom);
             });

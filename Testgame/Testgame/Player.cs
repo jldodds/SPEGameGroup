@@ -15,7 +15,8 @@ namespace Testgame
             playerName = name;
             score = 0;
             myState = PlayerState.Off;
-            this.isPlayer1 = isPlayer1; 
+            this.isPlayer1 = isPlayer1;
+            freezeTimer = new Timer(1);
         }
 
         // possible player states
@@ -34,6 +35,7 @@ namespace Testgame
         public readonly bool isPlayer1;
         PlayerState oldState;
         MouseState oldstate;
+        Timer freezeTimer;
 
         int cardTopHeight = 585;
         int cardBottomHeight = 765;
@@ -155,8 +157,10 @@ namespace Testgame
 
         public void Freeze()
         {
+            if (myState == PlayerState.Frozen || (myState == PlayerState.Penalized && oldState == PlayerState.Frozen)) freezeTimer.ResetTimer(0);
             oldState = PlayerState.Frozen;
             if (myState != PlayerState.Penalized) myState = PlayerState.Frozen;
+            freezeTimer.SetTimer(0, 4, delegate() { UnFreeze(); });
         }
 
         public void UnFreeze()
@@ -253,6 +257,7 @@ namespace Testgame
         // This has to be implemented by the extended classes
         public virtual void Update(Pile[] Hand, Pile rgamestack, Pile lgamestack, GameTime gameTime)
         {
+            freezeTimer.Update(gameTime);
         }
 
         public virtual void Reset()
@@ -260,6 +265,7 @@ namespace Testgame
             score = 0;
             myState = PlayerState.Off;
             selector = 0;
+            freezeTimer.RemoveTimers();
         }
     }
 }
