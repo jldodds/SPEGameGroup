@@ -230,6 +230,7 @@ namespace Testgame
             textures.Add(Content.Load<Texture2D>("star"));
 
             // makes the freeze icon
+
             freeze = new PowerUp(Color.LightBlue, textures,powerUpsOn)
             {
                 attributes = new Attributes()
@@ -1037,6 +1038,7 @@ namespace Testgame
                 }
             };
             freeze.isSeeable = false;
+
 
             test = new ParticleEngine(textures, new Vector2(512, 400), new Vector2(1000,1000), .99f, Color.Blue);
             test2 = new ParticleEngine(textures, new Vector2(256, 400), new Vector2(1000, 1000), .99f, Color.Red);

@@ -405,9 +405,12 @@ namespace Testgame
             }
             temp.Flip(true, delay);
             temp.toPile(destinationPile, delay);
+            if (destinationPile.hasPowerUp) destinationPile.RemovePowerUp();
             temp.WhenDoneMoving(delegate() { destinationPile.drawnTo = false; Timer drawTimer = new Timer(1);
             base.Add(drawTimer); drawTimer.SetTimer(0, .5f, delegate() { ableToReBegin = true; });
-            if (destinationPile == lGameStack || destinationPile == rGameStack) SelectPowerUp(destinationPile);
+            
+                if ((destinationPile == lGameStack || destinationPile == rGameStack) && !destinationPile.hasPowerUp) SelectPowerUp(destinationPile);
+            
             });
         }
 
@@ -422,6 +425,7 @@ namespace Testgame
             if (r < .1)
             {
                 int x = random.Next(0, (int)PowerUps.freeze);
+
                 PowerUp newPower = new PowerUp(freeze.engine.attributes.color, freeze.engine.textures, powerUpOn)
                 {
                     attributes = new Attributes()
@@ -429,9 +433,9 @@ namespace Testgame
                         texture = freeze.attributes.texture,
                         position = new Vector2(100, 100),
                         color = Color.White
-                    },
-                    isSeeable = false,
+                    }
                 };
+                    newPower.isSeeable = false;
                 newPower.WhenPlayed(delegate(Player player)
             {
                 player.Freeze();

@@ -68,5 +68,14 @@ namespace Testgame
             hasPowerUp = false;
         }
 
+        public void RemovePowerUp()
+        {
+            if (!hasPowerUp) return;
+            powerUp.isSeeable = false;
+            powerUp.attributes.position = new Vector2(-200, -200);
+            powerUp = null;
+            hasPowerUp = false;
+        }
+
     }
 }
