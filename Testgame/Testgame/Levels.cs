@@ -24,6 +24,7 @@ namespace Testgame
         SoundEffect playingCard;
         SoundEffectInstance shuffleInstance;
         bool isSoundOn;
+        bool isPowerUpOn;
         Timer timer;
         public bool isHalted { get; set; }
         public bool isPaused { get; set; }
@@ -45,7 +46,7 @@ namespace Testgame
             Hard
         }
         
-        public Levels(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player player1, List<Texture2D> particles, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, Difficulty difficulty, PowerUp powerup)
+        public Levels(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player player1, List<Texture2D> particles, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, bool powerUpsOn, Difficulty difficulty, PowerUp powerup)
         {
             computer = new ComputerPlayer("Computer", false);
             deck = deckOfCards;
@@ -58,6 +59,7 @@ namespace Testgame
             this.playingCard = playingcard;
             shuffleInstance = shuffinstance;
             this.isSoundOn = isSoundOn;
+            isPowerUpOn = powerUpsOn;
             _level = 1;
             myState = LevelState.Playing;
             myDiff = difficulty;
@@ -82,7 +84,7 @@ namespace Testgame
                     break;
             }
 
-            speed = new Speed(deck, _background, _selector, _font, _player1, computer, _particles, Speed.gameType.Levels, shuffling, playingCard, shuffleInstance, isSoundOn, freeze);
+            speed = new Speed(deck, _background, _selector, _font, _player1, computer, _particles, Speed.gameType.Levels, shuffling, playingCard, shuffleInstance, isSoundOn, isPowerUpOn, freeze);
 
             speed.level = _level;
             speed.TurnOn();
