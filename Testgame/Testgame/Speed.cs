@@ -955,7 +955,7 @@ namespace Testgame
                 },
                 scale = new Vector2(.8f,.8f)
             };
-            if (myType == gameType.Levels) YouTie();
+            
 
             Text tieMiddle = new Text("You're both", _font)
             {

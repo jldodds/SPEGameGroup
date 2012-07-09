@@ -364,7 +364,8 @@ namespace Testgame
                 }
                 else if (levels != null)
                 {
-                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, difficulty, freeze); levels.StartGame();
+
+                    levels.myState = Levels.LevelState.Starting; levels.StartGame();
                 }
                     Pause.isPaused = true;
             };

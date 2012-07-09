@@ -35,8 +35,9 @@ namespace Testgame
 
         public enum LevelState
         {
-            Playing,
+            Starting,
             PlayAgain,
+            Playing,
         }
 
         public enum Difficulty
@@ -61,7 +62,7 @@ namespace Testgame
             this.isSoundOn = isSoundOn;
             isPowerUpOn = powerUpsOn;
             _level = 1;
-            myState = LevelState.Playing;
+            myState = LevelState.Starting;
             myDiff = difficulty;
             freeze = powerup;
         }
@@ -70,6 +71,8 @@ namespace Testgame
         {
             _player1.Reset();
             computer.Reset();
+            if (myState == LevelState.Starting) _level = 1;
+            myState = LevelState.Playing;
 
             switch (myDiff)
             {
