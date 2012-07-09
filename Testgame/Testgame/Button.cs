@@ -38,19 +38,6 @@ namespace Testgame
             _checkMark.attributes.position = new Vector2(attributes.position.X + 300, attributes.position.Y);
         }
 
-        // draws buttons if they should be drawn, then makes selected buttons larger than normal
-        public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
-        {
-            if (!isSeeable) return;
-            if (selected && !clicked) attributes.color = Color.Red;
-            if (selected) spriteBatch.DrawString(_font, content, attributes.position, attributes.color, attributes.rotation, _font.MeasureString(content) / 2, scale * 1.3f, spriteEffects, attributes.depth);
-            else base.Draw(spriteBatch, spriteEffects);
-        }
-
-        // delegate and event for cases where buttons are selected
-        public delegate void ClickHandler();
-        public event ClickHandler Clicked;
-
         // performs button actions .5 seconds after it's clicked, then uses delegates to make events occur
         public void Click()
         {
@@ -73,6 +60,31 @@ namespace Testgame
             }
         }
 
+        // draws buttons if they should be drawn, then makes selected buttons larger than normal
+        public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
+        {
+            if (moduloToggled == 0)
+            {
+                if (!isSeeable) return;
+                if (selected && !clicked) attributes.color = Color.Red;
+                if (selected) spriteBatch.DrawString(_font, content, attributes.position, attributes.color, attributes.rotation, _font.MeasureString(content) / 2, scale * 1.3f, spriteEffects, attributes.depth);
+                else base.Draw(spriteBatch, spriteEffects);
+            }
+            else
+            {
+                if (!isSeeable) return;
+                attributes.color = Color.Orange;
+                _checkMark.isSeeable = true;
+                _checkMark.attributes.color = Color.Black;
+                if (selected) spriteBatch.DrawString(_font, content, attributes.position, attributes.color, attributes.rotation, _font.MeasureString(content) / 2, scale * 1.3f, spriteEffects, attributes.depth);
+                else base.Draw(spriteBatch, spriteEffects);
+            }
+        }
+
+        // delegate and event for cases where buttons are selected
+        public delegate void ClickHandler();
+        public event ClickHandler Clicked;
+
         // 
         public void Remove()
         {
@@ -84,8 +96,8 @@ namespace Testgame
         // update method
         public override void Update(GameTime gameTime)
         {
-            if (moduloToggled == 1)
-                _checkMark.isSeeable = true;
+            //if (moduloToggled == 1)
+            //    _checkMark.isSeeable = true;
             if (buttonTimer != null) buttonTimer.Update(gameTime);
             base.Update(gameTime);
         }
