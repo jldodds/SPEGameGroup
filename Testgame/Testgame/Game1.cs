@@ -106,12 +106,11 @@ namespace Testgame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // loads up badaboom font, since it is "SpriteFont3"
             font = Content.Load<SpriteFont>("SpriteFont3");
             SpriteFont instructionsfont = this.Content.Load<SpriteFont>("SpriteFont1");
-            // loads up the background
 
-            
-
+            // loads up background as drawable
             background = new Drawable()
             {
                 attributes = new Attributes()
@@ -189,13 +188,13 @@ namespace Testgame
             cards[51] = new Card(51, this.Content.Load<Texture2D>("KingSpades"), this.Content.Load<Texture2D>("cardBack2.0"), new Vector2(-100, 100), true);
             #endregion Create cards[]
 
-            // plays music
+            // loads up playable music, creates instance also, which may not be necessary..
             shuffle = Content.Load<SoundEffect>("Audio\\Waves\\shuffle1");
             playcard = Content.Load<SoundEffect>("Audio\\Waves\\slapcard");
             shuffleinstance = shuffle.CreateInstance();
-
             aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
 
+            // loads up badtime meme as a joke (for if instructions are clicked during gameplay)
             BadTime = new Drawable()
             {
                 attributes = new Attributes()
@@ -209,6 +208,7 @@ namespace Testgame
                 isSeeable = false,
             };
 
+            // loads up image of a checkmark
             checkMark = new Drawable()
             {
                 attributes = new Attributes()
@@ -229,8 +229,7 @@ namespace Testgame
             textures.Add(Content.Load<Texture2D>("diamond"));
             textures.Add(Content.Load<Texture2D>("star"));
 
-            // makes the freeze icon
-
+            // creates instance of freeze powerup
             freeze = new PowerUp(Color.LightBlue, textures,powerUpsOn)
             {
                 attributes = new Attributes()
@@ -255,29 +254,34 @@ namespace Testgame
                 height = 200
             };
             
-            // button names
+            // button names for play again menu
             String[] PAButtonNames = new String[2];
             PAButtonNames[0] = "Yes";
             PAButtonNames[1] = "No";
             
             // starts new game or goes to main menu depending on choice
             Button.ClickHandler[] playAgainAction = new Button.ClickHandler[2];
+            // if playagain is chosen from the menu, following options are available
             playAgainAction[0] = delegate() {
                 player1.Reset(); player2.Reset(); computer.Reset();
                 if (speed != null)
                 {
+                    // switch based on what speed game type is being played
                     switch (speed.myType)
                     {
+                        // 
                         case Speed.gameType.Timed:
                             int x = speed.gameLength;
                             speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                             speed.gameLength = x;
                             break;
+                        //
                         case Speed.gameType.Marathon:
                             int y = speed.winningscore;
                             speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                             speed.winningscore = y;
-                            break;
+                            break; 
+                        // 
                         default:
                             speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                             break;
@@ -1038,7 +1042,6 @@ namespace Testgame
                 }
             };
             freeze.isSeeable = false;
-
 
             test = new ParticleEngine(textures, new Vector2(512, 400), new Vector2(1000,1000), .99f, Color.Blue);
             test2 = new ParticleEngine(textures, new Vector2(256, 400), new Vector2(1000, 1000), .99f, Color.Red);
