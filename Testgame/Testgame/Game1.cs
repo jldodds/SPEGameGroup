@@ -270,6 +270,7 @@ namespace Testgame
                     switch (speed.myType)
                     {
                         // 
+                            // game length?
                         case Speed.gameType.Timed:
                             int x = speed.gameLength;
                             speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
@@ -281,19 +282,22 @@ namespace Testgame
                             speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                             speed.winningscore = y;
                             break; 
-                        // 
+                        // if neither of the other cases apply, do this default action
                         default:
                             speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze);
                             break;
                     }
                     speed.TurnOn(); PlayAgain.isPaused = true;
                 }
-                if (levels != null) {
+                // if playing levels, begins a new game
+                if (levels != null) 
+                {
                     levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, difficulty, freeze);
                     levels.StartGame();
                     PlayAgain.isPaused = true;
                 }
             };
+            // if exit is chosen, nullifies levels or speed, returns to main menu
             playAgainAction[1] = delegate()
             {
                 if (speed != null) speed = null;
@@ -301,7 +305,7 @@ namespace Testgame
                 PlayAgain.isPaused = true; MainMenu.isPaused = false;
             };
             
-            // makes transparent background
+            // makes an example in which the background is transparent
             Drawable playAgainBackground = new Drawable()
             {
                 attributes = new Attributes()
@@ -355,13 +359,14 @@ namespace Testgame
             };
             // disables pause menu & displays instructions
             pauseActions[1] = delegate()
-            {
-                
+            { 
                 player1.Reset(); player2.Reset(); computer.Reset();
+                // restarts SPEED game if restart is chosen from pause menu
                 if (speed != null)
                 {
                     speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, soundOn, powerUpsOn, freeze); speed.TurnOn();
                 }
+                // restarts LEVELS game if restart chosen from pause menu
                 else if (levels != null)
                 {
 
@@ -421,19 +426,19 @@ namespace Testgame
                 togglePowerUps();
             };
 
-            // 
+            // sets the difficulty to easy
             settingsactions[2] = delegate() 
             {
                 difficulty = Levels.Difficulty.Easy;
             };
 
-            // 
+            // sets the difficulty to medium
             settingsactions[3] = delegate()
             {
                 difficulty = Levels.Difficulty.Medium;
             };
 
-            // 
+            // sets the difficulty to hard
             settingsactions[4] = delegate()
             {
                 difficulty = Levels.Difficulty.Hard;
@@ -450,6 +455,7 @@ namespace Testgame
             #endregion
 
             #region InstructionsMenu
+            // makes the text for the instructions menu 
             Text Instructions = new Text("Instructions", font)
             {
                 attributes = new Attributes()
@@ -462,6 +468,7 @@ namespace Testgame
                 scale = new Vector2(.4f, .4f)
             };
 
+            // makes names for instructions buttons
             String[] InstructionsMenuString = new String[5];
             InstructionsMenuString[0] = "Controls";
             InstructionsMenuString[1] = "Rules";
@@ -470,36 +477,42 @@ namespace Testgame
             InstructionsMenuString[4] = "Back";
             Button.ClickHandler[] InstructionsMenuAction = new Button.ClickHandler[5];
 
+            // displays controls section of instructions
             InstructionsMenuAction[0] = delegate()
             {
                 Controls.isPaused = false;
                 InstructionsMenu.isPaused = true;
             };
 
+            // displays rules section of instructions
             InstructionsMenuAction[1] = delegate()
             {
                 InstructionsMenu.isPaused = true;
                 Rules.isPaused = false;
             };
 
+            // displays winning sections of instructions
             InstructionsMenuAction[2] = delegate()
             {
                 InstructionsMenu.isPaused = true;
                 Winning.isPaused = false;
             };
 
+            // displays powerups section of instructions
             InstructionsMenuAction[3] = delegate()
             {
                 InstructionsMenu.isPaused = true;
                 PowerUps.isPaused = false;
             };
 
+            // goes back to the main menu from instructions menu
             InstructionsMenuAction[4] = delegate()
             {
                 InstructionsMenu.isPaused = true; 
                 MainMenu.isPaused = false;
             };
 
+            // creates instance of instructions menu
             InstructionsMenu = new Menu(background, 5, Instructions, InstructionsMenuString, InstructionsMenuAction, font);
             #endregion
 
@@ -525,13 +538,14 @@ namespace Testgame
             mainMenuString[4] = "Exit";
             Button.ClickHandler[] mainMenuAction = new Button.ClickHandler[5];
 
-            // if "play game" is chosen from main menu, starts the game
+            // initializes mode to oneplayer, moves on to the one player game menu
             mainMenuAction[0] = delegate()
             {
                 MainMenu.isPaused = true; GameMenu1.isPaused = false;
                 myMode = Mode.onePlayer;
             };
 
+            // initializes mode to twoplayer, moves on to the two player game menu
             mainMenuAction[1] = delegate()
             {
                 MainMenu.isPaused = true; GameMenu2.isPaused = false;
@@ -549,7 +563,7 @@ namespace Testgame
                 MainMenu.isPaused = true; SettingsMenu.isPaused = false;
             };
 
-            //exits game
+            // exits game
             mainMenuAction[4] = delegate() { this.Exit(); };
 
             //makes main menu and turns it on
@@ -558,6 +572,7 @@ namespace Testgame
             #endregion
 
             #region GameMenu1
+            // creates playgame text
             Text playgame1 = new Text("Select Game", font)
             {
                 attributes = new Attributes()
@@ -568,7 +583,8 @@ namespace Testgame
                 },
                 scale = new Vector2(.5f, .5f)
             };
-
+            
+            // makes menu buttons for one player
             String[] gameMenuString1 = new String[5];
             gameMenuString1[0] = "Normal";
             gameMenuString1[1] = "Marathon";
@@ -577,6 +593,7 @@ namespace Testgame
             gameMenuString1[4] = "Back";
             Button.ClickHandler[] gameMenuAction1 = new Button.ClickHandler[5];
 
+            // begins normal game vs the computer
             gameMenuAction1[0] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
@@ -584,6 +601,7 @@ namespace Testgame
                 speed.TurnOn(); GameMenu1.isPaused = true;
             };
 
+            // goes to 1 player marathon menu from main menu
             gameMenuAction1[1] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
@@ -591,6 +609,7 @@ namespace Testgame
                 MarathonMenu.isPaused = false; GameMenu1.isPaused = true;
             };
 
+            // goes to 1 player timed menu from main menu
             gameMenuAction1[2] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
@@ -598,6 +617,7 @@ namespace Testgame
                 TimedMenu.isPaused = false; GameMenu1.isPaused = true;
             };
 
+            // begins levels mode vs computer
             gameMenuAction1[3] = delegate()
             {
                 player1.Reset(); computer.Reset();
@@ -605,13 +625,16 @@ namespace Testgame
                 GameMenu1.isPaused = true;
                 levels.StartGame();
             };
-
+            
+            // goes back to main menu from player 1 game menu
             gameMenuAction1[4] = delegate() { GameMenu1.isPaused = true; MainMenu.isPaused = false; };
 
+            // makes instance of game menu for single player
             GameMenu1 = new Menu(background, 5, playgame1, gameMenuString1, gameMenuAction1, font);
             #endregion
 
             #region GameMenu2
+            // creates playgame text 
             Text playgame2 = new Text("Select Game", font)
             {
                 attributes = new Attributes()
@@ -623,6 +646,7 @@ namespace Testgame
                 scale = new Vector2(.5f, .5f)
             };
 
+            // creates button names for 2 player game menu
             String[] gameMenuString2 = new String[4];
             gameMenuString2[0] = "Normal";
             gameMenuString2[1] = "Marathon";
@@ -630,6 +654,7 @@ namespace Testgame
             gameMenuString2[3] = "Back";
             Button.ClickHandler[] gameMenuAction2 = new Button.ClickHandler[4];
 
+            // begin normal game vs another player
             gameMenuAction2[0] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
@@ -637,6 +662,7 @@ namespace Testgame
                 speed.TurnOn(); GameMenu2.isPaused = true;
             };
 
+            // goes to 2 player marathon menu from 2 player game menu
             gameMenuAction2[1] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
@@ -644,6 +670,7 @@ namespace Testgame
                 MarathonMenu.isPaused = false; GameMenu2.isPaused = true;
             };
 
+            // goes to 2 player timed menu from 2 player game menu
             gameMenuAction2[2] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
@@ -651,14 +678,16 @@ namespace Testgame
                 TimedMenu.isPaused = false; GameMenu2.isPaused = true;
             };
 
+            // returns to main menu from 2 player game menu
             gameMenuAction2[3] = delegate() { GameMenu2.isPaused = true; MainMenu.isPaused = false; };
 
+            // makes new instance of 2 player game menu
             GameMenu2 = new Menu(background, 4, playgame2, gameMenuString2, gameMenuAction2, font);
             #endregion
 
             #region Controls
 
-            
+            // makes all the drawable text to display when control screen is chosen from instructions menu
             Drawable[][] ControlsText = new Drawable[1][];
             #region FirstPage
             
@@ -755,12 +784,15 @@ namespace Testgame
             };
             #endregion
 
+            // makes instance of the control screen with its text
             Controls = new Instructions(background, ControlsText, font);
             Controls.setButton(delegate() { Controls.isPaused = true; InstructionsMenu.isPaused = false; });
 
             #endregion
 
             #region Rules
+
+            // makes all the drawable text to display when control screen is chosen from instructions menu
             Drawable[][] RulesText = new Drawable[1][];
             #region FirstPage
             
@@ -848,15 +880,14 @@ namespace Testgame
             };
             #endregion
 
-            
-
+            // makes instance of rules text
             Rules = new Instructions(background, RulesText, font);
             Rules.setButton(delegate() { Rules.isPaused = true; InstructionsMenu.isPaused = false; });
 
             #endregion
 
             #region Winning
-
+            // makes all the drawable text to display when control screen is chosen from instructions menu
             Drawable[][] WinningText = new Drawable[1][];
 
             #region FirstPage
@@ -871,7 +902,6 @@ namespace Testgame
                     position = new Vector2(512, 150),
                 }
             };
-
             WinningText[0][1] = new Text("In Normal Mode: The first person to play all", instructionsfont)
             {
                 height = 80,
@@ -944,8 +974,103 @@ namespace Testgame
             };
             #endregion
 
+            // makes instance of winning text
             Winning = new Instructions(background, WinningText, font);
             Winning.setButton(delegate() { Winning.isPaused = true; InstructionsMenu.isPaused = false; });
+            #endregion
+
+            #region Winning
+            // makes all the drawable text to display when control screen is chosen from instructions menu
+            Drawable[][] PowerUpsText = new Drawable[1][];
+
+            #region FirstPage
+            PowerUpsText[0] = new Drawable[8];
+            PowerUpsText[0][0] = new Text("PowerUps", instructionsfont)
+            {
+                height = 200,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 150),
+                }
+            };
+            WinningText[0][1] = new Text("In Normal Mode: The first person to play all", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 250),
+                }
+            };
+            WinningText[0][2] = new Text("of their cards or the player with the highest score when", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 290),
+                }
+            };
+            WinningText[0][3] = new Text("no more cards can be drawn wins the game.", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 330),
+                }
+            };
+            WinningText[0][4] = new Text("In Marathon Mode: The first player to play a chosen", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 410),
+                }
+            };
+            WinningText[0][5] = new Text("number of cards wins the game.", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 450),
+                }
+            };
+            WinningText[0][6] = new Text("In Timed Mode: The player who plays the most cards", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 530),
+                }
+            };
+            WinningText[0][7] = new Text("before time runs out wins the game.", instructionsfont)
+            {
+                height = 80,
+                attributes = new Attributes()
+                {
+                    color = Color.Black,
+                    depth = 0f,
+                    position = new Vector2(512, 570),
+                }
+            };
+            #endregion
+
+            // makes instance of winning text
+            PowerUps = new Instructions(background, WinningText, font);
+            // goes back to instructions menu if back is pressed from powerups instructions
+            PowerUps.setButton(delegate() { PowerUps.isPaused = true; InstructionsMenu.isPaused = false; });
             #endregion
 
             #region MarathonMenu
@@ -1077,7 +1202,7 @@ namespace Testgame
 
             // TODO: Add your update logic here
             
-            // updates game screens and all 
+            // updates game screens if not null
             if (speed != null)
             {
                 speed.Update(gameTime);
@@ -1096,10 +1221,12 @@ namespace Testgame
                     levels.Halt();
                 }
             }
+            // updates particle generator positions
             test.attributes.position = new Vector2(random.Next(0, 1024), random.Next(0, 800));
             test2.attributes.position = new Vector2(random.Next(0, 1024), random.Next(0, 800));
             test3.attributes.position = new Vector2(random.Next(0, 1024), random.Next(0, 800));
 
+            // updates different menus and screens
             GameMenu1.Update(gameTime);
             GameMenu2.Update(gameTime);
             test.Update(gameTime);

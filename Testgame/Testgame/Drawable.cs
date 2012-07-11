@@ -190,6 +190,7 @@ namespace Testgame
             tweenerA.Ended += process;
         }
 
+        // method to set all the tweeners to null
         public void ClearTweeners()
         {
             tweenerX = null;
@@ -198,7 +199,6 @@ namespace Testgame
             tweenerY = null;
             tweenerRotate = null;
             tweenerDepth = null;
-            
 
             tweenerColorG = null;
             tweenerColorB = null;

@@ -15,6 +15,7 @@ namespace Testgame
         Random random;
         bool isOn;
 
+        // constructor for powerups which makes instance of particle engine associated with it, a random number, and turns powerup off
         public PowerUp(Color color, List<Texture2D> particles, bool onOff)
         {
             engine = new ParticleEngine(particles, attributes.position, new Vector2(150, 150), attributes.depth - .001f, color);
@@ -22,16 +23,19 @@ namespace Testgame
             isOn = onOff;
         }
 
+        // when a powerup is "played," adds the event undergone to events
         public void WhenPlayed(PowerAction action)
         {
             Played += action;
         }
 
+        // if a player plays a card on a powerup, event plaed is called and action is taken
         public void HitPlayer(Player player)
         {
             if (Played != null) Played(player);
         }
 
+        // overrides drawable update method to update attributes of powerup, such as position and depth
         public override void Update(GameTime gameTime)
         {
             if (isOn)
@@ -45,6 +49,7 @@ namespace Testgame
             }
         }
 
+        // overrides drawable draw method to draw the powerup
         public override void Draw(SpriteBatch spriteBatch, SpriteEffects spriteEffects)
         {
             if (isSeeable) engine.Draw(spriteBatch, spriteEffects);

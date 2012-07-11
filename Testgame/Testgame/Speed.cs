@@ -18,7 +18,7 @@ namespace Testgame
         Pile rSpitStack;
         Pile lGameStack;
         Pile rGameStack;
-        Card[] deck;         //non-shuffled for reference
+        Card[] deck;         // non-shuffled for reference
         Card[] cards;        // shuffled cards (actually played with)
         Pile[] yourCards;
         Pile[] opponentCards;
@@ -40,7 +40,7 @@ namespace Testgame
         Random random;
         List<Texture2D> textures;
         ParticleEngine engine;
-        int[] cardcounter;            //keep track of generated cards;
+        int[] cardcounter;            // keep track of generated cards;
         int numberOfDecks = 1;        // number of decks to be used at a time
 
         public readonly gameType myType;

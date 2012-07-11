@@ -26,6 +26,7 @@ namespace Testgame
             buttonTimer = new Timer(1);
         }
 
+        // overloaded constructor to allow for drawable checkmark to be passed in
         public Button(String stuff, SpriteFont font, Vector2 position, Color color, Drawable checkMark)
             : base(stuff, font)
         {
