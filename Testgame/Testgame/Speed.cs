@@ -18,7 +18,7 @@ namespace Testgame
         Pile rSpitStack;
         Pile lGameStack;
         Pile rGameStack;
-        Card[] deck;         //non-shuffled for reference
+        Card[] deck;         // non-shuffled for reference
         Card[] cards;        // shuffled cards (actually played with)
         Pile[] yourCards;
         Pile[] opponentCards;
@@ -41,7 +41,7 @@ namespace Testgame
         Random random;
         List<Texture2D> textures;
         ParticleEngine engine;
-        int[] cardcounter;            //keep track of generated cards;
+        int[] cardcounter;            // keep track of generated cards;
         int numberOfDecks = 1;        // number of decks to be used at a time
 
         public readonly gameType myType;
@@ -422,30 +422,33 @@ namespace Testgame
 
         private void SelectPowerUp(Pile pile)
         {
-            double r = random.NextDouble();
-            if (r < .1)
+            if (powerUpOn)
             {
-                int x = random.Next(0, (int)PowerUps.freeze);
-
-                PowerUp newPower = new PowerUp(freeze.engine.attributes.color, freeze.engine.textures, powerUpOn)
+                double r = random.NextDouble();
+                if (r < .1)
                 {
-                    attributes = new Attributes()
+                    int x = random.Next(0, (int)PowerUps.freeze);
+
+                    PowerUp newPower = new PowerUp(freeze.engine.attributes.color, freeze.engine.textures, powerUpOn)
                     {
-                        texture = freeze.attributes.texture,
-                        position = new Vector2(100, 100),
-                        color = Color.White
-                    }
-                };
+                        attributes = new Attributes()
+                        {
+                            texture = freeze.attributes.texture,
+                            position = new Vector2(100, 100),
+                            color = Color.White
+                        }
+                    };
                     newPower.isSeeable = false;
-                newPower.WhenPlayed(delegate(Player player)
-            {
-                player.Freeze();
-                newPower.Fade(4);
-                if (player.isPlayer1) newPower.Move(Actions.ExpoMove, yourSelector.attributes.position, 1);
-                else newPower.Move(Actions.ExpoMove, oppSelector.attributes.position, 1);
-            });
-                base.Add(newPower);
-                pile.GivePowerUp(newPower);
+                    newPower.WhenPlayed(delegate(Player player)
+                {
+                    player.Freeze();
+                    newPower.Fade(4);
+                    if (player.isPlayer1) newPower.Move(Actions.ExpoMove, yourSelector.attributes.position, 1);
+                    else newPower.Move(Actions.ExpoMove, oppSelector.attributes.position, 1);
+                });
+                    base.Add(newPower);
+                    pile.GivePowerUp(newPower);
+                }
             }
         }
 
@@ -628,18 +631,24 @@ namespace Testgame
                 if(myType == gameType.Timed) delayTimer.ResetTimer(0);
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
-                playcard.Play();
+                if (soundOn)
+                {
+                    playcard.Play();
+                }
                 m.Rotate(Actions.ExpoMove, (float)(random.NextDouble() - .5) / 2, .3f);
                 m.WhenDoneMoving(delegate()
                 {
                     m.Move(Actions.LinearMove, m.attributes.position + new Vector2(random.Next(-5,5), random.Next(-5, 5)), 3f); 
                     player.score++;
-                    if (destinationPile.hasPowerUp)
+                    if (powerUpOn)
                     {
-                        Player victim;
-                        if (player.isPlayer1) victim = opp;
-                        else victim = you;
-                        destinationPile.PlayPowerUp(victim);
+                        if (destinationPile.hasPowerUp)
+                        {
+                            Player victim;
+                            if (player.isPlayer1) victim = opp;
+                            else victim = you;
+                            destinationPile.PlayPowerUp(victim);
+                        }
                     }
                     speedState = gameState.GamePlay;
                     if (player.isPlayer1)
