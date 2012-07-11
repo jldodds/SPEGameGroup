@@ -306,7 +306,7 @@ namespace Testgame
             });
         }
 
-        // displays a countdown while cards are dealt to respective hands and game stacks are formed
+        // 
         public void Begin()
         {
             base.RemoveLast();
@@ -420,6 +420,7 @@ namespace Testgame
             freeze
         }
 
+        //
         private void SelectPowerUp(Pile pile)
         {
             if (powerUpOn)
@@ -479,7 +480,6 @@ namespace Testgame
         {
             if (base.isPaused) return;
             if (isHalted) return;
-            //if (speedState != gameState.Dealing) shuffleinstance.IsLooped = false;
             if (myType == gameType.Timed)
             {
                 time1.changeContent(gameTimer.getCountDown(0));
