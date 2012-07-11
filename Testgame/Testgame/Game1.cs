@@ -995,7 +995,7 @@ namespace Testgame
                     position = new Vector2(512, 150),
                 }
             };
-            WinningText[0][1] = new Text("In Normal Mode: The first person to play all", instructionsfont)
+            PowerUpsText[0][1] = new Text("PowerUps appear on game piles randomly during gameplay.", instructionsfont)
             {
                 height = 80,
                 attributes = new Attributes()
@@ -1005,7 +1005,7 @@ namespace Testgame
                     position = new Vector2(512, 250),
                 }
             };
-            WinningText[0][2] = new Text("of their cards or the player with the highest score when", instructionsfont)
+            PowerUpsText[0][2] = new Text("If a card is played on a powerup, the powerup", instructionsfont)
             {
                 height = 80,
                 attributes = new Attributes()
@@ -1015,7 +1015,7 @@ namespace Testgame
                     position = new Vector2(512, 290),
                 }
             };
-            WinningText[0][3] = new Text("no more cards can be drawn wins the game.", instructionsfont)
+            PowerUpsText[0][3] = new Text("will immediately take effect in favor of who played the card.", instructionsfont)
             {
                 height = 80,
                 attributes = new Attributes()
@@ -1025,7 +1025,7 @@ namespace Testgame
                     position = new Vector2(512, 330),
                 }
             };
-            WinningText[0][4] = new Text("In Marathon Mode: The first player to play a chosen", instructionsfont)
+            PowerUpsText[0][4] = new Text("Freeze - Renders the opponent's selector immovable for around 2 seconds.", instructionsfont)
             {
                 height = 80,
                 attributes = new Attributes()
@@ -1035,7 +1035,7 @@ namespace Testgame
                     position = new Vector2(512, 410),
                 }
             };
-            WinningText[0][5] = new Text("number of cards wins the game.", instructionsfont)
+            PowerUpsText[0][5] = new Text(" ", instructionsfont)
             {
                 height = 80,
                 attributes = new Attributes()
@@ -1045,7 +1045,7 @@ namespace Testgame
                     position = new Vector2(512, 450),
                 }
             };
-            WinningText[0][6] = new Text("In Timed Mode: The player who plays the most cards", instructionsfont)
+            PowerUpsText[0][6] = new Text(" ", instructionsfont)
             {
                 height = 80,
                 attributes = new Attributes()
@@ -1055,7 +1055,7 @@ namespace Testgame
                     position = new Vector2(512, 530),
                 }
             };
-            WinningText[0][7] = new Text("before time runs out wins the game.", instructionsfont)
+            PowerUpsText[0][7] = new Text(" ", instructionsfont)
             {
                 height = 80,
                 attributes = new Attributes()
@@ -1068,7 +1068,7 @@ namespace Testgame
             #endregion
 
             // makes instance of winning text
-            PowerUps = new Instructions(background, WinningText, font);
+            PowerUps = new Instructions(background, PowerUpsText, font);
             // goes back to instructions menu if back is pressed from powerups instructions
             PowerUps.setButton(delegate() { PowerUps.isPaused = true; InstructionsMenu.isPaused = false; });
             #endregion
@@ -1236,6 +1236,7 @@ namespace Testgame
             Controls.Update(gameTime);
             Rules.Update(gameTime);
             Winning.Update(gameTime);
+            PowerUps.Update(gameTime);
             MainMenu.Update(gameTime);
             MarathonMenu.Update(gameTime);
             TimedMenu.Update(gameTime);
@@ -1325,6 +1326,7 @@ namespace Testgame
             TimedMenu.Draw(spriteBatch);
             Rules.Draw(spriteBatch);
             Winning.Draw(spriteBatch);
+            PowerUps.Draw(spriteBatch);
             freeze.Draw(spriteBatch, SpriteEffects.None);
             //test.Draw(spriteBatch, SpriteEffects.None);
             //test2.Draw(spriteBatch, SpriteEffects.None);
