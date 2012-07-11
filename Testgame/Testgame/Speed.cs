@@ -23,6 +23,7 @@ namespace Testgame
         Pile[] yourCards;
         Pile[] opponentCards;
         KeyboardState oldState;
+        GamePadState elderState;
         public gameState speedState { get; set; }
         Drawable oppSelector;
         Drawable yourSelector;
@@ -187,7 +188,7 @@ namespace Testgame
                     color = Color.Red,
                     height = 190,
                     width = 140,
-                    depth = .01f,
+                    depth = .11f,
                     rotation = 0
                 }
             };
@@ -526,6 +527,7 @@ namespace Testgame
         protected void KeyUpdate(GameTime gameTime)
         {
             KeyboardState newState = Keyboard.GetState();
+            GamePadState youngState = GamePad.GetState(PlayerIndex.One);
             if (speedState == gameState.AskBegin)
             {
                 if (newState.IsKeyDown(Keys.Enter))
@@ -535,8 +537,17 @@ namespace Testgame
                         Begin();
                     }
                 }
+
+                if (youngState.IsButtonDown(Buttons.A))
+                {
+                    if (!elderState.IsButtonDown(Buttons.A))
+                    {
+                        Begin();
+                    }
+                }
             }
             oldState = newState;
+            elderState = youngState;
         }
 
         // resumes the game

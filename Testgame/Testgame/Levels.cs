@@ -42,6 +42,7 @@ namespace Testgame
 
         public enum Difficulty
         {
+            Baby,
             Easy,
             Medium,
             Hard
@@ -76,14 +77,17 @@ namespace Testgame
 
             switch (myDiff)
             {
+                case Difficulty.Baby:
+                    ComputerPlayer.timeDelay = 2 - (.05f * _level);
+                    break;
                 case Difficulty.Easy:
-                    computer.timeDelay = 2.0f - (.027f * _level);
+                    ComputerPlayer.timeDelay = 1.2f - (.027f * _level);
                     break;
                 case Difficulty.Medium:
-                    computer.timeDelay = .6f - (.03f * _level);
+                    ComputerPlayer.timeDelay = .6f - (.03f * _level);
                     break;
                 case Difficulty.Hard:
-                    computer.timeDelay = .43f - (.025f * _level);
+                    ComputerPlayer.timeDelay = .43f - (.025f * _level);
                     break;
             }
 

@@ -12,6 +12,7 @@ namespace Testgame
     {
         Drawable[][] _slides;
         KeyboardState oldState;
+        GamePadState elderState;
         int page;
         Button exit;
 
@@ -66,6 +67,7 @@ namespace Testgame
         {
             if (isPaused) return;
             KeyboardUpdate();
+            GamePadUpdate();
             DisplayPage();
             base.Update(gameTime);
         }
@@ -103,6 +105,60 @@ namespace Testgame
             }
 
             oldState = newState;
+        }
+
+        public void GamePadUpdate()
+        {
+            GamePadState youngState = GamePad.GetState(PlayerIndex.One);
+
+            if (youngState.IsButtonDown(Buttons.DPadLeft))
+            {
+                // moves back an instructions page unless on the first one
+                if (!elderState.IsButtonDown(Buttons.DPadLeft))
+                {
+                    if (page == 0) return;
+                    else page--;
+                }
+            }
+
+            if (youngState.IsButtonDown(Buttons.LeftThumbstickLeft))
+            {
+                // moves back an instructions page unless on the first one
+                if (!elderState.IsButtonDown(Buttons.LeftThumbstickLeft))
+                {
+                    if (page == 0) return;
+                    else page--;
+                }
+            }
+
+            // moves forward an instructions page unless on the last one
+            if (youngState.IsButtonDown(Buttons.LeftThumbstickRight))
+            {
+                if (!elderState.IsButtonDown(Buttons.LeftThumbstickRight))
+                {
+                    if (page == _slides.Length - 1) return;
+                    else page++;
+                }
+            }
+
+            if (youngState.IsButtonDown(Buttons.DPadRight))
+            {
+                if (!elderState.IsButtonDown(Buttons.DPadRight))
+                {
+                    if (page == _slides.Length - 1) return;
+                    else page++;
+                }
+            }
+
+            if (youngState.IsButtonDown(Buttons.A))
+            {
+                if (!elderState.IsButtonDown(Buttons.A))
+                {
+                    exit.Click();
+                }
+            }
+
+            elderState = youngState;
         }
 
         public void ResetPage()

@@ -9,7 +9,7 @@ namespace Testgame
 {
     class ComputerPlayer : Player
     {
-        public float timeDelay { get; set; }
+        public static float timeDelay { get; set; }
         Timer moveDelay;
         int pileNumber;
         bool isLeftPile;
@@ -291,6 +291,25 @@ namespace Testgame
         {
             myState = CompState.normal;            
             base.Reset();
+        }
+
+        public static void ChangeDifficulty(Levels.Difficulty difficulty)
+        {
+            switch (difficulty)
+            {
+                case Levels.Difficulty.Baby:
+                    timeDelay = 1.5f;
+                        break;
+                case Levels.Difficulty.Easy:
+                    timeDelay = 1;
+                    break;
+                case Levels.Difficulty.Medium:
+                    timeDelay = .5f;
+                    break;
+                case Levels.Difficulty.Hard:
+                    timeDelay = .3f;
+                    break;
+            }
         }
     }
 }

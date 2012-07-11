@@ -66,6 +66,7 @@ namespace Testgame
             if (moduloToggled == 0)
             {
                 if (!isSeeable) return;
+                if (!selected) attributes.color = Color.Black;
                 if (selected && !clicked) attributes.color = Color.Red;
                 if (selected) spriteBatch.DrawString(_font, content, attributes.position, attributes.color, attributes.rotation, _font.MeasureString(content) / 2, scale * 1.3f, spriteEffects, attributes.depth);
                 else base.Draw(spriteBatch, spriteEffects);

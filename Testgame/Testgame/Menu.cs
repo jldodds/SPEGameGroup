@@ -11,6 +11,8 @@ namespace Testgame
     public class Menu : Screen
     {
         KeyboardState oldState;
+        MouseState oldstate;
+        GamePadState elderState;
         Button[] buttons;
         int buttonHeight;
         float maxButtonWidth;
@@ -177,6 +179,7 @@ namespace Testgame
         {
             if (isPaused) return;
             KeyUpdate();
+            GamePadUpdate();
             MouseUpdate();
             for (int i = 0; i < buttons.Length; i++)
             {
@@ -240,10 +243,74 @@ namespace Testgame
             oldState = newState;
         }
 
-        MouseState oldstate;
+        public void GamePadUpdate()
+        {
+            // keeps track of current keyboard state
+            GamePadState youngState = GamePad.GetState(PlayerIndex.One);
+
+            // only do the following if the menustate is on
+            if (myState == menuState.Off) return;
+            if (myState == menuState.Clicking) return;
+            if (keysOff) return;
+            // if up is pressed, moves selector up
+            if (youngState.IsButtonDown(Buttons.LeftThumbstickUp))
+            {
+                if (!youngState.IsButtonDown(Buttons.LeftThumbstickUp))
+                {
+                    selected--;
+                    if (selected == -1) selected = buttons.Length - 1;
+                }
+            }
+
+            if (youngState.IsButtonDown(Buttons.DPadUp))
+            {
+                if (!youngState.IsButtonDown(Buttons.DPadUp))
+                {
+                    selected--;
+                    if (selected == -1) selected = buttons.Length - 1;
+                }
+            }
+
+            // if down is pressed, moves selector down
+            if (youngState.IsButtonDown(Buttons.LeftThumbstickDown))
+            {
+                if (!youngState.IsButtonDown(Buttons.LeftThumbstickDown))
+                {
+                    selected++;
+                    if (selected == buttons.Length) selected = 0;
+                }
+            }
+
+            if (youngState.IsButtonDown(Buttons.DPadDown))
+            {
+                if (!youngState.IsButtonDown(Buttons.DPadDown))
+                {
+                    selected++;
+                    if (selected == buttons.Length) selected = 0;
+                }
+            }
+
+            // if enter is pressed, ...
+            if (youngState.IsButtonDown(Buttons.A))
+            {
+                if (!youngState.IsButtonDown(Buttons.A))
+                {
+                    myState = menuState.Clicking;
+                    buttons[selected].WhenButtonClicked(delegate() { myState = menuState.On; });
+                    buttons[selected].Click();
+                }
+            }
+
+            // makes the oldstate the previous state
+            elderState = youngState;
+        }
+        
+        
 
         public void MouseUpdate()
         {
+            if (myState == menuState.Off) return;
+            if (myState == menuState.Clicking) return;
             MouseState newstate = Mouse.GetState();
             if (newstate == oldstate) return;
             float x = newstate.X;
