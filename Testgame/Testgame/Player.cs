@@ -266,6 +266,8 @@ namespace Testgame
             myState = PlayerState.Off;
             selector = 0;
             freezeTimer.RemoveTimers();
+            SelectedCardLeft = null;
+            SelectedCardRight = null;
         }
     }
 }

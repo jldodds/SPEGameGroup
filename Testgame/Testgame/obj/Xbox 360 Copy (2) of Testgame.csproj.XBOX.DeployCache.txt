@@ -1,0 +1,185 @@
+578edf35988042f3b5310206ebe8a441
+0
+XBOX
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\
+129865887380000000
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\GameThumbnail.png
+2012-06-18T18:44:52.1900288Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Testgame.exe
+2012-07-12T18:26:23.5186385Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\1.xnb
+2012-07-10T15:01:57.5207696Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\2.xnb
+2012-07-10T15:01:58.0327989Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\3.xnb
+2012-07-10T15:01:57.0587432Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\AceClubs.xnb
+2012-07-10T15:01:41.9848810Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\AceDiamonds.xnb
+2012-07-10T15:01:42.1218888Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\AceHearts.xnb
+2012-07-10T15:01:42.2578966Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\AceSpades.xnb
+2012-07-10T15:01:41.8468731Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Background2.xnb
+2012-07-10T15:01:51.6284326Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Background3.xnb
+2012-07-10T15:01:52.1404618Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\BadTime.xnb
+2012-07-10T15:01:59.0838590Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Blob.xnb
+2012-07-10T15:01:41.4848524Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\blue.xnb
+2012-07-10T15:02:00.0169124Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\cardback2.0.xnb
+2012-07-10T15:01:58.6448339Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\CardSelector.xnb
+2012-07-10T15:01:58.2148093Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\checkMark.xnb
+2012-07-10T15:02:04.1311477Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\circle.xnb
+2012-07-10T15:01:59.1738641Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\diamond.xnb
+2012-07-10T15:01:59.2578689Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\EightClubs.xnb
+2012-07-10T15:01:42.4819094Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\EightDiamonds.xnb
+2012-07-10T15:01:42.7379241Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\EightHearts.xnb
+2012-07-10T15:01:41.7058650Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\EightSpades.xnb
+2012-07-10T15:01:42.9169343Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\FiveClubs.xnb
+2012-07-10T15:01:43.0809437Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\FiveDiamonds.xnb
+2012-07-10T15:01:43.3289579Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\FiveHearts.xnb
+2012-07-10T15:01:43.5299694Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\FiveSpades.xnb
+2012-07-10T15:01:43.7449817Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\FourClubs.xnb
+2012-07-10T15:01:43.9719946Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\FourDiamonds.xnb
+2012-07-10T15:01:44.1940073Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\FourHearts.xnb
+2012-07-10T15:01:44.3460160Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\FourSpades.xnb
+2012-07-10T15:01:44.5070252Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Freeze.xnb
+2012-07-10T15:01:58.3308159Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\green.xnb
+2012-07-10T15:02:00.5469427Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\JackClubs.xnb
+2012-07-10T15:01:44.7050366Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\JackDiamonds.xnb
+2012-07-10T15:01:44.9730519Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\JackHearts.xnb
+2012-07-10T15:01:45.1840640Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\JackSpades.xnb
+2012-07-10T15:01:45.4230776Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\KingClubs.xnb
+2012-07-10T15:01:45.6600912Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\KingDiamonds.xnb
+2012-07-10T15:01:45.8981048Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\KingHearts.xnb
+2012-07-10T15:01:46.0751149Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\KingSpades.xnb
+2012-07-10T15:01:46.2341240Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\NineClubs.xnb
+2012-07-10T15:01:46.3961333Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\NineDiamonds.xnb
+2012-07-10T15:01:46.6391472Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\NineHearts.xnb
+2012-07-10T15:01:46.7921559Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\NineSpades.xnb
+2012-07-10T15:01:46.9611656Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\PlainWhite.xnb
+2012-07-12T17:45:35.5389246Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\PossibleBackground.xnb
+2012-07-10T15:01:56.5687151Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\QueenClubs.xnb
+2012-07-10T15:01:47.1211748Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\QueenDiamonds.xnb
+2012-07-10T15:01:47.3611885Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\QueenHearts.xnb
+2012-07-10T15:01:47.5461991Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\QueenSpades.xnb
+2012-07-10T15:01:47.7282095Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\red.xnb
+2012-07-10T15:02:01.1239757Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\SevenClubs.xnb
+2012-07-10T15:01:47.9542224Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\SevenDiamonds.xnb
+2012-07-10T15:01:48.1192318Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\SevenHearts.xnb
+2012-07-10T15:01:48.2792410Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\SevenSpades.xnb
+2012-07-10T15:01:48.4392501Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\SixClubs.xnb
+2012-07-10T15:01:48.5922589Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\SixDiamonds.xnb
+2012-07-10T15:01:48.7412674Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\SixHearts.xnb
+2012-07-10T15:01:48.8972763Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\SixSpades.xnb
+2012-07-10T15:01:49.0582856Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Slide1.xnb
+2012-07-10T15:02:02.2310390Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Slide2.xnb
+2012-07-10T15:02:02.7590692Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Slide3.xnb
+2012-07-10T15:02:03.2850993Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Slide4.xnb
+2012-07-10T15:02:03.9371366Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\SpriteFont1.xnb
+2012-07-10T15:02:06.3752760Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\SpriteFont2.xnb
+2012-07-10T15:02:06.5132839Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\SpriteFont3.xnb
+2012-07-10T15:02:08.9694244Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\star.xnb
+2012-07-10T15:01:59.3688753Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\TenClubs.xnb
+2012-07-10T15:01:49.2282953Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\TenDiamonds.xnb
+2012-07-10T15:01:49.4663089Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\TenHearts.xnb
+2012-07-10T15:01:49.7253237Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\TenSpades.xnb
+2012-07-10T15:01:49.9203349Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\ThreeClubs.xnb
+2012-07-10T15:01:50.1763495Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\ThreeDiamonds.xnb
+2012-07-10T15:01:50.3283582Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\ThreeHearts.xnb
+2012-07-10T15:01:50.4763667Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\ThreeSpades.xnb
+2012-07-10T15:01:50.6243751Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\TwoClubs.xnb
+2012-07-10T15:01:50.7753838Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\TwoDiamonds.xnb
+2012-07-10T15:01:50.9223922Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\TwoHearts.xnb
+2012-07-10T15:01:51.0704006Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\TwoSpades.xnb
+2012-07-10T15:01:51.2104087Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\white.xnb
+2012-07-10T15:02:01.7180097Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Audio\Waves\drawcard.xnb
+2012-07-10T15:02:09.8754762Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Audio\Waves\dropcard.xnb
+2012-07-10T15:02:09.9544807Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Audio\Waves\engine_2.xnb
+2012-07-10T15:02:09.4984547Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Audio\Waves\flipcard.xnb
+2012-07-10T15:02:10.1594925Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Audio\Waves\hyperspace_activate.xnb
+2012-07-10T15:02:09.6434630Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Audio\Waves\shuffle1.xnb
+2012-07-10T15:02:10.2484976Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Audio\Waves\shuffle2.xnb
+2012-07-10T15:02:10.0614869Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Audio\Waves\slapcard.xnb
+2012-07-10T15:02:10.1224904Z
+C:\Users\Ben\Documents\GitHub\SPEGameGroup\Testgame\Testgame\bin\Xbox 360\Debug\Content\Audio\Waves\wowcool.xnb
+2012-07-10T15:02:09.6864654Z

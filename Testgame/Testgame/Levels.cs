@@ -82,18 +82,20 @@ namespace Testgame
             switch (myDiff)
             {
                 case Difficulty.Baby:
-                    ComputerPlayer.timeDelay = 2 - (.05f * _level);
+                    ComputerPlayer.timeDelay = 2 - (.1f * _level);
+                    if (ComputerPlayer.timeDelay <= 0) Winner();
                     break;
                 case Difficulty.Easy:
-
-                    ComputerPlayer.timeDelay = 1.2f - (.027f * _level);
-
+                    ComputerPlayer.timeDelay = 1.2f - (.06f * _level);
+                    if (ComputerPlayer.timeDelay <= 0) Winner();
                     break;
                 case Difficulty.Medium:
                     ComputerPlayer.timeDelay = .6f - (.03f * _level);
+                    if (ComputerPlayer.timeDelay <= 0) Winner();
                     break;
                 case Difficulty.Hard:
-                    ComputerPlayer.timeDelay = .43f - (.025f * _level);
+                    ComputerPlayer.timeDelay = .44f - (.022f * _level);
+                    if (ComputerPlayer.timeDelay <= 0) Winner();
                     break;
             }
 
@@ -152,6 +154,13 @@ namespace Testgame
         public void Draw(SpriteBatch spriteBatch)
         {
             if (speed != null) speed.Draw(spriteBatch);
+        }
+
+        public void Winner()
+        {
+            //You made it to level 20. Holy Shit.
+            ComputerPlayer.timeDelay = .001f;
+            _level = 1000;
         }
 
     }

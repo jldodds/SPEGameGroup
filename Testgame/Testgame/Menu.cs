@@ -40,6 +40,7 @@ namespace Testgame
                 if (!value)
                 {
                     myState = menuState.Off;
+                    selected = 0;
                     Timer state = new Timer(1);
                     base.Add(state);
                     state.SetTimer(0, .5f, delegate() { myState = menuState.On; });  
@@ -255,16 +256,16 @@ namespace Testgame
             // if up is pressed, moves selector up
             if (youngState.IsButtonDown(Buttons.LeftThumbstickUp))
             {
-                if (!youngState.IsButtonDown(Buttons.LeftThumbstickUp))
+                if (!elderState.IsButtonDown(Buttons.LeftThumbstickUp))
                 {
                     selected--;
                     if (selected == -1) selected = buttons.Length - 1;
                 }
             }
-
+            
             if (youngState.IsButtonDown(Buttons.DPadUp))
             {
-                if (!youngState.IsButtonDown(Buttons.DPadUp))
+                if (!elderState.IsButtonDown(Buttons.DPadUp))
                 {
                     selected--;
                     if (selected == -1) selected = buttons.Length - 1;
@@ -274,7 +275,7 @@ namespace Testgame
             // if down is pressed, moves selector down
             if (youngState.IsButtonDown(Buttons.LeftThumbstickDown))
             {
-                if (!youngState.IsButtonDown(Buttons.LeftThumbstickDown))
+                if (!elderState.IsButtonDown(Buttons.LeftThumbstickDown))
                 {
                     selected++;
                     if (selected == buttons.Length) selected = 0;
@@ -283,7 +284,7 @@ namespace Testgame
 
             if (youngState.IsButtonDown(Buttons.DPadDown))
             {
-                if (!youngState.IsButtonDown(Buttons.DPadDown))
+                if (!elderState.IsButtonDown(Buttons.DPadDown))
                 {
                     selected++;
                     if (selected == buttons.Length) selected = 0;
@@ -293,7 +294,7 @@ namespace Testgame
             // if enter is pressed, ...
             if (youngState.IsButtonDown(Buttons.A))
             {
-                if (!youngState.IsButtonDown(Buttons.A))
+                if (!elderState.IsButtonDown(Buttons.A))
                 {
                     myState = menuState.Clicking;
                     buttons[selected].WhenButtonClicked(delegate() { myState = menuState.On; });

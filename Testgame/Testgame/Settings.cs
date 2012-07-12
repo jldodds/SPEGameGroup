@@ -17,6 +17,18 @@ namespace Testgame
         MouseState oldstate;
         GamePadState elderState;
         Button exit;
+        public override bool isPaused
+        {
+            get
+            {
+                return base.isPaused;
+            }
+            set
+            {
+                if (!value) selectedSwitch = 0;
+                base.isPaused = value;
+            }
+        }
 
         public Settings(Text title, Switch[] switches, Drawable background, SpriteFont font)
             : base(background)

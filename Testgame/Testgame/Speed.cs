@@ -124,12 +124,16 @@ namespace Testgame
                 cards[i].attributes.color = Color.White;
                 cards[i].attributes.rotation = 0;
                 cards[i].ClearTweeners();
+                cards[i].attributes.height = 180;
+                cards[i].attributes.width = 130;
                 deck[i].attributes.position = new Vector2(-100, 100);
                 deck[i].isFaceUp = false;
                 deck[i].isSeeable = true;
                 deck[i].attributes.color = Color.White;
                 deck[i].attributes.rotation = 0;
                 deck[i].ClearTweeners();
+                deck[i].attributes.height = 180;
+                deck[i].attributes.width = 130;
             }
             yourStack = new Pile(new Vector2(897, 675));
             opponentStack = new Pile(new Vector2(127, 125));
@@ -273,7 +277,7 @@ namespace Testgame
                     attributes = new Attributes()
                     {
                         color = Color.Yellow,
-                        depth = 0,
+                        depth = .5f,
                         position = new Vector2(512, 400),
                     },
                 };
@@ -295,7 +299,8 @@ namespace Testgame
                 {
                     color = Color.Yellow,
                     position = new Vector2(512, 400),
-                    rotation = 0
+                    rotation = 0,
+                    depth = .5f
                 },
                 scale = new Vector2(.1f,.1f)
             };

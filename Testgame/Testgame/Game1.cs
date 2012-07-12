@@ -11,6 +11,12 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Testgame
 {
+    // TO DO:
+    //  - Vibrate Controllers
+    //  - Piles have depth
+
+
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -355,6 +361,7 @@ namespace Testgame
                 },
                 height = 300
             };
+
             // makes names for each button on pause menu
             String[] pauseNames = new String[5];
             pauseNames[0] = "Resume";
@@ -385,13 +392,15 @@ namespace Testgame
                 // restarts SPEED game if restart is chosen from pause menu
                 if (speed != null)
                 {
-                    speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), freeze); speed.TurnOn();
+                    speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures,
+                        speed.myType, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), freeze); speed.TurnOn();
                 }
                 // restarts LEVELS game if restart chosen from pause menu
                 else if (levels != null)
                 {
-
-                    levels.myState = Levels.LevelState.Starting; levels.StartGame();
+                    player1.Reset();
+                    levels = new Levels(cards, background,selector,font, player1, textures, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(),
+                        PowerUpSwitch.getOnOff(), (Levels.Difficulty)DifficultySwitch.getState(), freeze); levels.StartGame();
                 }
                     Pause.isPaused = true;
             };
@@ -1212,10 +1221,12 @@ namespace Testgame
 
             // updates game screens and all
 
-            ComputerPlayer.ChangeDifficulty((Levels.Difficulty)DifficultySwitch.getState());
+            
             
             if (speed != null)
             {
+
+                ComputerPlayer.ChangeDifficulty((Levels.Difficulty)DifficultySwitch.getState()); 
                 speed.Update(gameTime);
                 if (speed.speedState == Speed.gameState.PlayAgain)
                 {
