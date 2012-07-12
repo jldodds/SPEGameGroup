@@ -70,11 +70,16 @@ namespace Testgame
             timer[timerNumber].Reset();
         }
 
-        public int getTimeLeft(int timerNumber)
+        public double getTimeLeft(int timerNumber)
         {
-            int time = (int)timer[timerNumber].getElapsed();
-            int countDownTime = (int)timer[timerNumber].getDuration() - time;
+            double time = (double)timer[timerNumber].getElapsed();
+            double countDownTime = (double)timer[timerNumber].getDuration() - time;
             return countDownTime;
+        }
+
+        public void pauseTimer(Timer timer)
+        {
+
         }
     }
 }

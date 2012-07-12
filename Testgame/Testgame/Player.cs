@@ -34,14 +34,14 @@ namespace Testgame
         public int selector { get; set; }
         public readonly bool isPlayer1;
         PlayerState oldState;
-        MouseState oldstate;
+        //MouseState oldstate;
         Timer freezeTimer;
 
-        int cardTopHeight = 585;
-        int cardBottomHeight = 765;
-        int initCardRightSide = 808;
-        int initCardLeftSide = 678;
-        int cardXShift = 154;
+        //int cardTopHeight = 585;
+        //int cardBottomHeight = 765;
+        //int initCardRightSide = 808;
+        //int initCardLeftSide = 678;
+        //int cardXShift = 154;
 
         public delegate void CardPlayer();
         public event CardPlayer SelectedCardLeft;
@@ -121,6 +121,7 @@ namespace Testgame
             }
         }
 
+        // moves selector left to pile that is passed in, assuming player is on and not penalized
         public void MoveSelectorLeft(int pileNumber)
         {
             if (myState == PlayerState.Off) return;
@@ -161,6 +162,21 @@ namespace Testgame
             oldState = PlayerState.Frozen;
             if (myState != PlayerState.Penalized) myState = PlayerState.Frozen;
             freezeTimer.SetTimer(0, 4, delegate() { UnFreeze(); });
+        }
+
+        double timeLeft;
+
+        public void PauseFreeze()
+        {
+            freezeTimer.isPaused = true;
+            timeLeft = freezeTimer.getTimeLeft(1);
+        }
+
+        public void unPauseFreeze()
+        {
+            freezeTimer.isPaused = false;
+            Timer newTimer = new Timer(2);
+            newTimer.SetTimer(2, (float)timeLeft, delegate() { UnFreeze(); });
         }
 
         public void UnFreeze()

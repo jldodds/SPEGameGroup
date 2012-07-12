@@ -1221,8 +1221,7 @@ namespace Testgame
 
             // updates game screens and all
 
-            
-            
+
             if (speed != null)
             {
 

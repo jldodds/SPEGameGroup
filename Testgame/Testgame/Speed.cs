@@ -61,7 +61,6 @@ namespace Testgame
         public event EndGameMethod YouLost;
         public event EndGameMethod YouTie;
         Timer delayTimer;
-        Text levelsss;
         Text levelss;
         PowerUp freeze;
 
@@ -311,7 +310,7 @@ namespace Testgame
             });
         }
 
-        // displays a countdown while cards are dealt to respective hands and game stacks are formed
+        // 
         public void Begin()
         {
             base.RemoveLast();
@@ -323,16 +322,6 @@ namespace Testgame
 
             if (myType == gameType.Levels)
             {
-                levelsss = new Text("Level " + level, _font)
-                {
-                    height = 100,
-                    attributes = new Attributes()
-                    {
-                        color = Color.Black,
-                        position = new Vector2(lSpitStack.position.X, oppName.attributes.position.Y),
-                        depth = .01f
-                    },
-                };
                 levelss = new Text("Level " + level, _font)
                 {
                     height = 100,
@@ -343,7 +332,6 @@ namespace Testgame
                         depth = .01f
                     },
                 };
-                base.Add(levelsss);
                 base.Add(levelss);
 
             }
@@ -425,6 +413,7 @@ namespace Testgame
             freeze
         }
 
+        //
         private void SelectPowerUp(Pile pile)
         {
             if (powerUpOn)
@@ -484,7 +473,6 @@ namespace Testgame
         {
             if (base.isPaused) return;
             if (isHalted) return;
-            //if (speedState != gameState.Dealing) shuffleinstance.IsLooped = false;
             if (myType == gameType.Timed)
             {
                 time1.changeContent(gameTimer.getCountDown(0));
@@ -830,7 +818,6 @@ namespace Testgame
             if (myType == gameType.Levels)
             {
                 levelss.Fade(4);
-                levelsss.Fade(4);
             }
             for (int i = 0; i < yourCards.Length; i++)
             {
@@ -860,7 +847,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.LightSkyBlue,
-                    position = new Vector2(512, 600),
+                    position = new Vector2(512, 650),
                     //rotation = -.2f,
                     depth = .1f,
                 },
@@ -871,7 +858,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.DarkRed,
-                    position = new Vector2(512, 200),
+                    position = new Vector2(512, 180),
                     //rotation = -.2f,
                     depth = .1f
                 },
@@ -917,7 +904,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.Red,
-                    position = new Vector2(512, 200),
+                    position = new Vector2(512, 180),
                     //rotation = -.2f,
                     depth = .1f
                 },
@@ -928,7 +915,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.DarkBlue,
-                    position = new Vector2(512, 600),
+                    position = new Vector2(512, 650),
                     //rotation = -.2f,
                     depth = .1f
                 },
