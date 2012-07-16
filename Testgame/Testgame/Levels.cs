@@ -25,6 +25,7 @@ namespace Testgame
         SoundEffectInstance shuffleInstance;
         bool isSoundOn;
         bool isPowerUpOn;
+        bool isVibrateOn;
         Timer timer;
         public bool isHalted { get; set; }
         public bool isPaused { get; set; }
@@ -49,7 +50,7 @@ namespace Testgame
         }
         
         // constructor, makes instance of the computer player and initializes global variables based on arguments
-        public Levels(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player player1, List<Texture2D> particles, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, bool powerUpsOn, Difficulty difficulty, PowerUp powerup)
+        public Levels(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, Player player1, List<Texture2D> particles, SoundEffect shuffling, SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, bool powerUpsOn, bool vibrateOn, Difficulty difficulty, PowerUp powerup)
         {
             computer = new ComputerPlayer("Computer", false);
             deck = deckOfCards;
@@ -63,6 +64,7 @@ namespace Testgame
             shuffleInstance = shuffinstance;
             this.isSoundOn = isSoundOn;
             isPowerUpOn = powerUpsOn;
+            isVibrateOn = vibrateOn;
             _level = 1;
             myState = LevelState.Starting;
             myDiff = difficulty;
@@ -100,7 +102,7 @@ namespace Testgame
             }
 
             // makes new instance of speed between computer and player
-            speed = new Speed(deck, _background, _selector, _font, _player1, computer, _particles, Speed.gameType.Levels, shuffling, playingCard, shuffleInstance, isSoundOn, isPowerUpOn, freeze);
+            speed = new Speed(deck, _background, _selector, _font, _player1, computer, _particles, Speed.gameType.Levels, shuffling, playingCard, shuffleInstance, isSoundOn, isPowerUpOn, isVibrateOn, freeze);
 
             // sets level to level, turns speed on, makes player's state the playing state
             speed.level = _level;
