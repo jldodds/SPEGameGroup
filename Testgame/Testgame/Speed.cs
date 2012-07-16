@@ -419,7 +419,7 @@ namespace Testgame
             if (powerUpOn)
             {
                 double r = random.NextDouble();
-                if (r < .1)
+                if (r < .05)
                 {
                     int x = random.Next(0, (int)PowerUps.freeze);
 
