@@ -11,10 +11,12 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Testgame
 {
+
     // TO DO:
     //  - Vibrate Controllers
     //  - Piles have depth
     //  - Adjust Play Again menu
+
 
 
 
@@ -46,6 +48,7 @@ namespace Testgame
         Settings settings2;
         Switch SoundSwitch;
         Switch PowerUpSwitch;
+        Switch VibrateSwitch;
         Switch DifficultySwitch;
         PowerUp freeze;
         List<Texture2D> textures;
@@ -70,6 +73,7 @@ namespace Testgame
         SoundEffectInstance shuffleinstance;
         bool soundOn = true;
         bool powerUpsOn = true;
+        bool vibrateOn = true;
         Mode myMode;
         Drawable checkMark;
         Levels.Difficulty difficulty;
@@ -146,6 +150,21 @@ namespace Testgame
                     color = new Color(0, 100, 100, 23),
                     position = new Vector2(512, 400),
                     depth = .05f,
+                    height = 802,
+                    width = 1026,
+                    rotation = 0
+                }
+            };
+
+            // makes an example in which the background is transparent
+            Drawable playAgainBackground = new Drawable()
+            {
+                attributes = new Attributes()
+                {
+                    texture = this.Content.Load<Texture2D>("PossibleBackground"),
+                    color = Color.Transparent,
+                    position = new Vector2(512, 400),
+                    depth = 1,
                     height = 802,
                     width = 1026,
                     rotation = 0
@@ -275,7 +294,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.Black,
-                    rotation = -.1f,
+                    //rotation = -.1f,
                     depth = 0f,
                 },
                 height = 200
@@ -300,25 +319,25 @@ namespace Testgame
                             // game length?
                         case Speed.gameType.Timed:
                             int x = speed.gameLength;
-                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), freeze);
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), vibrateOn, freeze);
                             speed.gameLength = x;
                             break;
                         //
                         case Speed.gameType.Marathon:
                             int y = speed.winningscore;
-                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), freeze);
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), vibrateOn, freeze);
                             speed.winningscore = y;
                             break; 
                         // if neither of the other cases apply, do this default action
                         default:
-                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), freeze);
+                            speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures, speed.myType, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), vibrateOn, freeze);
                             break;
                     }
                     speed.TurnOn(); PlayAgain.isPaused = true;
                 }
 
                 if (levels != null) {
-                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), (Levels.Difficulty) DifficultySwitch.getState(), freeze);
+                    levels = new Levels(cards, background, selector, font, levels._player1, textures, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), vibrateOn, (Levels.Difficulty) DifficultySwitch.getState(), freeze);
                     levels.StartGame();
                     PlayAgain.isPaused = true;
                 }
@@ -329,21 +348,6 @@ namespace Testgame
                 if (speed != null) speed = null;
                 if (levels != null) levels = null; 
                 PlayAgain.isPaused = true; MainMenu.isPaused = false;
-            };
-            
-            // makes an example in which the background is transparent
-            Drawable playAgainBackground = new Drawable()
-            {
-                attributes = new Attributes()
-                {
-                    texture = this.Content.Load<Texture2D>("PossibleBackground"),
-                    color = Color.Transparent,
-                    position = new Vector2(512, 400),
-                    depth = 1,
-                    height = 802,
-                    width = 1026,
-                    rotation = 0
-                }
             };
             
             // makes playagain menu
@@ -357,7 +361,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.Black,
-                    rotation = -.1f,
+                    //rotation = -.1f,
                     depth = 0f,
                 },
                 height = 300
@@ -394,14 +398,14 @@ namespace Testgame
                 if (speed != null)
                 {
                     speed = new Speed(cards, background, selector, font, speed.you, speed.opp, textures,
-                        speed.myType, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), freeze); speed.TurnOn();
+                        speed.myType, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), vibrateOn, freeze); speed.TurnOn();
                 }
                 // restarts LEVELS game if restart chosen from pause menu
                 else if (levels != null)
                 {
                     player1.Reset();
                     levels = new Levels(cards, background,selector,font, player1, textures, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(),
-                        PowerUpSwitch.getOnOff(), (Levels.Difficulty)DifficultySwitch.getState(), freeze); levels.StartGame();
+                        PowerUpSwitch.getOnOff(), vibrateOn, (Levels.Difficulty)DifficultySwitch.getState(), freeze); levels.StartGame();
                 }
                     Pause.isPaused = true;
             };
@@ -436,18 +440,17 @@ namespace Testgame
                     depth = 0f,
                 },
                 scale = new Vector2(.5f, .5f)
-            };
-
-            // creates settings buttons
+            }; 
 
             SoundSwitch = new Switch("Sound", 300, font, 0);
             PowerUpSwitch = new Switch("Power Ups", 400, font, 0);
+            VibrateSwitch = new Switch("(XBOXONLY)Vibrate", 500, font, 0);
             String[] names = new String[4];
-            names[0] = "Baby";
+            names[0] = "Beginner";
             names[1] = "Easy";
             names[2] = "Medium";
             names[3] = "Hard";
-            DifficultySwitch = new Switch("Difficulty", names, 500, font, 2);
+            DifficultySwitch = new Switch("Difficulty", names, 600, font, 2);
             Switch[] settingSwitches = new Switch[3];
             settingSwitches[0] = SoundSwitch;
             settingSwitches[1] = PowerUpSwitch;
@@ -479,7 +482,7 @@ namespace Testgame
                 {
                     color = Color.Black,
 
-                    rotation = -.05f,
+                    //rotation = -.05f,
                     depth = 0f,
                 },
                 scale = new Vector2(.4f, .4f)
@@ -540,7 +543,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.Black,
-                    rotation = -.2f,
+                    //rotation = -.2f,
                     depth = 0f,
                 },
                 scale = new Vector2(.5f, .5f)
@@ -595,7 +598,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.Black,
-                    rotation = -.05f,
+                    //rotation = -.05f,
                     depth = 0f,
                 },
                 scale = new Vector2(.5f, .5f)
@@ -614,7 +617,7 @@ namespace Testgame
             gameMenuAction1[0] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), freeze);
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), vibrateOn, freeze);
                 speed.TurnOn(); GameMenu1.isPaused = true;
             };
 
@@ -622,7 +625,7 @@ namespace Testgame
             gameMenuAction1[1] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), freeze);
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), vibrateOn, freeze);
                 MarathonMenu.isPaused = false; GameMenu1.isPaused = true;
             };
 
@@ -630,7 +633,7 @@ namespace Testgame
             gameMenuAction1[2] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), freeze);
+                speed = new Speed(cards, background, selector, font, player1, computer, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), vibrateOn, freeze);
                 TimedMenu.isPaused = false; GameMenu1.isPaused = true;
             };
 
@@ -638,7 +641,7 @@ namespace Testgame
             gameMenuAction1[3] = delegate()
             {
                 player1.Reset(); computer.Reset();
-                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), (Levels.Difficulty) DifficultySwitch.getState(), freeze);
+                levels = new Levels(cards, background, selector, font, player1, textures, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), vibrateOn, (Levels.Difficulty) DifficultySwitch.getState(), freeze);
                 GameMenu1.isPaused = true;
                 levels.StartGame();
             };
@@ -657,7 +660,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.Black,
-                    rotation = -.05f,
+                    //rotation = -.05f,
                     depth = 0f,
                 },
                 scale = new Vector2(.5f, .5f)
@@ -675,7 +678,7 @@ namespace Testgame
             gameMenuAction2[0] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), freeze);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Normal, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), vibrateOn, freeze);
                 speed.TurnOn(); GameMenu2.isPaused = true;
             };
 
@@ -683,7 +686,7 @@ namespace Testgame
             gameMenuAction2[1] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), freeze);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Marathon, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), vibrateOn, freeze);
                 MarathonMenu.isPaused = false; GameMenu2.isPaused = true;
             };
 
@@ -691,7 +694,7 @@ namespace Testgame
             gameMenuAction2[2] = delegate()
             {
                 player1.Reset(); player2.Reset(); computer.Reset();
-                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), freeze);
+                speed = new Speed(cards, background, selector, font, player1, player2, textures, Speed.gameType.Timed, shuffle, playcard, shuffleinstance, SoundSwitch.getOnOff(), PowerUpSwitch.getOnOff(), vibrateOn, freeze);
                 TimedMenu.isPaused = false; GameMenu2.isPaused = true;
             };
 
@@ -996,7 +999,7 @@ namespace Testgame
             Winning.setButton(delegate() { Winning.isPaused = true; InstructionsMenu.isPaused = false; });
             #endregion
 
-            #region Winning
+            #region PowerUps
             // makes all the drawable text to display when control screen is chosen from instructions menu
             Drawable[][] PowerUpsText = new Drawable[1][];
 
@@ -1096,7 +1099,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.Black,
-                    rotation = -.05f,
+                    //rotation = -.05f,
                     depth = 0f,
                 },
                 scale = new Vector2(.5f, .5f)
@@ -1135,7 +1138,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.Black,
-                    rotation = -.05f,
+                    //rotation = -.05f,
                     depth = 0f,
                 },
                 scale = new Vector2(.5f, .5f)

@@ -51,6 +51,7 @@ namespace Testgame
             }
         }
 
+        //
         public String getTimeString(int time)
         {
             int min = time / 60;
@@ -58,6 +59,7 @@ namespace Testgame
             return min + ":" + sec/10 +"" + sec%10;
         }
 
+        //
         public String getCountDown(int timerNumber)
         {
             int time = (int) timer[timerNumber].getElapsed();
@@ -65,11 +67,13 @@ namespace Testgame
             return getTimeString(countDownTime);
         }
 
+        //
         public void ResetTimer(int timerNumber)
         {
             timer[timerNumber].Reset();
         }
 
+        //
         public double getTimeLeft(int timerNumber)
         {
             double time = (double)timer[timerNumber].getElapsed();
@@ -77,6 +81,7 @@ namespace Testgame
             return countDownTime;
         }
 
+        //
         public void pauseTimer(Timer timer)
         {
 

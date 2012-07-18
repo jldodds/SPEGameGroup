@@ -25,6 +25,7 @@ namespace Testgame
             // updates drawable
             public void Update(GameTime gameTime)
             {
+                
                 drawable.Update(gameTime);
             }
         }

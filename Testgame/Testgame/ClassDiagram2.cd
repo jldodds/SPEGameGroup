@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Testgame.Actions" Collapsed="true">
+    <Position X="14.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAEAAAAAAAAAAABAAABAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Actions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Attributes" Collapsed="true">
+    <Position X="16.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAQAQACAIAACAAAAAgCAAAAAIAAAAAA=</HashCode>
+      <FileName>Attributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Button" Collapsed="true">
+    <Position X="12.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAAAAIAAAggACABBDAAAAAAAACAAACAgQgAAAgA=</HashCode>
+      <FileName>Button.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Card" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIIAACAAABAAgIAAAAAAQAEAQgAAAAAAAABCAAAAAAg=</HashCode>
+      <FileName>Card.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Check" Collapsed="true">
+    <Position X="18.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Check.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Commands" Collapsed="true">
+    <Position X="14.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.ComputerPlayer" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AISACAAAAIAABAAAEAAAAAAAQIAAAAACAAQAIAAQAAA=</HashCode>
+      <FileName>ComputerPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Drawable" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QGYASAAAAMAAAhAAAAIAJQMBEAAQEQAAAAAHAEAAAAA=</HashCode>
+      <FileName>Drawable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.HumanPlayer" Collapsed="true">
+    <Position X="2.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAABAAAQAAAMAAAACABAQQAAEABAAAAABEAAAAE=</HashCode>
+      <FileName>HumanPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Levels" Collapsed="true">
+    <Position X="16.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQgAACAQBAEIgACAACAIQAgVADIAUAAEQACAwgAIAA=</HashCode>
+      <FileName>Levels.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Instructions" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAAAAAAwAAAAAEAAAAAAAAAAAQABAAAAAASAAEAA=</HashCode>
+      <FileName>Menus\Instructions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Menu" Collapsed="true">
+    <Position X="0.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARIEAIAAAgAAAAIYAAACQBAQAAAAABAACAAAgAAIAA=</HashCode>
+      <FileName>Menus\Menu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Settings" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAQAgAAAAIAQAACADAAAAAAABAAAAAACQAIAA=</HashCode>
+      <FileName>Menus\Settings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Switch" Collapsed="true">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAIAAQAAAIgQAAAAAAAAAAAAgAAEEAAAACkAAAAA=</HashCode>
+      <FileName>Menus\Switch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Particle" Collapsed="true">
+    <Position X="18.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAABAAAAAAgAAAIAAIAAAABAAAwCAAAQAIABAAAA=</HashCode>
+      <FileName>Particle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.ParticleEngine" Collapsed="true">
+    <Position X="10" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAEAEAgAAAAwBACAAAAAAAAAAABQAAAAAAAA=</HashCode>
+      <FileName>ParticleEngine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Pile" Collapsed="true">
+    <Position X="14.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAEAAAEAQAAAAAAIARAAAAAAIAAAAFAAAAAEAg=</HashCode>
+      <FileName>Pile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Player" Collapsed="true">
+    <Position X="1.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQCACCAIAgkBAAAAAEIgAAAQAAEIAAAQAwACAAAIAI=</HashCode>
+      <FileName>Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.PowerUp" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIAAAAAAAAAgAAAAABAAAAAAAAAAAACAQAAQQAAAA=</HashCode>
+      <FileName>PowerUp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Program" Collapsed="true">
+    <Position X="16.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Screen" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYoAAAAAAAAAgAAAAEAAAAAAAAAAAAAQAAAAAgAIgA=</HashCode>
+      <FileName>Screen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Speed" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QGwYIADDQkiEZUkABDiAiQBEMAOwEEAgQQYIEywUGBk=</HashCode>
+      <FileName>Speed.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Text" Collapsed="true">
+    <Position X="12.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAgQAQAAAAAACAACAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Text.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Timer" Collapsed="true">
+    <Position X="1" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAkAAAAAAAAAAAADAAAAIAAAAEAAAJAA=</HashCode>
+      <FileName>Timer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Testgame.Tweener" Collapsed="true">
+    <Position X="18.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAEIAACAAJAEkQBQSCAQAAgACAAAMIEACgCAAAQA=</HashCode>
+      <FileName>Tweener.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Delegate Name="Testgame.MoveDel" Collapsed="true">
+    <Position X="14.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAADSAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Drawable.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

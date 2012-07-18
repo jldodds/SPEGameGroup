@@ -34,14 +34,7 @@ namespace Testgame
         public int selector { get; set; }
         public readonly bool isPlayer1;
         PlayerState oldState;
-        //MouseState oldstate;
         Timer freezeTimer;
-
-        //int cardTopHeight = 585;
-        //int cardBottomHeight = 765;
-        //int initCardRightSide = 808;
-        //int initCardLeftSide = 678;
-        //int cardXShift = 154;
 
         public delegate void CardPlayer();
         public event CardPlayer SelectedCardLeft;
@@ -156,6 +149,7 @@ namespace Testgame
             else SelectedCardRight();
         }
 
+        //
         public void Freeze()
         {
             if (myState == PlayerState.Frozen || (myState == PlayerState.Penalized && oldState == PlayerState.Frozen)) freezeTimer.ResetTimer(0);
@@ -166,12 +160,14 @@ namespace Testgame
 
         double timeLeft;
 
+        //
         public void PauseFreeze()
         {
             freezeTimer.isPaused = true;
             timeLeft = freezeTimer.getTimeLeft(1);
         }
 
+        //
         public void unPauseFreeze()
         {
             freezeTimer.isPaused = false;
@@ -179,6 +175,7 @@ namespace Testgame
             newTimer.SetTimer(2, (float)timeLeft, delegate() { UnFreeze(); });
         }
 
+        //
         public void UnFreeze()
         {
             oldState = PlayerState.Normal;
@@ -192,83 +189,6 @@ namespace Testgame
         {
             myState = PlayerState.Normal;
         }
-
-        /*public void MouseUpdate()
-        {
-            // keeps track of what key currently being pressed
-            MouseState newstate = Mouse.GetState();
-            
-            // move selector to left pile if left if corresp. key pressed
-                if (newstate.LeftButton == ButtonState.Pressed && oldstate.LeftButton == ButtonState.Released)
-                {
-                    if ((newstate.X > initCardLeftSide) && (newstate.X < initCardRightSide) && (newstate.Y > cardTopHeight) && (newstate.Y < cardBottomHeight))
-                    {
-                        selector = 0;
-                        SelectCard(true);
-                    }
-
-                    if ((newstate.X > initCardLeftSide - cardXShift) && (newstate.X < initCardRightSide - cardXShift) && (newstate.Y > cardTopHeight) && (newstate.Y < cardBottomHeight))
-                    {
-                        selector = 1;
-                        SelectCard(true);
-                    }
-
-                    if ((newstate.X > initCardLeftSide - (2 * cardXShift)) && (newstate.X < initCardRightSide - (2 * cardXShift)) && (newstate.Y > cardTopHeight) && (newstate.Y < cardBottomHeight))
-                    {
-                        selector = 2;
-                        SelectCard(true);
-                    }
-
-                    if ((newstate.X > initCardLeftSide - (3 * cardXShift)) && (newstate.X < initCardRightSide - (3 * cardXShift)) && (newstate.Y > cardTopHeight) && (newstate.Y < cardBottomHeight))
-                    {
-                        selector = 3;
-                        SelectCard(true);
-                    }
-
-                    if ((newstate.X > initCardLeftSide - (4 * cardXShift)) && (newstate.X < initCardRightSide - (4 * cardXShift)) && (newstate.Y > cardTopHeight) && (newstate.Y < cardBottomHeight))
-                    {
-                        selector = 4;
-                        SelectCard(true);
-                    }
-                }
-
-            if (newstate.RightButton == ButtonState.Pressed && oldstate.RightButton == ButtonState.Released)
-            {
-                if ((newstate.X > initCardLeftSide) && (newstate.X < initCardRightSide) && (newstate.Y > cardTopHeight) && (newstate.Y < cardBottomHeight))
-                {
-                    selector = 0;
-                    SelectCard(false);
-                }
-
-                if ((newstate.X > initCardLeftSide - cardXShift) && (newstate.X < initCardRightSide - cardXShift) && (newstate.Y > cardTopHeight) && (newstate.Y < cardBottomHeight))
-                {
-                    selector = 1;
-                    SelectCard(false);
-                }
-
-                if ((newstate.X > initCardLeftSide - (2 * cardXShift)) && (newstate.X < initCardRightSide - (2 * cardXShift)) && (newstate.Y > cardTopHeight) && (newstate.Y < cardBottomHeight))
-                {
-                    selector = 2;
-                    SelectCard(false);
-                }
-
-                if ((newstate.X > initCardLeftSide - (3 * cardXShift)) && (newstate.X < initCardRightSide - (3 * cardXShift)) && (newstate.Y > cardTopHeight) && (newstate.Y < cardBottomHeight))
-                {
-                    selector = 3;
-                    SelectCard(false);
-                }
-
-                if ((newstate.X > initCardLeftSide - (4 * cardXShift)) && (newstate.X < initCardRightSide - (4 * cardXShift)) && (newstate.Y > cardTopHeight) && (newstate.Y < cardBottomHeight))
-                {
-                    selector = 4;
-                    SelectCard(false);
-                }
-            }
-
-            // updates old mouse state
-            oldstate = newstate;
-        }*/
-        
         
         // This has to be implemented by the extended classes
         public virtual void Update(Pile[] Hand, Pile rgamestack, Pile lgamestack, GameTime gameTime)

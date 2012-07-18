@@ -53,6 +53,7 @@ namespace Testgame
         SoundEffectInstance shuffleinstance;
         bool soundOn;
         bool powerUpOn;
+        bool vibrateOn;
         bool ableToReBegin;
         bool ableToReBegin2;
         public int level { get; set; }
@@ -67,7 +68,7 @@ namespace Testgame
         // initializes lots of variables
         public Speed(Card[] deckOfCards, Drawable background, Texture2D selector, SpriteFont font, 
             Player bottom, Player top, List<Texture2D> particles, gameType gameType, SoundEffect shuffling, 
-            SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, bool isPowerUpOn, PowerUp powerup):base(background)
+            SoundEffect playingcard, SoundEffectInstance shuffinstance, bool isSoundOn, bool isPowerUpOn, bool isVibrateOn, PowerUp powerup):base(background)
         {
             myType = gameType;
             cardcounter = new int[52];
@@ -81,6 +82,7 @@ namespace Testgame
             textures = particles;
             soundOn = isSoundOn;
             powerUpOn = isPowerUpOn;
+            vibrateOn = isVibrateOn;
             ableToReBegin = true;
             ableToReBegin2 = true;
             freeze = powerup;
@@ -149,33 +151,37 @@ namespace Testgame
                 yourCards[i] = new Pile(new Vector2(yourStack.position.X - (i + 1) * 154, yourStack.position.Y));
             }
 
-            yourName = new Text(you.playerName + " - ", _font);
+            yourName = new Text(you.playerName + " -  ", _font);
             yourName.height = 100;
-            yourName.attributes.position = new Vector2((yourCards[3].position.X + yourCards[4].position.X)/2, (yourCards[3].position.Y + lGameStack.position.Y) / 2);
+            yourName.attributes.position = new Vector2((yourCards[3].position.X + yourCards[4].position.X)/2 - 20, (yourCards[3].position.Y + lGameStack.position.Y) / 2);
             yourName.isSeeable = true;
             yourName.attributes.color = Color.LightSkyBlue;
             yourName.attributes.depth = .02f;
+            yourName.scale = new Vector2(.15f, .15f);
             
-            oppName = new Text(" - " + opp.playerName, _font);
+            oppName = new Text("  - " + opp.playerName, _font);
             oppName.height = 100;
-            oppName.attributes.position = new Vector2((opponentCards[3].position.X + opponentCards[4].position.X)/2, (opponentCards[3].position.Y + lGameStack.position.Y) / 2);
+            oppName.attributes.position = new Vector2((opponentCards[3].position.X + opponentCards[4].position.X)/2 + 20, (opponentCards[3].position.Y + lGameStack.position.Y) / 2);
             oppName.isSeeable = true;
             oppName.attributes.color = Color.Red;
             oppName.attributes.depth = .02f;
+            oppName.scale = new Vector2(.15f, .15f);
             
             yourScore = new Text(you.score.ToString(), _font);
             yourScore.height = 100;
-            yourScore.attributes.position = new Vector2(yourName.attributes.position.X + yourName.width/2 + 20, yourName.attributes.position.Y);
+            yourScore.attributes.position = new Vector2(yourName.attributes.position.X + yourName.width/2 + 10, yourName.attributes.position.Y);
             yourScore.isSeeable = true;
             yourScore.attributes.color = Color.LightSkyBlue;
             yourScore.attributes.depth = .02f;
-            
+            yourScore.scale = new Vector2(.15f, .15f);
+
             oppScore = new Text(opp.score.ToString(), _font);
             oppScore.height = 100;
-            oppScore.attributes.position = new Vector2(oppName.attributes.position.X - oppName.width/2 - 20, oppName.attributes.position.Y);
+            oppScore.attributes.position = new Vector2(oppName.attributes.position.X - oppName.width/2 - 10, oppName.attributes.position.Y);
             oppScore.isSeeable = true;
             oppScore.attributes.color = Color.Red;
             oppScore.attributes.depth = .02f;
+            oppScore.scale = new Vector2(.15f, .15f);
             
             for (int i = 0; i < cards.Length; i++)
             {
@@ -218,8 +224,8 @@ namespace Testgame
                 winningscore = 30;
             }
 
-            if (myType == gameType.Timed)
-            {
+            //if (myType == gameType.Timed)
+            //{
                 gameLength = 120;
                 delayTimer = new Timer(1);
                 delayTimer.SetTimer(0, 4, delegate()
@@ -239,7 +245,7 @@ namespace Testgame
                     delay.Fade(2);
                     delay.WhenDoneFading(delegate() { BeginGame(); });
                 });                   
-            }
+            //}
         }
 
         public enum gameType
@@ -316,7 +322,7 @@ namespace Testgame
             base.RemoveLast();
             if (myType == gameType.Timed)
             {
-                base.Add(time1);
+                //base.Add(time1);
                 base.Add(time2);
             }
 
@@ -328,9 +334,10 @@ namespace Testgame
                     attributes = new Attributes()
                     {
                         color = Color.Black,
-                        position = new Vector2(rSpitStack.position.X, yourName.attributes.position.Y),
+                        position = new Vector2(rSpitStack.position.X + 50, yourName.attributes.position.Y),
                         depth = .01f
                     },
+                    scale = new Vector2(.15f, .15f),
                 };
                 base.Add(levelss);
 
@@ -473,11 +480,12 @@ namespace Testgame
         {
             if (base.isPaused) return;
             if (isHalted) return;
+            if (speedState == gameState.GamePlay) delayTimer.Update(gameTime);
             if (myType == gameType.Timed)
             {
-                time1.changeContent(gameTimer.getCountDown(0));
+                //time1.changeContent(gameTimer.getCountDown(0));
                 time2.changeContent(gameTimer.getCountDown(0));
-                if (speedState == gameState.GamePlay) delayTimer.Update(gameTime);
+                //if (speedState == gameState.GamePlay) delayTimer.Update(gameTime);
                 if (speedState == gameState.ReBeginning && gameTimer.getTimeLeft(0) <= 20) gameTimer.isPaused = true;
                 else gameTimer.isPaused = false;
             }
@@ -559,14 +567,15 @@ namespace Testgame
             if (myType == gameType.Timed)
             {
                 gameTimer = new Timer(1);
-                gameTimer.SetTimer(0, gameLength, delegate() { Winner(DetermineWinner()); ableToReBegin = false; ableToReBegin2 = false; time1.Fade(4); time2.Fade(4); speedState = gameState.Winner; });
+                gameTimer.SetTimer(0, gameLength, delegate() { Winner(DetermineWinner()); ableToReBegin = false; ableToReBegin2 = false; /*time1.Fade(4);*/ time2.Fade(4); speedState = gameState.Winner; });
 
-                time1 = new Text(gameTimer.getCountDown(0), _font);
+                /*time1 = new Text(gameTimer.getCountDown(0), _font);
                 time1.height = 100;
                 time1.attributes.position = new Vector2(yourName.attributes.position.X, oppName.attributes.position.Y);
                 time1.isSeeable = true;
                 time1.attributes.color = Color.Black;
                 time1.attributes.depth = .02f;
+                time1.scale = new Vector2(.15f, .15f);*/
 
                 time2 = new Text(gameTimer.getCountDown(0), _font);
                 time2.height = 100;
@@ -574,6 +583,7 @@ namespace Testgame
                 time2.isSeeable = true;
                 time2.attributes.color = Color.Black;
                 time2.attributes.depth = .02f;
+                time2.scale = new Vector2(.12f, .12f);
             }
             Deal();
             base.TurnOn();
@@ -621,12 +631,17 @@ namespace Testgame
             int value = destinationPile.Peek().cardValue;
             if ((cv == 0 && value == 12) || (cv == 12 && value == 0) || (cv == value + 1 || cv == value - 1))
             {
-                if(myType == gameType.Timed) delayTimer.ResetTimer(0);
+                //if(myType == gameType.Timed) 
+                delayTimer.ResetTimer(0);
                 Card m = fromPile.Take();
                 m.toPile(destinationPile);
                 if (soundOn)
                 {
                     playcard.Play();
+                }
+                if (vibrateOn)
+                {
+                    GamePad.SetVibration(PlayerIndex.One, 1.0f, 1.0f);
                 }
                 m.Rotate(Actions.ExpoMove, (float)(random.NextDouble() - .5) / 2, .3f);
                 m.WhenDoneMoving(delegate()
