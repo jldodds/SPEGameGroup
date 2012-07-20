@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace Testgame
+namespace Speed
 {
 
     public class Tweener
@@ -178,6 +178,7 @@ namespace Testgame
         // 
         public override string ToString()
         {
+            String.Format("Ok", elapsed);
             return String.Format("{0}.{1}. Tween {2} -> {3} in {4}s. Elapsed {5:##0.##}s",
                 tweeningFunction.Method.DeclaringType.Name,
                 tweeningFunction.Method.Name,

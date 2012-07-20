@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
-namespace Testgame
+namespace Speed
 {
     class Actions
     {
@@ -42,6 +43,17 @@ namespace Testgame
         {
             
 		return (t==0) ? start : (end - start) * (float)Math.Pow(2, 10 * (t/d - 1)) + start;
-	}
+	    }
+
+        // Make pile method
+        public static void MakePile(Card[] cards, Vector2 position)
+        {
+            Random random = new Random();
+            for (int i = 0; i < cards.Length; i++)
+            {
+                cards[i].Move(Actions.ExpoMove, position + new Vector2(random.Next(-52 + i, 52 - i), random.Next(-52 + i, 52 - i)), ((float)i + 1) / 3);
+                cards[i].Rotate(Actions.ExpoMove, (float)(random.NextDouble() - .5) / 2, ((float)i + 1) / 3);
+            }
+        }
     }
 }

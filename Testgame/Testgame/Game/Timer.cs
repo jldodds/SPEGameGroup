@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace Testgame
+namespace Speed
 {
     class Timer : Drawable
     {

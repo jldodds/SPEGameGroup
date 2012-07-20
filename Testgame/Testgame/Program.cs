@@ -1,6 +1,6 @@
 using System;
 
-namespace Testgame
+namespace Speed
 {
 #if WINDOWS || XBOX
     static class Program

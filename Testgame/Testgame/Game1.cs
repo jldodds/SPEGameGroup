@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace Testgame
+namespace Speed
 {
 
     // TO DO:
@@ -162,7 +162,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     texture = this.Content.Load<Texture2D>("PossibleBackground"),
-                    color = Color.Transparent,
+                    color = Color.White,
                     position = new Vector2(512, 400),
                     depth = 1,
                     height = 802,
@@ -294,7 +294,6 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.Black,
-                    //rotation = -.1f,
                     depth = 0f,
                 },
                 height = 200
@@ -351,7 +350,7 @@ namespace Testgame
             };
             
             // makes playagain menu
-            PlayAgain = new Menu(playAgainBackground, 2, playAgain, PAButtonNames, playAgainAction, font, 150);
+            PlayAgain = new Menu(playAgainBackground, 2, playAgain, PAButtonNames, playAgainAction, font, 100, true);
             #endregion
 
             #region PauseMenu
@@ -444,17 +443,18 @@ namespace Testgame
 
             SoundSwitch = new Switch("Sound", 300, font, 0);
             PowerUpSwitch = new Switch("Power Ups", 400, font, 0);
-            VibrateSwitch = new Switch("(XBOXONLY)Vibrate", 500, font, 0);
+            VibrateSwitch = new Switch("(XBOX)Vibrate", 500, font, 0);
             String[] names = new String[4];
             names[0] = "Beginner";
             names[1] = "Easy";
             names[2] = "Medium";
             names[3] = "Hard";
             DifficultySwitch = new Switch("Difficulty", names, 600, font, 2);
-            Switch[] settingSwitches = new Switch[3];
+            Switch[] settingSwitches = new Switch[4];
             settingSwitches[0] = SoundSwitch;
             settingSwitches[1] = PowerUpSwitch;
-            settingSwitches[2] = DifficultySwitch;
+            settingSwitches[2] = VibrateSwitch;
+            settingSwitches[3] = DifficultySwitch;
 
             settings = new Settings(settingsText, settingSwitches, background, font);
             settings.SetButton(delegate() { settings.isPaused = true; MainMenu.isPaused = false; });
@@ -464,9 +464,10 @@ namespace Testgame
             #region SettingsMenu2
 
             // creates settings buttons
-            Switch[] settingSwitches2 = new Switch[2];
+            Switch[] settingSwitches2 = new Switch[3];
             settingSwitches2[0] = SoundSwitch;
             settingSwitches2[1] = DifficultySwitch;
+            settingSwitches2[2] = VibrateSwitch;
 
             settings2 = new Settings(settingsText, settingSwitches2, PauseBackground, font);
             settings2.SetButton(delegate() { settings2.isPaused = true; Pause.isPaused = false; });

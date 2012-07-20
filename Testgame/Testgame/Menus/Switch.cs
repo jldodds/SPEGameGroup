@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Testgame
+namespace Speed
 {
     class Switch : Drawable
     {
@@ -49,7 +49,9 @@ namespace Testgame
                     attributes = new Attributes()
                     {
                         color = Color.Black,
+
                         position = new Vector2(200 + 924 / (stateNames.Length + 1) * (i + 1), height),
+
 
                     },
                     height = switchHeight
