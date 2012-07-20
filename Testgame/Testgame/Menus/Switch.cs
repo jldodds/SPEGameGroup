@@ -32,7 +32,7 @@ namespace Testgame
                 attributes = new Attributes()
                 {
                     color = Color.Black,
-                    position = new Vector2(200, height),
+                    position = new Vector2(150, height),
                     
                 },
                 height = 75
@@ -49,7 +49,7 @@ namespace Testgame
                     attributes = new Attributes()
                     {
                         color = Color.Black,
-                        position = new Vector2(200 + 824 / (stateNames.Length + 1) * (i + 1), height),
+                        position = new Vector2(200 + 924 / (stateNames.Length + 1) * (i + 1), height),
 
                     },
                     height = switchHeight

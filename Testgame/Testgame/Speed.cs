@@ -230,20 +230,23 @@ namespace Testgame
                 delayTimer = new Timer(1);
                 delayTimer.SetTimer(0, 4, delegate()
                 {
-                    speedState = gameState.ReBeginning;
-                    Text delay = new Text("Delay", font)
+                    if (speedState == gameState.GamePlay && lSpitStack.Count() != 0)
                     {
-                        attributes = new Attributes()
-                            {
-                                color = Color.Yellow,
-                                position = new Vector2(512, 400),
-                                depth = .001f,
-                            },
-                        height = 400,
-                    };
-                    base.Add(delay);
-                    delay.Fade(2);
-                    delay.WhenDoneFading(delegate() { BeginGame(); });
+                        speedState = gameState.ReBeginning;
+                        Text delay = new Text("Delay", font)
+                        {
+                            attributes = new Attributes()
+                                {
+                                    color = Color.Yellow,
+                                    position = new Vector2(512, 400),
+                                    depth = .001f,
+                                },
+                            height = 400,
+                        };
+                        base.Add(delay);
+                        delay.Fade(2);
+                        delay.WhenDoneFading(delegate() { BeginGame(); });
+                    }
                 });                   
             //}
         }
