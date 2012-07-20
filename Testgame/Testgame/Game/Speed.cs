@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
-namespace Testgame
+namespace Speed
 {
     class Speed : Screen
     {
@@ -982,7 +982,6 @@ namespace Testgame
                 },
                 scale = new Vector2(.8f,.8f)
             };
-            
 
             Text tieMiddle = new Text("You're both", _font)
             {

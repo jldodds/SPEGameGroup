@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 
-namespace Testgame
+namespace Speed
 {
     public class Text : Drawable
     {

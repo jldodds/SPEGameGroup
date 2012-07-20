@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Testgame
+namespace Speed
 {
     public class Menu : Screen
     {
@@ -146,6 +146,41 @@ namespace Testgame
             {
                 buttons[i] = new Button(buttonNames[i], buttonFont, new Vector2(512, title.height + 140 + ((800 - title.height - 80 - buttonHeight) / numberOfButtons) * i), Color.Black);
                 buttons[i].height = this.buttonHeight;
+                buttons[i].Clicked += buttonActions[i];
+                buttons[i].Clicked += delegate()
+                {
+                    for (int j = 0; j < numberOfButtons; j++)
+                    {
+                        if (j != i) buttons[j].Remove();
+                    }
+                };
+                if (buttons[i].width > maxButtonWidth) maxButtonWidth = buttons[i].width;
+                base.Add(buttons[i]);
+                buttons[i].attributes.depth = .01f;
+            }
+
+            selected = 0;
+            myState = menuState.Off;
+            keysOff = false;
+            Timer state = new Timer(1);
+            base.Add(state);
+            state.SetTimer(0, .5f, delegate() { myState = menuState.On; });
+        }
+
+        // overloaded constructor to add buttonheight
+        public Menu(Drawable background, int numberOfButtons, Text title, String[] buttonNames, Button.ClickHandler[] buttonActions, SpriteFont buttonFont, int buttonHeight, bool PAMenuButtonHeight)
+            : base(background)
+        {
+            this.buttonHeight = buttonHeight;
+            buttons = new Button[numberOfButtons];
+            base.Add(title);
+            title.attributes.position = new Vector2(512, title.height / 2 + 40);
+            title.attributes.depth = .01f;
+            maxButtonWidth = 0;
+            for (int i = 0; i < numberOfButtons; i++)
+            {
+                buttons[i] = new Button(buttonNames[i], buttonFont, new Vector2(512, 550 + (125 * i)), Color.Black);
+                buttons[i].height = 100;
                 buttons[i].Clicked += buttonActions[i];
                 buttons[i].Clicked += delegate()
                 {
