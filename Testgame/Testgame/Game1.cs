@@ -11,6 +11,15 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Speed
 {
+
+    // TO DO:
+    //  - Vibrate Controllers
+    //  - Piles have depth
+    //  - Adjust Play Again menu
+
+
+
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
